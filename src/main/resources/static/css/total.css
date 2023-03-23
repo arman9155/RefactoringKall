@@ -1,0 +1,40 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+    width: 100%;
+}
+
+main {
+  width: 1200px;
+  margin: 100px auto;
+}
+
+h2 {
+   padding-bottom: 20px;
+   margin-bottom: 20px;
+   border-bottom: 1px solid #333333;
+   font-weight: 700;
+   font-size: 2rem;
+ }
+
+.container {
+   display:grid;
+   align-items: baseline;
+   justify-items: center;
+   width: 100%;
+   grid-template: repeat(1, 1fr) / repeat(5 , 1fr);
+   grid-template-areas:
+       "a b b b b";
+}
+
+aside {
+    grid-area : a;
+}
+.content {
+    grid-area : b;
+}
+
+
+

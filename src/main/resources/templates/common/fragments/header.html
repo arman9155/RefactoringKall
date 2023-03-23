@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      th:fragment="HeaderFragment">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link th:href="@{css/header.css}" rel="stylesheet">
+
+</head>
+<body>
+    <header>
+        <h1 class="animate__animated animate__tada title_logo">
+            <a href="#">
+                <span>SGL</span>
+            </a>
+        </h1>
+
+        <div class="item_search">
+            <input type="search" id="search" placeholder="검색어를 입력하세요." >
+            <label for="search"><a href="#">Search</a></label>
+        </div>
+
+        <ul class="user_menu">
+            <li><a href="#" >로그인</a></li>
+            <li><a href="#" >회원가입</a></li>
+            <li><a href="#" >장바구니</a></li>
+        </ul>
+
+        <ul class="main_menu">
+            <li><a th:href="@{customList}" class="animate__animated">Custom</a></li>
+            <li><a th:href="@{designList}" class="animate__animated">Design</a></li>
+            <li><a th:href="@{etcList}" class="animate__animated">ETC</a></li>
+            <li><a th:href="@{notice}" class="animate__animated">Community</a></li>
+        </ul>
+
+    </header>
+
+</body>
+</html>
