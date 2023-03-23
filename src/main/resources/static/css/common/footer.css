@@ -1,0 +1,46 @@
+/* footer */
+footer {
+    position:relative;
+    bottom:0;
+    left:0;
+
+    box-sizing: border-box;
+    width:100%;
+    height: 200px;
+    line-height: 30px;
+    color: white;
+    font-weight:bold;
+    text-align: center;
+
+    background: #FB9DA7;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+footer .corp_item {
+    display: inline-flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+
+}
+footer .corp_item li {
+    width: 150px;
+}
+footer .corp_item li a {
+    text-decoration: none;
+    color: white;
+}
+
+footer div:nth-of-type(2) a {
+    text-decoration: none;
+    color: white;
+}
+
+.element {
+    display: inlne-block;
+
+    animation: headShake;
+    animation-duration: 3s;
+    animation-iteration-count: 5;
+}

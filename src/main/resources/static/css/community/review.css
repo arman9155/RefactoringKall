@@ -1,0 +1,89 @@
+
+.content {
+     width: 100%;
+     padding-left: 20px;
+     border-left: 1px solid #33333330;
+     display: flex;
+     flex-direction: column;
+}
+
+.review {
+  display:grid;
+  grid-template: repeat(13, 1fr) / repeat(13 , 1fr);
+  grid-template-areas:
+      ". a a a . b b b . c c c ."
+      ". a a a . b b b . c c c ."
+      ". a a a . b b b . c c c ."
+      ". . . . . . . . . . . . ."
+      ". d d d . e e e . f f f ."
+      ". d d d . e e e . f f f ."
+      ". d d d . e e e . f f f ."
+      ". . . . . . . . . . . . ."
+      ". g g g . h h h . i i i ."
+      ". g g g . h h h . i i i ."
+      ". g g g . h h h . i i i ."
+}
+.review1 {
+    grid-area : a;
+}
+.review2 {
+    grid-area : b;
+}
+.review3 {
+    grid-area : c;
+}
+.review4 {
+    grid-area : d;
+}
+.review5 {
+    grid-area : e;
+}
+.review6 {
+    grid-area : f;
+}
+.review7 {
+    grid-area : g;
+}
+.review8 {
+    grid-area : h;
+}
+.review9 {
+    grid-area : i;
+}
+
+.productImg {
+  width: 100%;
+  height: 40%;
+}
+
+.comment {
+  width: 36px;
+  height: 36px;
+  margin:0 3px;
+}
+
+.content .review_recent{
+  display:flex;
+  align-items: center;
+  text-overflow: ellipsis;
+  font-size: 13px;
+  border-bottom: 1px solid #6b6b6b;
+}
+
+
+/*.content .review ul {
+  display:flex;
+  flex-direction: column;
+  gap:3px;
+  border: 1px solid #6b6b6b
+}*/
+
+.content .productName {
+     height:20%;
+    border-bottom: 1px solid #6b6b6b;
+}
+.content .review_recent {
+     height:20%;
+    border-bottom: 1px solid #6b6b6b;
+}
+

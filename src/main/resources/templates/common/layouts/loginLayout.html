@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+  <meta charset="UTF-8">
+  <title>로그인</title>
+</head>
+<body>
+  <!-- Content 내용 영역을 참조 -->
+  <th:block layout:fragment ="Content"></th:block>
+
+  <!-- Footer 영역을 참조합니다. -->
+  <footer th:replace="common/fragments/footer::FooterFragment"></footer>
+</body>
+</html>

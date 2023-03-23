@@ -1,0 +1,94 @@
+
+form div {
+    margin: 10px 0 ;
+}
+
+form label {
+  display: block;
+  margin: 10px 0;
+  line-height: 1.2rem;
+  font-weight: bold;
+}
+
+form input,
+form select {
+    all: unset;
+    box-sizing: border-box;
+    padding: 5px 20px;
+    width: 100%;
+    border-radius: 20px;
+    border: 1px solid RGB(255, 227, 227);
+    appearance: auto; /*요소의 브라우저 기본 모양을 그대로 사용하도록 설정하는 속성 */
+    line-height: 1.2rem;
+}
+
+form input:focus,
+form select:focus,
+form textarea:focus {
+     border: 3px solid #FB9DA7;
+}
+
+form textarea {
+    all: unset;
+    box-sizing: border-box;
+    padding: 20px 0;
+    width: 100%;
+    border-radius: 20px;
+    border: 1px solid RGB(255, 227, 227);
+    appearance: auto;
+    line-height: 1.2rem;
+}
+.file-upload {
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+.file-upload .upload-name {
+    box-sizing: border-box;
+    height: 40px;
+    padding: 10 20px;
+    vertical-align: middle;
+    border-radius: 20px 0 0 20px;
+    border: 1px solid RGB(255, 227, 227);
+    width:70%;
+}
+
+.file-upload label {
+    box-sizing: border-box;
+    height: 40px;
+    padding: 10px 20px;
+    vertical-align: middle;
+    background-color: #FB9DA7;
+    border: 1px solid  #FB9DA7;
+    border-radius: 0 20px 20px 0;
+    width: 30%;
+    color: white;
+}
+
+.file-upload input[type="file"] {
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+}
+
+form button {
+  all: unset;
+  /*font-size: 1.2rem;*/
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 0;
+  text-align: center;
+  border-radius: 20px;
+  background-color: RGB(255, 227, 227);
+  cursor: pointer;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+form button:hover {
+  background-color: #FB9DA7;
+  color: white;
+}

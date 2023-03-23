@@ -1,0 +1,38 @@
+
+.container {
+   display:grid;
+   align-items: baseline;
+   justify-items: center;
+   width: 100%;
+   grid-template: repeat(1, 1fr) / repeat(5 , 1fr);
+   grid-template-areas:
+       "a b b b b";
+}
+
+aside {
+    grid-area : a;
+}
+.content {
+    grid-area : b;
+}
+
+
+.content {
+     width: 100%;
+     padding-left: 20px;
+     border-left: 1px solid #33333330;
+     display: flex;
+     flex-direction: column;
+}
+
+h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  padding-bottom: 20px;
+}
+
+h3.underline {
+  border-bottom: 1px solid #33333330;
+  margin-bottom: 20px;
+}
+

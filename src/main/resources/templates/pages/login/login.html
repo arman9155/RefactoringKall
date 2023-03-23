@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/loginLayout}"
+      layout:fragment="Content">
+<head>
+    <meta charset="UTF-8">
+    <title>로그인</title>
+    <link th:href="@{css/login/login.css}" rel="stylesheet">
+
+</head>
+<body>
+    <main>
+        <!-- ================기본 로그인 ===========================================================-->
+        <div class="login_page">
+            <h1><a th:href="@{main}">메인으로</a></h1>
+            <form action="login" name="customer_login">
+                <section class="login">
+                    <h3>로그인</h3>
+                    <div class="login_ID">
+                        <input type="text" name="customer_ID" placeholder="아이디" required>
+                    </div>
+                    <div class="login_password">
+                        <input type="password" name="customer_password" placeholder="비밀번호" required>
+                    </div>
+
+                    <div class="save_ID">
+                        <input type="checkbox" name="save_ID" value="save_ID" id="save_ID">
+                        <label for="save_ID">
+                            아이디 저장
+                            <!-- 저장 가능할 시  -->
+                        </label>
+                    </div>
+
+                    <button class="login_submit" type="submit">로그인
+                    </button>
+                </section>
+            </form>
+
+            <div class="find_info">
+                <a class="find_ID" th:href="@{findID}">아이디 찾기</a>
+                <a class="find_password" th:href="@{findPW}">비밀번호 찾기</a>
+                <a class="join" th:href="@{join}">회원가입</a>
+             </div>
+            <!-- ===============SNS 로그인 가능시 ==================================================== -->
+            <section class="join_sns">
+                <p>SNS로 간편하게 로그인하세요.</p>
+                <a href="">간편 로그인 구현하기!!</a>
+            </section>
+            <!-- 기능 구현 가능 시  -->
+        </div>
+    </main>
+</body>
+</html>

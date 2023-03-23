@@ -1,0 +1,79 @@
+#mapList {
+  display: flex;
+  gap: 10px;
+  position:absolute;
+  z-index:2;
+}
+
+#naver {
+  text-indent: -9999px;
+  background: url('../community/visit/img/naver.png') center/100% 100% no-repeat;
+  width: 40px;
+  height: 40px;
+}
+
+#google {
+  text-indent: -9999px;
+  background: url('../community/visit/img/google.png') center/100% 100% no-repeat ;
+  width: 40px;
+  height: 40px;
+}
+
+.map_box {
+  display:flex;
+  flex-direction: column;
+  gap:20px;
+}
+
+#mapping_naver,
+#mapping_google {
+  width: 100%;
+  height: 400px;
+  position: relative;
+}
+
+#customoverlay {
+  width:50px;
+  line-height:40px;
+  text-align: center;
+  color:black;
+}
+
+.title_map{
+  display:block;
+  background: url('../community/visit/img/marker.png') center/100% 100% no-repeat;
+  width: 70px;
+  height: 70px;
+  line-height: 60px;
+  font-size: 20px;
+  font-weight: bold;
+  color:white;
+  /* color:black; */
+}
+
+div.visit-info p {
+  display: block;
+  font-size: 1.2rem;
+}
+
+div.visit-info p:not(:last-of-type) {
+  margin-bottom: 10px;
+}
+
+div.visit-info p span {
+  display: block;
+  box-sizing: border-box;
+  width: 100px;
+  text-align: center;
+  padding: 5px;
+  margin-bottom: 5px;
+  background-color:RGB(255, 227, 227);
+  color: black;
+}
+
+/*
+클릭하면 google / naver 왔다리 갔다리 하게 만든 것
+.hidden {
+  display:none;
+}
+*/

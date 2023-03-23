@@ -5,24 +5,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link th:href="@{css/total.css}" rel="stylesheet">
+    <link th:href="@{css/community/total.css}" rel="stylesheet">
 </head>
 
 <body>
-<!-- Header 영역을 참조합니다. -->
-<header th:replace="common/fragments/header::HeaderFragment"></header>
+    <!-- Header 영역을 참조합니다. -->
+    <header th:replace="common/fragments/header::HeaderFragment"></header>
 
-<main>
-    <h2> 커뮤니티</h2>
-    <div class="container">
-        <!-- Content 내용 영역을 참조 -->
-        <th:block layout:fragment ="Content"></th:block>
-        <aside th:replace="common/fragments/sidebar::Sidebar"></aside>
-    </div>
-</main>
+    <!-- 내용 영역을 참조합니다.     -->
+    <main>
+        <h2> 커뮤니티</h2>
+        <div class="container">
+            <!-- Content 내용 영역을 참조 -->
+            <th:block layout:fragment ="Content"></th:block>
+            <aside th:replace="common/fragments/sidebar::Sidebar"></aside>
+        </div>
+    </main>
 
-<!-- Footer 영역을 참조합니다. -->
-<footer th:replace="common/fragments/footer::FooterFragment"></footer>
+    <!-- Footer 영역을 참조합니다. -->
+    <footer th:replace="common/fragments/footer::FooterFragment"></footer>
 
 </body>
 </html>

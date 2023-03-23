@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+<!--      th:replace="common/fragments/config::ConfigFragment">-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title layout:title-pattern="$LAYOUT_TITLE : $CONTENT_TITLE">공동타이틀</title>-->
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+        <!-- Header 영역을 참조합니다. -->
+
+        <header th:replace="common/fragments/header::HeaderFragment"></header>
+        <!-- Content 내용 영역을 참조 -->
+        <th:block layout:fragment ="Content"></th:block>
+
+        <!-- Footer 영역을 참조합니다. -->
+        <footer th:replace="common/fragments/footer::FooterFragment"></footer>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/loginLayout}"
+      layout:fragment="Content">
+<head>
+  <meta charset="UTF-8">
+  <title>회원가입</title>
+  <link th:href="@{css/login/join.css}" rel="stylesheet">
+</head>
+<body>
+  <main>
+    <h1 class="logo"><a th:href="@{main}">메인으로</a></h1>
+    <form action="./complete.html" name="memberJoin" class="sighup-form">
+      <fieldset>
+        <legend><h3>필수입력 사항</h3> </legend>
+
+        <table id="required">
+          <tbody>
+            <tr>
+              <th><label for="name">이름</label></th>
+              <td><input id="name" type="text" name="name" placeholder="이름을 입력해 주세요" required></td>
+            </tr>
+            <tr>
+              <th><label for="id">아이디</label></th>
+              <td> <input id="id" type="text" name="id" placeholder="사용하실 아이디를 입력해주세요 " required></td>
+            </tr>
+            <tr>
+              <th><label for="password">비밀번호</label></th>
+              <td><input id="password" type="password" name="psw" placeholder="최소 7자리 이상 " minlength="7" required></td>
+            </tr>
+            <tr>
+              <th><label for="phone">전화번호</label></th>
+              <td id="phoneNB">
+                <input type="text" name="first_phone_num" value="010" minlength="3" maxlength="3" size="1" readonly required>
+                <span>-</span>
+                <input id="phone" type="text" name="mid_phone_num" minlength="3" maxlength="4" size="1" required>
+                <span>-</span>
+                <input type="text" name="last_phone_num" minlength="4" maxlength="4" size="1" required></td>
+            </tr>
+            <tr>
+              <th><label for="e-mail">이메일</label></th>
+              <td id="email">
+                <input id="e-mail" type="text" placeholder="이메일" size="5" required>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </fieldset>
+
+      <fieldset>
+        <legend><h3>선택사항</h3></legend>
+        <table id="choose">
+          <tbody>
+            <tr>
+              <th>생년월일</th>
+              <td><input type="date" id="birthday" name="birthday"></td>
+            </tr>
+            <tr>
+              <th>방문경로</th>
+              <td>
+                <div id="visit_root">
+                  <input id="blog-cafe" name="visit-root" value="blogCafe" type="checkbox" hidden>
+                  <label for="blog-cafe">블로그 등</label>
+
+                  <input id="friend" name="visit-root" value="friend" type="checkbox" hidden>
+                  <label for="friend">지인</label>
+
+                  <input id="sns" name="visit-root" value="sns" type="checkbox" hidden>
+                  <label for="sns">sns</label>
+
+                  <input id="search" name="visit-root" value="search" type="checkbox" hidden>
+                  <label for="search">검색</label>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </fieldset>
+
+      <fieldset>
+        <legend><h3>약관동의</h3></legend>
+        <table id="agree">
+          <tbody>
+            <tr>
+              <th><input type="checkbox" id="age" required></th>
+              <td><label for="age">만 14세 이상입니다. <a href="">(필수)</a></label></td>
+            </tr>
+            <tr>
+              <th><input type="checkbox" id="rule" required></th>
+              <td><label for="rule">이용약관 <a href="">(필수)</a></label></td>
+            </tr>
+            <tr>
+              <th><input type="checkbox" id="agreement" required></th>
+              <td><label for="agreement">개인정보수집 및 이용동의 <a href="">(필수)</a></label></td>
+            </tr>
+            <tr>
+              <th><input type="checkbox" id="event"></th>
+              <td><label for="event">이벤트, 쿠폰,특가알림 메일 및 SMS 등 수신 <a href="">(선택)</a></label></td>
+            </tr>
+          </tbody>
+        </table>
+      </fieldset>
+      <input type="submit" id="join" value="회원가입">
+    </form>
+  </main>
+</body>
+</html>

@@ -5,13 +5,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link th:href="@{css/header.css}" rel="stylesheet">
+    <link th:href="@{css/common/header.css}" rel="stylesheet">
 
 </head>
 <body>
     <header>
         <h1 class="animate__animated animate__tada title_logo">
-            <a href="#">
+            <a th:href="@{main}">
                 <span>SGL</span>
             </a>
         </h1>
@@ -22,9 +22,9 @@
         </div>
 
         <ul class="user_menu">
-            <li><a href="#" >로그인</a></li>
-            <li><a href="#" >회원가입</a></li>
-            <li><a href="#" >장바구니</a></li>
+            <li><a th:href="@{login}">Login</a></li>
+            <li><a th:href="@{join}">Join</a></li>
+            <li><a th:href="@{cart}" >Cart</a></li>
         </ul>
 
         <ul class="main_menu">
@@ -35,6 +35,5 @@
         </ul>
 
     </header>
-
 </body>
 </html>

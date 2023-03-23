@@ -1,8 +1,6 @@
 
 .content {
      width: 100%;
-     margin-right: 0;
-     margin-left: 20px;
      padding-left: 20px;
      border-left: 1px solid #33333330;
      display: flex;
@@ -19,7 +17,9 @@ h3.underline {
   border-bottom: 1px solid #33333330;
   margin-bottom: 20px;
 }
-#QAList{
+
+table {
+  table-layout: fixed; /* 이게 없으면... column 넓이 하나도 안멱혀요...*/
   width: 100%;
   margin: 0 0 20px 0;
   border: 0;
@@ -27,6 +27,15 @@ h3.underline {
   border-collapse: collapse;
   border-top: 1px solid #3c3c3c;
   line-height: 40px;
+}
+ table tr th:nth-child(1) {
+     width: 10%;
+ }
+table tr th:nth-child(2) {
+    width: 30%;
+ }
+table tr th:nth-child(3) {
+    width: 60%;
 }
 
 section .toggle_Q .guide_content,
@@ -64,6 +73,7 @@ thead tr {
   font-weight: 900;
   margin:0 10px;
 }
+
 section .QA_q_title::before,
 section .QA_q_content::before {
   content: '\f059';
@@ -73,13 +83,14 @@ section .QA_q_content::before {
 }
 
 section .guide_q_a,
- section .QA_q_a,
+section .QA_q_a,
 section .notice_a {
 
   padding: 20px;
   background-color: var(--white-f9);
   border-bottom: 1px solid #333333;
 }
+
 section .toggle_A .open {
   display: flex;
   content: '\f107';
