@@ -1,0 +1,118 @@
+
+.buyerInfo,
+.orderInfo,
+.productList,
+.total {
+    width: 100%;
+    table-layout: fixed;
+    text-align: center;
+    border-collapse: collapse;
+    border: 1px solid RGB(255, 200, 200);
+    margin-bottom: 20px;
+}
+
+.buyerInfo *,
+.orderInfo *,
+.productList *,
+.total * {
+    box-sizing: border-box;
+    padding: 10px 5px;
+}
+
+.buyerInfo th,
+.orderInfo th {
+    width: 45%;
+    color: white;
+    background-color: RGB(255, 200, 200);
+}
+.buyerInfo tr:not(:last-child) td,
+.orderInfo tr:not(:last-child) td {
+    border-bottom: 1px dotted RGB(255, 200, 200);
+}
+.orderInfo tr:nth-child(1) {
+    border: 1px solid RGB(255, 200, 200);
+}
+
+.buyerInfo input,
+.orderInfo input,
+.discount input,
+form button {
+    all: unset;
+}
+
+.buyerInfo button,
+.orderInfo button {
+    padding: 0;
+    width : 50px;
+    border: none;
+    background-color: RGB(255, 200, 200);
+    color:white;
+    float: right;
+    top:0;
+}
+
+ form button {
+    width : 20%;
+    border: none;
+    background-color: RGB(255, 200, 200);
+    color: white;
+    text-align: center;
+    float: right;
+}
+
+.buyerInfo button:hover,
+.orderInfo button:hover,
+form button:hover {
+    background-color:  #FB9DA7;
+}
+
+.orderInfo tr:nth-child(1) th {
+    background-color: white;
+    text-align: left;
+    color: black;
+}
+
+.productList tr {
+    box-sizing: border-box;
+    padding: 10px 0;
+    border-bottom: 3px solid RGB(255, 200, 200);
+}
+
+.discount {
+    display: flex;
+    border: 1px solid RGB(255, 200, 200);
+}
+.discount li {
+    box-sizing: border-box;
+    padding: 10px 0;
+}
+.discount li input {
+    padding: 0 20px;
+}
+.discount li:nth-child(1) {
+    width: 40%;
+    background-color: RGB(255, 200, 200);
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+.discount input[type="number"]::-webkit-outer-spin-button,
+.discount input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.payment  {
+    display: flex;
+    test-align: center;
+}
+.payment input {
+    width: 20px;
+    height: 20px;
+    padding: 0 5px;
+}
+
+.total th {
+    width: 25%;
+    line-height: 1.2rem;
+}

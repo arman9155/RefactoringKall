@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>마이페이지</title>
+    <link th:href="@{css/community/total.css}" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header 영역을 참조합니다. -->
+    <header th:replace="common/fragments/header::HeaderFragment"></header>
+
+    <!-- 내용 영역을 참조합니다. -->
+    <main>
+        <div class="container">
+            <!-- Content 내용 영역을 참조 -->
+            <th:block layout:fragment ="Content"></th:block>
+            <aside th:replace="common/fragments/mypageSidebar::Sidebar"></aside>
+        </div>
+    </main>
+
+    <!-- Footer 영역을 참조합니다. -->
+    <footer th:replace="common/fragments/footer::FooterFragment"></footer>
+
+</body>
+</html>

@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-                xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-                layout:decorate="~{common/layouts/listLayout}"
-                layout:fragment="Content">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/listLayout}"
+      layout:fragment="Content">
 <head>
     <meta charset="UTF-8">
     <link th:href="@{css/product/main.css}" rel="stylesheet">
@@ -22,57 +23,23 @@
 
                 <input type="radio" name="main_pic" id="main_3" class="main_pic">
                 <label for="main_3"></label>
-    <!--            <img src="../img/main_picture/3.jpg" alt="메인사진3" id="main 3">-->
+    <!--            <img src=" ../img/main_picture/3.jpg" alt="메인사진3" id="main 3">-->
             </div>
         </div>
 
         <h2 class="animate__animated element">추천 상품</h2>
-
-        <div class="recommend_item">
-
-            <div class="recommend item1">
-                <p>
-    <!--                <a href="./sunglasses.html"><img src="../img/main_product/1.jpg"></a>-->
-                <h3>유니크 뿔테 안경</h3><br>
-                </p>
+        <form action="" method="get" th:object="${recommendProduct}">
+            <div class="recommendContainer">
+            <th:block th:each="item, i : ${recommendProduct}">
+                <div class="recommend item[[${i.index}]]">
+                    <p>
+                        <a ref=""><img th:src="${item.image}"></a>
+                        <h3 th:text="${item.name}"></h3><br>
+                    </p>
+                </div>
+            </th:block>
             </div>
-
-            <div class="recommend item2">
-                <p>
-    <!--                <a href="#"><img src="../img/main_product/2.jpg"></a>-->
-                <h3>투브릿지 레트로 안경</h3><br>
-                </p>
-            </div>
-
-            <div class="recommend item3">
-                <p>
-    <!--                <a href="./sunglasses.html"><img src="../img/main_product/3.jpg"></a>-->
-                <h3>레이벤 선글라스</h3><br>
-                </p>
-            </div>
-
-            <div class="recommend item4">
-                <p>
-    <!--                <a href="#"><img src="../img/main_product/4.jpg"></a>-->
-                <h3>티타늄 안경</h3><br>
-                </p>
-            </div>
-
-
-            <div class="recommend item5">
-                <p>
-    <!--                <a href="#"><img src="../img/main_product/5.jpg"></a>-->
-                <h3>레이벤 뿔테 안경</h3><br>
-                </p>
-            </div>
-
-            <div class="recommend item6">
-                <p>
-    <!--                <a href="./sunglasses.html"><img src="../img/main_product/6.jpg"></a>-->
-                <h3>레이벤 선글라스</h3><br>
-                </p>
-            </div>
-        </div>
+        </form>
     </div>
 </body>
 </html>

@@ -113,12 +113,12 @@ table td {
 
 /*--------- 버튼 ------------------------------------------------------*/
 #join {
-      background-color: RGB(255, 227, 227);
+      background-color: RGB(255, 200, 200);
       cursor: pointer;
       font-weight: bold;
+      color: white;
 }
 
 #join:hover {
   background-color: #FB9DA7;
-  color: white;
 }

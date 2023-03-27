@@ -81,7 +81,7 @@ h2 {
     font-size: 45px;
 }
 
-.recommend_item {
+.recommendContainer {
     display:grid;
     /* justify-content: center;
     align-items: center; */

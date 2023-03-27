@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>주문</title>
+</head>
+<body>
+<!-- Header 내용 영역을 참조합니다. -->
+<Header th:replace="common/fragments/header::HeaderFragment"></Header>
+
+<!-- Content 내용 영역을 참조 -->
+<main>
+    <div th:replace="common/fragments/orderProcess::orderProcess"></div>
+    <th:block layout:fragment ="Content"></th:block>
+</main>
+
+<!-- Footer 영역을 참조합니다. -->
+<footer th:replace="common/fragments/footer::FooterFragment"></footer>
+</body>
+</html>

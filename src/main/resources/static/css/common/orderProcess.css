@@ -1,0 +1,23 @@
+
+.orderProcess {
+    border-radius: 20px;
+    /*height: 30%;*/
+    border: 3px solid #FB9DA7;
+    margin: 10px;
+}
+
+.flow {
+    display: flex;
+}
+
+.flow * {
+      box-sizing: border-box;
+      padding: 10px;
+}
+
+.flow tr {
+    display: flex;
+    flex-direction: column;
+    text-align:center;
+    line-height: 1.5rem;
+}

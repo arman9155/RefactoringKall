@@ -20,113 +20,26 @@
                     <th>내용</th>
                 </tr>
             </thead>
-
             <tbody id="toggle_container">
+            <th:block th:each="qna, i : ${qnaList}">
                 <tr class="toggle_Q">
-                    <td>4</td>
-                    <td>배송/결제</td>
+                    <td scope="row" th:text="${i.index+1}"></td>
+                    <td th:text="${qna.categoryDTO?.categoryName}"></td>
                     <td class="QA_content">
-                                <span class="QA_q_title">
-                                    배송일과 배송시간을 지정할 수 있나요?
-                                </span>
+                         <span class="QA_q_title"
+                               th:text="${qna.title}">
+                         </span>
                     </td>
                 </tr>
 
                 <tr class="toggle_A">
                     <td colspan="3" class="QA_q_a">
-                        <div class="QA_q_content">
-                            배송일과 배송시간을 지정할 수 있나요?
-                        </div>
-                        <div class="QA_a_content">
-                            <p>
-                                <strong>A</strong> <br><br>
-                                제품 주문 시 배송일과 배송시간을 지정하실 수 있습니다.<br><br>
-                                배송일은 지정한 배달 방식에 따라 당일 ~ 최대 3일 내로 도착합니다.
-                                <br>
-                                배송시간은 지역 및 당일 교통 상황에 따라 더 빠르거나 늦어질 수 있습니다.
-                                <br><br>
-                                다만, 주문제작의 경우 당일배송은 불가하며, 배송일의 경우 여유있게 <strong> 필요일 하루 전 </strong>수령으로 지정해주세요.
-                            </p>
+                        <div class="QA_a_content"
+                            th:text="${qna.content}">
                         </div>
                     </td>
                 </tr>
-
-                <tr class="toggle_Q">
-                    <td>3</td>
-                    <td>기타</td>
-                    <td class="QA_content">
-                                <span class="QA_q_title">
-                                    레터링 문구는 몇 글자까지 가능한가요?
-                                </span>
-                    </td>
-                </tr>
-
-                <tr class="toggle_A">
-                    <td colspan="3" class="QA_q_a">
-                        <div class="QA_q_content">
-                            레터링 문구는 몇 글자까지 가능한가요?
-                        </div>
-                        <div class="QA_a_content">
-                            <p>
-                                <strong>A</strong> <br><br>
-                                <strong>한글 12글자/영어 15글자 이내</strong> 로 가능합니다.<br><br>
-                            </p>
-                        </div>
-                    </td>
-                </tr>
-
-                <tr class="toggle_Q">
-                    <td>2</td>
-                    <td>기타</td>
-                    <td class="QA_content">
-                                <span class="QA_q_title">
-                                    케이크 보관은 몇일까지 가능한가요?
-                                </span>
-                    </td>
-                </tr>
-
-                <tr class="toggle_A">
-                    <td colspan="3" class="QA_q_a">
-                        <div class="QA_q_content">
-                            케이크 보관은 몇일까지 가능한가요?
-                        </div>
-                        <div class="QA_a_content">
-                            <p>
-                                <strong>A</strong> <br><br>
-                                케이크를 수령한뒤, 가급적 바로 섭취 해주시는게 가장 맛있게 드실 수 있습니다. <br> <br>
-                                필요일 이전에 수령하신 경우에는 냉장 보관을 해주시고 1 ~ 2일정도는 섭취하시는데 문제는 없습니다. <br>
-                                (맛이 떨어질 수 있으니, 수령후 바로 섭취하시는 것을 추천드립니다.)
-                            </p>
-                        </div>
-                    </td>
-                </tr>
-
-                <tr class="toggle_Q">
-                    <td>1</td>
-                    <td>결제/배송</td>
-                    <td class="QA_content">
-                                <span class="QA_q_title">
-                                    배송 대신 매장 픽업 가능한가요?
-                                </span>
-                    </td>
-                </tr>
-
-                <tr class="toggle_A">
-                    <td colspan="3" class="QA_q_a">
-                        <div class="QA_q_content">
-                            배송 대신 매장 픽업 가능한가요?
-                        </div>
-                        <div class="QA_a_content">
-                            <p>
-                                <strong>A</strong> <br><br>
-                                네 가능합니다.
-                                매장픽업은 주중, 주말, 공휴일 모두 픽업 가능하시며, 1:1 문의에 방문 날짜와 시간을 작성해 주시면 1일내로 예약 확정 문자를 남겨드리고 있습니다. 배송비 차액건은 케이크 픽업시 결제취소 후
-                                재결제 도와드리고있습니다.<br><br>
-                                혹, 예약 확정 문자를 받지 못하신 경우 문자 또는 1:1 문의글을 남겨주시면 답변드리겠습니다.
-                            </p>
-                        </div>
-                    </td>
-                </tr>
+            </th:block>
             </tbody>
         </table>
     </section>

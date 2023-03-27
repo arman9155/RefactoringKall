@@ -50,7 +50,7 @@ section:nth-child(1) {
     padding: 5px 20px;
     width: 70%;
     border-radius: 20px;
-    border: 1px solid RGB(255, 227, 227);
+    border: 1px solid RGB(255, 200, 200);
     outline: none;
     line-height: 1.2rem;
 
@@ -89,16 +89,16 @@ form button {
      padding: 10px 0;
      text-align: center;
      border-radius: 20px;
-     background-color: RGB(255, 227, 227);
+     background-color: RGB(255, 200, 200);
      cursor: pointer;
      font-weight: bold;
      margin: 3px 0;
      line-height: 1.2rem;
+     color: white;
 }
 
 form button:hover {
   background-color: #FB9DA7;
-  color: white;
 }
 
 /* -------- 찾기 시리즈 ---------------------------------------*/

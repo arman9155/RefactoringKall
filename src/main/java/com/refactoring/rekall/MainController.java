@@ -14,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("")
 public class MainController {
 
-    //  ------------------------------------- ★ Product List ★ ---------------------------------------------------------------
+//  ------------------------------------- ★ Product List ★ ------------------------------------------------------------
     @GetMapping(value = {"", "main"})
     public ModelAndView main() {
         ModelAndView modelAndView = new ModelAndView();
@@ -43,7 +43,7 @@ public class MainController {
         return modelAndView;
     }
 
-    //  ------------------------------------- ★ Community ★ ---------------------------------------------------------------
+//  ------------------------------------- ★ Community ★ ---------------------------------------------------------------
     @GetMapping("notice") // 공지사항
     public ModelAndView noticeList() {
         ModelAndView modelAndView = new ModelAndView();
@@ -79,8 +79,7 @@ public class MainController {
         return modelAndView;
     }
 
-
-//  ------------------------------------- ★ My Page ★ ---------------------------------------------------------------
+//  ------------------------------------- ★ login ★ -------------------------------------------------------------------
     @GetMapping("login") // 로그인
     public ModelAndView login() {
         ModelAndView modelAndView = new ModelAndView();
@@ -102,4 +101,31 @@ public class MainController {
         return modelAndView;
     }
 
+//  ------------------------------------- ★ My Page ★ -----------------------------------------------------------------
+
+    @GetMapping("mypage") // 로그인
+    public ModelAndView mypage() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("pages/mypage/mypage.html");
+        return modelAndView;
+    }
+
+
+//  ------------------------------------- ★ Cart / Order ★ -----------------------------------------------------------------
+    @GetMapping("cart") // 장바구니
+    public ModelAndView cart() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("pages/order/cart.html");
+        return modelAndView;
+    }
+
+    @PostMapping("order") // 장바구니
+    public ModelAndView order() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("pages/order/order.html");
+        return modelAndView;
+    }
 }
+
+
+

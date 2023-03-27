@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      th:fragment="orderProcess">
+<head>
+  <meta charset="UTF-8">
+  <link th:href="@{css/common/orderProcess.css}" rel="stylesheet">
+</head>
+<body> <!-- 맞는 프로레스가 h2에 나오도록 설정~!d -->
+  <h2>장바구니</h2>
+  <table class="orderProcess">
+    <tbody class="flow">
+      <tr>
+        <th>01</th>
+        <th>장바구니</th>
+      </tr>
+      <tr>
+        <th>02</th>
+        <th>주문 / 결제</th>
+      </tr>
+      <tr>
+        <th>03</th>
+        <th>주문 완료</th>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>

@@ -172,3 +172,14 @@ svg {
     animation: headShake;
     animation-duration:1s;
 }
+
+h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  padding-bottom: 20px;
+}
+
+h3.underline {
+  border-bottom: 1px solid #33333330;
+  margin: 15px 0px;
+}

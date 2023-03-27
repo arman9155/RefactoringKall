@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/communityLayout}"
+      layout:fragment="Content">
+<head>
+  <meta charset="UTF-8">
+  <title>공지사항</title>
+  <link th:href="@{css/community/complete.css}" rel="stylesheet">
+</head>
+<body>
+    <h3>문의하신 내용이 정상적으로 접수되었습니다.</h3>
+    <p>문의에 대한 답변은 [마이페이지 > 문의 내역 ] 에서 확인 가능하십니다.</p>
+
+    <div class="atags">
+      <a th:href="@{main}">메인으로</a>
+      <a th:href="@{question}">문의 내역</a>
+    </div>
+</body>
+</html>

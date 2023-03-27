@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/orderLayout}"
+      layout:fragment="Content">
+<head>
+  <meta charset="UTF-8">
+  <link th:href="@{css/order/cart.css}" rel="stylesheet">
+  <title>장바구니</title>
+</head>
+<body>
+    <form th:action="@{order}" method="post">
+      <h3 class="underline">선택한 상품</h3>
+      <table class="cart">
+        <thead>
+          <th class="select">
+            <input type="checkbox" id="selectAll">
+            <label for="selectAll">전체선택</label>
+          </th>
+          <th colspan="2" class="info">상품 / 옵션 정보</th>
+          <th class="count">수량</th>
+          <th class="price">가격</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="checkbox" name="products" value="product1"></td>
+            <td>케이크</td>
+            <td>무슨무슨 옵션 케이브</td>
+            <td class="countBtn">
+              <button class="decrease" value="-1">-</button>
+              <div>1</div>
+              <button class="increase" value="+1">+</button>
+            </td>
+            <td>3000</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table class="order">
+        <tbody>
+          <tr>
+            <th>상품 총 금액</th>
+            <td>3000</td>
+            <th>배송비</th>
+            <td>3000</td>
+          </tr>
+
+          <tr>
+            <th colspan="2">합계</th>
+            <td colspan="2">6000</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="buttons">
+        <input type="submit" value="선택 항목 삭제">
+        <input type="submit" value="선택 항목 주문">
+        <input type="submit" value="모든 항목 주문">
+      </div>
+    </form>
+
+</body>
+</html>

@@ -1,0 +1,85 @@
+
+.cart,
+.order {
+    width: 100%;
+    table-layout: fixed;
+    text-align: center;
+    border: 1px solid RGB(255, 200, 200);
+    margin-bottom: 20px;
+}
+
+.cart *,
+.order * {
+    box-sizing: border-box;
+    padding: 10px 5px;
+}
+
+.cart input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+}
+
+.select {
+    width: 15%;
+}
+.select input {
+    display: none;
+}
+
+.info {
+    width: 55%;
+}
+
+.count {
+    width: 15%;
+}
+.countBtn {
+    display: flex;
+}
+.countBtn > * {
+    margin: 0 auto;
+    text-align: center;
+}
+.countBtn button {
+    width: 20%;
+    height: 20%;
+    color: white;
+    border: none;
+    background-color: RGB(255, 200, 200);
+}
+.countBtn button:hover {
+    background-color: #FB9DA7;
+}
+.countBtn div {
+    width: 30%;
+}
+
+.price {
+    width: 15% ;
+}
+
+
+.order tr {
+    display: flex;
+}
+
+
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin: 10px auto;
+}
+
+.buttons input {
+    margin: 0 5px;
+    color: white;
+    border: none;
+    background-color: RGB(255, 200, 200);
+    width: 20%;
+    line-height: 2rem;
+    font-weight: bold;
+}
+.buttons input:hover {
+    color: white;
+    background-color: #FB9DA7;
+}

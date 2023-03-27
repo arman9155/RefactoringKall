@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      th:fragment="Sidebar">
+
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{css/common/mypageSidebar.css}" rel="stylesheet">
+</head>
+<<body>
+    <aside>
+        <table>
+            <tbody class="sidebar">
+            <tr>
+                <th>PROFILE</th>
+                <td>개인정보수정</td>
+                <td>배송지 관리</td>
+                <td>마일리지 내역</td>
+            </tr>
+            <tr>
+                <th>Order</th>
+                <td>주문 내역</td>
+                <td>배송 내역</td>
+                <td>반품 내역</td>
+            </tr>
+            <tr>
+                <th>Board</th>
+                <td>후기 내역</td>
+                <td>문의 내역</td>
+                <th>WISHLIST</th>
+            </tr>
+            </tbody>
+        </table>
+    </aside>
+</body>
+</html>

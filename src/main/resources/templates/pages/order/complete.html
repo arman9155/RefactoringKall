@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/orderLayout}"
+      layout:fragment="Content">
+<head>
+  <meta charset="UTF-8">
+  <link th:href="@{css/order/complete.css}" rel="stylesheet">
+  <title>주문완료</title>
+</head>
+<body>
+  <div><h3>주문완료되었습니다</h3></div>
+  <table class="complete">
+    <tr>
+      <th>주문 번호</th>
+      <td>20164-51154-32478</td>
+    </tr>
+    <tr>
+      <th>배송지</th>
+      <td></td>
+    </tr>
+    <tr>
+      <th>주문 상품</th>
+      <td>!!!!!</td>
+    </tr>
+    <tr>
+      <th>주문 금액</th>
+      <td>!원</td>
+    </tr>
+    <tr>
+      <th>결제 상세</th>
+      <td>!!카드 승인일자 가격이런거.~~</td>
+    </tr>
+  </table>
+
+  <div class="atags">
+    <a th:href="@{orderList}">구매내역보기</a>
+    <a th:href="@{main}">홈으로 가기</a>
+  </div>
+</body>
+</html>

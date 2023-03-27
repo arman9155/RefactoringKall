@@ -1,0 +1,12 @@
+.mypage,
+.mypage_menu {
+    text-align:center;
+     border: 3px solid #FB9DA7;
+}
+
+.mypage_menu {
+    display: grid;
+    grid-template: repeat(2, 1fr) / repeat(4, 1fr);
+    justify-contents: center;
+   align-items: center;
+}

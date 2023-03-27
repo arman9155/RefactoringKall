@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/mypageLayout}"
+      layout:fragment="Content">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{css/mypage/mypage.css}" rel="stylesheet">
+    <title>마이페이지</title>
+</head>
+<body>
+    <main>
+        <div class="mypage">
+            <div class="user">
+                <ul>
+                    <li> <a href="updateUser"></a> 님</li>
+                        <ul>
+                            <li><a>새싹</a></li>
+                            <li><a></a></li>
+                            <li><a></a></li>
+                            <li><a></a></li>
+                        </ul>
+                    <li> <a href="#" class="DJ_ClassInfo">등급별 혜택</a></li>
+                </ul>
+            </div>
+
+            <div class="mypage_menu">
+                <div><a th:href="@{mypage}"><i class="fa-regular fa-user fa-3x"></i>PROFILE</a></div>
+                <div><a href="./deliveryAdress.html"><i class="fa-solid fa-house fa-3x"></i>ADRESS</a></div>
+                <div class="DJ_mileage"><a href="#"><i class="fa-solid fa-coins fa-3x"></i>MILEAGE</a></div>
+                <div><a href="../cart/index.html"><i class="fa-solid fa-cart-shopping fa-3x"></i>CART</a></div>
+                <div><a href="#"><i class="fa-solid fa-clipboard-check fa-3x"></i>ORDER</a></div>
+                <div><a href="#"><i class="fa-solid fa-clipboard-list fa-3x"></i>BOARD</a></div>
+                <div><a th:href="@{wishList}"><i class="fa-regular fa-heart fa-3x"></i>WISH LIST</a></div>
+            </div>
+        <!-- 마이페이지 하단메뉴 -->
+        </div>
+    <!-- 마이페이지 메인 -->
+    </main>
+</body>
+</html>

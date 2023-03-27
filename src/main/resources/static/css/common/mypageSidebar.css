@@ -1,0 +1,11 @@
+
+table tr {
+    display:flex;
+    flex-direction: column;
+    text-align:center;
+}
+
+tr > * {
+    box-sizing : border-box;
+    padding: 5px 10px;
+}

@@ -38,7 +38,7 @@ footer div:nth-of-type(2) a {
 }
 
 .element {
-    display: inlne-block;
+    display: inline-block;
 
     animation: headShake;
     animation-duration: 3s;
