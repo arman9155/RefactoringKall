@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class UsQDTO {
 
-    private Integer usQId; // ▷▶ id _ 자동 count _ 1:1 문의 번호
+    private Integer usqId; // ▷▶ id _ 자동 count _ 1:1 문의 번호
 
     // -------- ▷▶ usq 가 외래키로 가져오는 DTO ----------------------------------------------
     private UserDTO userDTO; // ▷▶ 유저Id
@@ -33,7 +33,7 @@ public class UsQDTO {
         if(usQEntity == null) return null;
         UsQDTO usQDTO = new UsQDTO();
 
-        usQDTO.setUsQId(usQEntity.getUsQId());
+        usQDTO.setUsqId(usQEntity.getUsqId());
         usQDTO.setUserDTO(UserDTO.toUserDTO(usQEntity.getUserEntity()));
         usQDTO.setCategoryDTO(CategoryDTO.toCategoryDTO(usQEntity.getCategoryEntity()));
         usQDTO.setTitle(usQEntity.getTitle());

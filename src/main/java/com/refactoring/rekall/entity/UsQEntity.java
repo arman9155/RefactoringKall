@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 public class UsQEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer usQId; // ▷▶ id _ 자동 count _ 1:1 문의 번호
+    private Integer usqId; // ▷▶ id _ 자동 count _ 1:1 문의 번호
 
 // -------- ▷▶ usq 가 외래키로 가져오는 Entity ----------------------------------------------
     @JoinColumn(name = "userId")
@@ -48,7 +48,7 @@ public class UsQEntity {
         if(usQDTO == null) return null;
         UsQEntity usQEntity = new UsQEntity();
 
-        usQEntity.setUsQId(usQDTO.getUsQId());
+        usQEntity.setUsqId(usQDTO.getUsqId());
         usQEntity.setUserEntity(UserEntity.toUserEntity(usQDTO.getUserDTO()));
         usQEntity.setCategoryEntity(CategoryEntity.toCategoryEntity(usQDTO.getCategoryDTO()));
         usQEntity.setTitle(usQDTO.getTitle());
@@ -65,7 +65,7 @@ public class UsQEntity {
         if(usQDTO == null) return null;
         UsQEntity usQEntity = new UsQEntity();
 
-        usQEntity.setUsQId(usQDTO.getUsQId());
+        usQEntity.setUsqId(usQDTO.getUsqId());
         usQEntity.setUserEntity(UserEntity.toUserEntity(usQDTO.getUserDTO()));
         usQEntity.setCategoryEntity(CategoryEntity.toCategoryEntity(usQDTO.getCategoryDTO()));
         usQEntity.setTitle(usQDTO.getTitle());

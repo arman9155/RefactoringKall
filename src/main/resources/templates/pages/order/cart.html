@@ -8,6 +8,7 @@
   <meta charset="UTF-8">
   <link th:href="@{css/order/cart.css}" rel="stylesheet">
   <title>장바구니</title>
+
 </head>
 <body>
     <form th:action="@{order}" method="post">
@@ -23,17 +24,38 @@
           <th class="price">가격</th>
         </thead>
         <tbody>
-          <tr>
-            <td><input type="checkbox" name="products" value="product1"></td>
-            <td>케이크</td>
-            <td>무슨무슨 옵션 케이브</td>
-            <td class="countBtn">
-              <button class="decrease" value="-1">-</button>
-              <div>1</div>
-              <button class="increase" value="+1">+</button>
-            </td>
-            <td>3000</td>
-          </tr>
+          <th:block th:each="cart, i : ${cartList}">
+            <tr>
+              <td><input type="checkbox" name="products" th:id="${i.index+1}" value="${cart.productDTO.productId}"></td>
+              <td>[[${cart.productDTO.productName}]]</td>
+              <td>
+                <p th:if="${cart.option_sheet} != null">
+                [[${cart.option_sheet}]]
+                </p>
+                <p th:if="${cart.option_shape} != null">
+                  [[${cart.option_shape}]]
+                </p>
+                <p th:if="${cart.option_cream} != null">
+                  [[${cart.option_cream}]]
+                </p>
+                <p th:if="${cart.option_lettering} != null">
+                  [[${cart.option_lettering}]]
+                </p>
+                <p th:if="${cart.option_size} != null">
+                  [[${cart.option_size}]]
+                </p>
+                <p th:if="${cart.option_image} != null">
+                  [[${cart.option_image}]]
+                </p>
+              </td>
+              <td class="countBtn">
+                <button class="decrease" value="-1">-</button>
+                <div> [[${cart.amount}]]</div>
+                <button class="increase" value="+1">+</button>
+              </td>
+              <td  th:text="[[${cart.price}]]*[[${cart.amount}]]">값</td>
+            </tr>
+          </th:block>
         </tbody>
       </table>
 
@@ -41,14 +63,16 @@
         <tbody>
           <tr>
             <th>상품 총 금액</th>
-            <td>3000</td>
+            <td>
+              <p th:text="${@CustomUtil.calcPrice(cartList)}"></p>
+            </td>
             <th>배송비</th>
             <td>3000</td>
           </tr>
 
           <tr>
             <th colspan="2">합계</th>
-            <td colspan="2">6000</td>
+            <td colspan="2" th:text="3000 + ${@CustomUtil.calcPrice(cartList)}">result</td>
           </tr>
         </tbody>
       </table>

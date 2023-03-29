@@ -12,103 +12,34 @@
 <body>
     <div class="content">
         <h3 class="underline">구매후기</h3>
-        <ul class="review">
-            <li class="review1">
-                <ul>
-                    <li>
-                        <img class="productImg" src="../../images/cake/product/product3.jpg" alt="팔레트 케이크">
-                    </li>
-                    <li class="productName">
-                        <p class="rating-number">팔레트 케이크(4.5)</p>
-
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star-half-alt"></i>
-                    </li>
-                    <li class="review_recent">
-                        <div>
-                            <img class="comment" src="../../images/text_review.png" alt="리뷰">
-                        </div>
-                        <div>
-                            생각보다 너무 이뻐요
-                        </div>
-                    </li>
-                    <li class="review_recent">
-                        <div>
-                            <img class="comment" src="../../images/text_review.png" alt="리뷰">
-                        </div>
-                        <div>
-                            퀄리티가 짱이에요 다음기념일때도 재규매해야겟어용
-                        </div>
-                    </li>
-                </ul>
-            </li>
-            <li class="review2">
-                <ul>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                </ul>
-            </li>
-            <li class="review3">
-                <ul>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                </ul>
-            </li>
-            <li class="review4">
-                <ul>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                </ul>
-            </li>
-            <li class="review5">
-                <ul>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                </ul>
-            </li>
-            <li class="review6">
-                <ul>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                </ul>
-            </li>
-            <li class="review7">
-                <ul>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                </ul>
-            </li>
-            <li class="review8">
-                <ul>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                </ul>
-            </li>
-            <li class="review9">
-                <ul>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                </ul>
-            </li>
+        <ul class="reviewContainer">
+            <th:block th:each="item,i : ${productList}">
+                <li th:class="review[[${i.index+1}]]">
+                    <ul>
+                        <li>
+                            <img class="productImg" th:src="${item.productDTO.image}" alt="${item.name}">
+                        </li>
+                        <li class="productName">
+                            <p class="rating-number">[[${item.name}]](${item.star})</p>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </li>
+                        <th:block th:each="review : ${reviewList}">
+                            <li class="review_recent">
+                                <div>
+                                    <img class="comment" th:src="${review.image}" alt="리뷰">
+                                </div>
+                                <div>
+                                    [[${review.content}]]
+                                </div>
+                            </li>
+                        </th:block> //두개만 나오게 조정해야함
+                    </ul>
+                </li>
+            </th:block>
         </ul>
     </div>
 </body>

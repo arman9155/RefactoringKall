@@ -33,16 +33,17 @@ form {
     margin: 10px 0;
 }
 
+
 fieldset {
     all:unset;
 }
 
-table #phoneNB input {
-    width: 25%;
-    text-align: center;
+form a {
+    text-decoration: none;
 }
 
-form input {
+form input,
+#back {
    box-sizing: border-box;
    display:inline-block;
    padding: 5px 20px;
@@ -100,6 +101,7 @@ table td {
 }
 #visit_root input:checked+label {
     background-color:#FB9DA7;
+    background-color:#FB9DA7;
     color : white;
 }
 
@@ -112,13 +114,23 @@ table td {
 }
 
 /*--------- 버튼 ------------------------------------------------------*/
-#join {
+
+#join,
+#back,
+#idCheck{
       background-color: RGB(255, 200, 200);
       cursor: pointer;
       font-weight: bold;
       color: white;
 }
 
-#join:hover {
+#join:hover,
+#back:hover,
+#idCheck:hover {
   background-color: #FB9DA7;
+}
+
+#idCheck {
+    border : none;
+    float: right;
 }

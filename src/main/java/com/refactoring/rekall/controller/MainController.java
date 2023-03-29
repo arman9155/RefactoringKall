@@ -44,65 +44,15 @@ public class MainController {
     }
 
 
-    @GetMapping("review") // 후기
-    public ModelAndView review() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("pages/community/review.html");
-        return modelAndView;
-    }
-
-//  ------------------------------------- ★ login ★ -------------------------------------------------------------------
-    @GetMapping("login") // 로그인
-    public ModelAndView login() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("pages/login/login.html");
-        return modelAndView;
-    }
-
-    @PostMapping("login") // 로그인
-    public ModelAndView loginOK() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("pages/main.html");
-        return modelAndView;
-    }
-
-    @GetMapping("join") // 로그인
-    public ModelAndView join() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("pages/login/join.html");
-        return modelAndView;
-    }
-
 //  ------------------------------------- ★ My Page ★ -----------------------------------------------------------------
 
-    @GetMapping("mypage") // 로그인
+    @GetMapping("mypage") // 마이페이지
     public ModelAndView mypage() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("pages/mypage/mypage.html");
         return modelAndView;
     }
 
-
-//  ------------------------------------- ★ Cart / Order ★ -----------------------------------------------------------------
-    @GetMapping("cart") // 장바구니
-    public ModelAndView cart() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("pages/order/cart.html");
-        return modelAndView;
-    }
-
-    @PostMapping("order") // 장바구니 -> 주문으로
-    public ModelAndView order() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("pages/order/order.html");
-        return modelAndView;
-    }
-    @PostMapping("complete") // 주문 -> 결제완료
-        public ModelAndView complete() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("pages/order/complete.html");
-        return modelAndView;
-    }
 }
 
 

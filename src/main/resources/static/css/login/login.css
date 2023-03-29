@@ -121,3 +121,9 @@ form button:hover {
     text-align: left;
     font: 1.0rem;
 }
+
+/* -------- error ----------------------------------------*/
+.error {
+    color: red;
+    font-weight: bold;
+}

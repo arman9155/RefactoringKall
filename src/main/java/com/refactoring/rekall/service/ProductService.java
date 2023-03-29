@@ -7,11 +7,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ProductService {
 
@@ -24,9 +26,7 @@ public class ProductService {
         List<ProductDTO> productDTOList = new ArrayList<>(6);
         for(ProductEntity productEntity : productEntityList) {
             if(productEntity != null) {
-                System.out.println("id = "+ productEntity.getCategoryEntity().getCategoryId());
                 if(!productEntity.getCategoryEntity().getCategoryId().equals("main")) {
-                    System.out.println("id = "+ productEntity.getCategoryEntity().getCategoryId());
                     productDTOList.add(ProductDTO.toProductDTO(productEntity));
                 }
             }
@@ -39,9 +39,7 @@ public class ProductService {
         List<ProductEntity> productEntityList = productRepository.findAllByCategoryEntityCategoryIdOrderByProductIdDesc(categoryId);
         List<ProductDTO> productDTOList = new ArrayList<>();
         for(ProductEntity productEntity : productEntityList) {
-            System.out.println("productid"+productEntity.getProductId());
             if(productEntity != null) {
-                System.out.println(productEntity.getProductId());
                 productDTOList.add(ProductDTO.toProductDTO(productEntity));
             }
         }

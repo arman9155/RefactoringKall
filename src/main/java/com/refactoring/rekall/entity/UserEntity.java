@@ -71,6 +71,7 @@ public class UserEntity {
     private String root; //  ▷▶ 방문경로
     @Column(length = 1)
     private String eventagree; //  ▷▶ 광고성 수신 여부 -> Y / N
+
     @Column(length = 10)
     private String role = "user"; //  ▷▶ ID 역할
     @Column(length = 8)

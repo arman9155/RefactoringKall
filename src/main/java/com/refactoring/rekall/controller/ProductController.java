@@ -20,7 +20,6 @@ public class ProductController {
     public ModelAndView customList() {
         ModelAndView modelAndView = new ModelAndView();
         List<ProductDTO> productDTOList = productService.findById("custom");
-        System.out.println("product ddd"+productDTOList);
         modelAndView.addObject("productList", productDTOList);
         modelAndView.setViewName("pages/product/customList.html");
 
@@ -46,4 +45,15 @@ public class ProductController {
 
         return modelAndView;
     }
+
+//  ------------------------------------- ★ 상세페이지 연결 ★ ------------------------------------------------------------
+    @GetMapping("product") // 상품 상세페이지
+        public ModelAndView product() {
+        ModelAndView modelAndView = new ModelAndView();
+        List<ProductDTO> productDTOList = productService.findById("etc");
+        modelAndView.addObject("productList", productDTOList);
+        modelAndView.setViewName("pages/product/etcList.html");
+
+        return modelAndView;
+}
 }

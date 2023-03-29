@@ -92,3 +92,19 @@ form button:hover {
   background-color: #FB9DA7;
   color: white;
 }
+
+.select {
+    display: flex;
+    gap : 30px;
+    margin: 10px auto;
+    text-align: center;
+}
+
+.select a {
+    text-decoration:none;
+    color: white;
+    border-radius: 20px;
+    background-color: RGB(255, 227, 227);
+    box-sizing: border-box;
+    padding: 5px 20px;
+}

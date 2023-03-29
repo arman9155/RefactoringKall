@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       th:fragment="HeaderFragment">
@@ -35,5 +35,53 @@
         </ul>
 
     </header>
+</body>
+</html>
+1번 -->
+
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml"
+      th:fragment="HeaderFragment">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link th:href="@{css/common/header.css}" rel="stylesheet">
+</head>
+<body>
+<header>
+    <h1 class="animate__animated animate__tada title_logo">
+        <a th:href="@{main}">
+            <span>SGL</span>
+        </a>
+    </h1>
+
+    <div class="item_search">
+        <input type="search" id="search" placeholder="검색어를 입력하세요." >
+        <label for="search"><a href="#">Search</a></label>
+    </div>
+
+    <ul class="user_menu">
+        <li sec:authorize="isAuthenticated()"><span sec:authentication="name"></span>님</li>
+        <li><a sec:authorize="isAnonymous()" th:href="@{login}">Login</a></li>
+        <li><a sec:authorize="isAuthenticated()"th:href="@{logout}">logout</a></li>
+        <li><a sec:authorize="isAnonymous()" th:href="@{join}">Join</a></li>
+        <li><a sec:authorize="isAnonymous()" th:href="@{cart}" >Cart</a></li>
+    </ul>
+<!-- sec:authorize=""
+        Spring Security가 제공해주는 인증에 관한 정보를 사용하기 위한 태그
+        isAnonymous() - 로그인이 이루어지지 않은 상태
+        isAuthenticated() - 로그인이 이루어진 상태
+    sec:authentication="name" - 현재 로그인된 사용자의 name  값을 가져옴-->
+
+    <ul class="main_menu">
+        <li><a th:href="@{customList}" class="animate__animated">Custom</a></li>
+        <li><a th:href="@{designList}" class="animate__animated">Design</a></li>
+        <li><a th:href="@{etcList}" class="animate__animated">ETC</a></li>
+        <li><a th:href="@{notice}" class="animate__animated">Community</a></li>
+    </ul>
+
+</header>
 </body>
 </html>

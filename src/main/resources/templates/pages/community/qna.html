@@ -8,10 +8,23 @@
     <meta charset="UTF-8">
     <title>자주 묻는 질문</title>
     <link th:href="@{css/community/notice.css}" rel="stylesheet">
+    <script th:src="@{myLib/jquery-3.2.1.min.js}"></script>
+    <script th:inline="javascript">
+        $("#categoryID").click(function(){
+            $("#categoryID").removeClass("click");
+            $(this).addClass("click");
+        });
+    </script>
 </head>
 <body>
     <section class="content">
         <h3 class="underline">자주 묻는 질문</h3>
+        <div class="select">
+            <a th:href="@{qna}" id="categoryID 0" class="category">전체</a>
+            <th:block th:each="category,i : ${category}">
+                <a th:href="@{${category.categoryId}}" th:id="'categoryID '+${i.index+1}" class="category">[[${category.categoryName}]]</a>
+            </th:block>
+        </div>
         <table id="QAList">
             <thead>
                 <tr>

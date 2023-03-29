@@ -38,6 +38,27 @@ table tr th:nth-child(3) {
     width: 60%;
 }
 
+.select {
+    display: flex;
+    gap : 30px;
+    margin: 10px auto;
+    text-align: center;
+}
+
+.select a {
+    text-decoration:none;
+    color: white;
+    border-radius: 20px;
+    background-color: RGB(255, 227, 227);
+    box-sizing: border-box;
+    padding: 5px 20px;
+}
+.click {
+    background-color: #FB9DA7;
+}
+
+
+
 section .toggle_Q .guide_content,
 section .toggle_Q .QA_content,
 section .toggle_Q .notice_content{
@@ -100,3 +121,5 @@ section .toggle_A .open {
   top: 50%;
   transform: translateY(-50%);
 }
+
+
