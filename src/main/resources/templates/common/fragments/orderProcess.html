@@ -9,15 +9,15 @@
 <body> <!-- 맞는 프로레스가 h2에 나오도록 설정~!d -->
   <table class="orderProcess">
     <tbody class="flow">
-      <tr class="p_cart">
+      <tr class="p_cart" th:classappend ="{${Content} == 'cart' ? 'active' : ''}">
         <th>01</th>
         <th>장바구니</th>
       </tr>
-      <tr class="p_order">
+      <tr class="p_order" th:classappend ="{${Content} == 'order' ? 'active' : ''}">
         <th>02</th>
         <th>주문 / 결제</th>
       </tr>
-      <tr class="p_complete">
+      <tr class="p_complete" th:classappend ="{${Content} == 'complete' ? 'active' : ''}">
         <th>03</th>
         <th>주문 완료</th>
       </tr>

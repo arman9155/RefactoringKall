@@ -1,5 +1,6 @@
 package com.refactoring.rekall.entity;
 
+import com.refactoring.rekall.dto.UserDelDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,4 +34,18 @@ public class UserDelEntity implements Serializable {
     @CreationTimestamp // 생성일시
     private LocalDateTime date = LocalDateTime.now(); // ▷▶  탈퇴일
 
+
+
+// -------------- ▷▶ DTO -> Entity --------------------------------------------------------
+    public static UserDelEntity toUserDelEntity(UserDelDTO userDelDTO) {
+        if(userDelDTO == null) return null;
+        UserDelEntity userDelEntity = new UserDelEntity();
+
+        userDelEntity.setUsdelId(userDelDTO.getUsdelId());
+        userDelEntity.setUserEntity(UserEntity.toUserEntity(userDelDTO.getUserDTO()));
+        userDelEntity.setText(userDelDTO.getText());
+        userDelEntity.setDate(userDelDTO.getDate());
+
+        return userDelEntity;
+    }
 }

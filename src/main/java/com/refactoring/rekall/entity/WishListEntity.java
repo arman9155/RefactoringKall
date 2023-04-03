@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @Table(name = "wish_list")
 public class WishListEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer wishListId; // ▷▶ id _ 자동 count
+    private Integer wishlistId; // ▷▶ id _ 자동 count
 
 // -------- ▷▶  wishlist 가 외래키로 가져오는 Entity ----------------------------------------------
     @JoinColumn(name = "productId")
@@ -38,7 +38,7 @@ public class WishListEntity {
         if (wishListDTO == null) return null;
         WishListEntity wishListEntity = new WishListEntity();
 
-        wishListEntity.setWishListId(wishListDTO.getWishListId());
+        wishListEntity.setWishlistId(wishListDTO.getWishlistId());
         wishListEntity.setProductEntity(ProductEntity.toProductEntity(wishListDTO.getProductDTO()));
         wishListEntity.setUserEntity(UserEntity.toUserEntity(wishListDTO.getUserDTO()));
         wishListEntity.setDate(wishListDTO.getDate());

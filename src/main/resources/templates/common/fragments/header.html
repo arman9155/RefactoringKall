@@ -1,49 +1,8 @@
-<!--<!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      th:fragment="HeaderFragment">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link th:href="@{css/common/header.css}" rel="stylesheet">
-
-</head>
-<body>
-    <header>
-        <h1 class="animate__animated animate__tada title_logo">
-            <a th:href="@{main}">
-                <span>SGL</span>
-            </a>
-        </h1>
-
-        <div class="item_search">
-            <input type="search" id="search" placeholder="검색어를 입력하세요." >
-            <label for="search"><a href="#">Search</a></label>
-        </div>
-
-        <ul class="user_menu">
-            <li><a th:href="@{login}">Login</a></li>
-            <li><a th:href="@{join}">Join</a></li>
-            <li><a th:href="@{cart}" >Cart</a></li>
-        </ul>
-
-        <ul class="main_menu">
-            <li><a th:href="@{customList}" class="animate__animated">Custom</a></li>
-            <li><a th:href="@{designList}" class="animate__animated">Design</a></li>
-            <li><a th:href="@{etcList}" class="animate__animated">ETC</a></li>
-            <li><a th:href="@{notice}" class="animate__animated">Community</a></li>
-        </ul>
-
-    </header>
-</body>
-</html>
-1번 -->
-
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.w3.org/1999/xhtml"
       th:fragment="HeaderFragment">
+<!--      xmlns:sec = "http://www.thymeleaf.org/extras/spring-security"-->
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -51,30 +10,62 @@
 </head>
 <body>
 <header>
+<!-- -------------------❤ 로고 ❤️-------------------------------------------------------------------------------------- -->
     <h1 class="animate__animated animate__tada title_logo">
         <a th:href="@{main}">
             <span>SGL</span>
         </a>
     </h1>
 
+<!-- -------------------❤ 검색 ❤️-------------------------------------------------------------------------------------- -->
     <div class="item_search">
         <input type="search" id="search" placeholder="검색어를 입력하세요." >
         <label for="search"><a href="#">Search</a></label>
     </div>
 
+<!-- -------------------❤ ~님 / 관리자면 관리자 모드 ❤️-------------------------------------------------------------------------------------- -->
+
+    <div id="header_name">
+        <th:block th="${userRole != null && userRole != ''}">
+            반갑습니다. <br><span th:text="${loginId}"></span>님
+            <th:block th:if="${userRole == 'admin'}">
+                <a th:href="@{admin}" id="admin_page">관리자모드</a>
+            </th:block>
+        </th:block>
+    </div>
+
+<!-- -------------------❤ 유저 메뉴 ❤️-------------------------------------------------------------------------------------- -->
     <ul class="user_menu">
-        <li sec:authorize="isAuthenticated()"><span sec:authentication="name"></span>님</li>
-        <li><a sec:authorize="isAnonymous()" th:href="@{login}">Login</a></li>
-        <li><a sec:authorize="isAuthenticated()"th:href="@{logout}">logout</a></li>
-        <li><a sec:authorize="isAnonymous()" th:href="@{join}">Join</a></li>
-        <li><a sec:authorize="isAnonymous()" th:href="@{cart}" >Cart</a></li>
+            <th:block th:if="${loginId != null}">
+                <li><a th:href="@{logout}" id="header_logout">Logout</a></li>
+            </th:block>
+            <th:block th:if="${loginId == null}">
+                <li><a th:href="@{login}" id="header_login">Login</a></li>
+             </th:block>
+        <th:block th:if="${loginId != null}">
+            <li><a th:href="@{mypage}" id="header_mypage">Mypage</a></li>
+        </th:block>
+        <th:block th:if="${loginId == null}">
+            <li><a th:href="@{login}" id="header_join">join</a></li>
+        </th:block>
+        <li><a th:href="@{cart}" id="header_cart" >Cart</a></li>
     </ul>
+<!--    <div sec:authorize="isAuthenticated()" id="header_name">반갑습니다. <br><span sec:authentication="name"></span>님
+        <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{admin}" id="admin_page">관리자모드</a></div>
+    <ul class="user_menu">
+        <li><a sec:authorize="isAnonymous()" th:href="@{login}" id="header_login">Login</a>
+            <a sec:authorize="isAuthenticated()"th:href="@{logout}" id="header_logout">logout</a></li>
+        <li><a sec:authorize="isAnonymous()" th:href="@{join}" id="header_join">Join</a></li>
+        <li><a sec:authorize="isAnonymous()" th:href="@{cart}" id="header_cart">Cart</a></li>
+    </ul>-->
 <!-- sec:authorize=""
         Spring Security가 제공해주는 인증에 관한 정보를 사용하기 위한 태그
         isAnonymous() - 로그인이 이루어지지 않은 상태
         isAuthenticated() - 로그인이 이루어진 상태
-    sec:authentication="name" - 현재 로그인된 사용자의 name  값을 가져옴-->
+    sec:authentication="name" - 현재 로그인된 사용자의 name  값을 가져옴
+    sec:authorize="hasRole('ROLE_ADMIN')" : admin권한 있으면 볼 수 있음-->
 
+<!-- -------------------❤ 상단메뉴 ❤️-------------------------------------------------------------------------------------- -->
     <ul class="main_menu">
         <li><a th:href="@{customList}" class="animate__animated">Custom</a></li>
         <li><a th:href="@{designList}" class="animate__animated">Design</a></li>

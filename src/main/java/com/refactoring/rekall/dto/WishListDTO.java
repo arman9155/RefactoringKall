@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class WishListDTO {
 
-    private Integer wishListId; // ▷▶ id _ 자동 count
+    private Integer wishlistId; // ▷▶ id _ 자동 count
 
     // -------- ▷▶  wishlist 가 외래키로 가져오는 DTO ----------------------------------------------
     private ProductDTO productDTO; // ▷▶ 상품번호
@@ -28,7 +28,7 @@ public class WishListDTO {
         if(wishListEntity == null) return null;
         WishListDTO wishListDTO = new WishListDTO();
 
-        wishListDTO.setWishListId(wishListEntity.getWishListId());
+        wishListDTO.setWishlistId(wishListEntity.getWishlistId());
         wishListDTO.setProductDTO(ProductDTO.toProductDTO(wishListEntity.getProductEntity()));
         wishListDTO.setUserDTO(UserDTO.toUserDTO(wishListEntity.getUserEntity()));
         wishListDTO.setDate(wishListEntity.getDate());

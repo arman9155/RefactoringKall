@@ -1,4 +1,3 @@
-<!--
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
@@ -13,30 +12,34 @@
 </head>
 <body>
     <main>
-        &lt;!&ndash; ================기본 로그인 ===========================================================&ndash;&gt;
+      <!-- ================기본 로그인 ==========================================================-->
         <div class="login_page">
             <h1><a th:href="@{main}">메인으로</a></h1>
-            <form action="login" name="customer_login">
+            <form th:action="@{login}" method="post" name="login" >
+           <!--     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
                 <section class="login">
                     <h3>로그인</h3>
                     <div class="login_ID">
-                        <input type="text" name="customer_ID" placeholder="아이디" required>
+                        <input type="text" name="userId" id="userId" th:name="userId" th:value="${userId}" placeholder="아이디" required>
                     </div>
                     <div class="login_password">
-                        <input type="password" name="customer_password" placeholder="비밀번호" required>
+                        <input type="password" name="password" id="password" th:name="password" th:value="${password}" placeholder="비밀번호" required>
                     </div>
-
+<!--                    <div th:if="${param.error}" id="error1">
+                        <p>로그인에 실패하였습니다. 아이디와 비밀번호를 확인해주세요</p>
+                    </div>
+                    <div th:if="${param.error}" id="error2">
+                        <p>탈퇴한 계정입니다.</p>
+                    </div>-->
                     <div class="save_ID">
                         <input type="checkbox" name="save_ID" value="save_ID" id="save_ID">
                         <label for="save_ID">
                             아이디 저장
-                            &lt;!&ndash; 저장 가능할 시  &ndash;&gt;
                         </label>
                     </div>
-
-                    <button class="login_submit" type="submit">로그인
-                    </button>
                 </section>
+                <button class="login_submit" type="submit">로그인</button>
+
             </form>
 
             <div class="find_info">
@@ -44,70 +47,12 @@
                 <a class="find_password" th:href="@{findPW}">비밀번호 찾기</a>
                 <a class="join" th:href="@{join}">회원가입</a>
              </div>
-            &lt;!&ndash; ===============SNS 로그인 가능시 ==================================================== &ndash;&gt;
+          <!-- ===============SNS 로그인 가능시 ==================================================== -->
             <section class="join_sns">
                 <p>SNS로 간편하게 로그인하세요.</p>
                 <a href="">간편 로그인 구현하기!!</a>
             </section>
-            &lt;!&ndash; 기능 구현 가능 시  &ndash;&gt;
-        </div>
-    </main>
-</body>
-</html>
-1번 -->
-
-
-<!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{common/layouts/loginLayout}"
-      layout:fragment="Content">
-<head>
-    <meta charset="UTF-8">
-    <title>로그인</title>
-    <link th:href="@{css/login/login.css}" rel="stylesheet">
-
-</head>
-<body>
-    <main>
-        &lt;!&ndash; ================기본 로그인 ===========================================================&ndash;&gt;
-        <div class="login_page">
-            <h1><a th:href="@{main}">메인으로</a></h1>
-            <form action="login" name="customer_login">
-                <section class="login">
-                    <h3>로그인</h3>
-                    <div class="login_ID">
-                        <input type="text" name="userID" placeholder="아이디" required>
-                    </div>
-                    <div class="login_password">
-                        <input type="password" name="password" placeholder="비밀번호" required>
-                    </div>
-
-                    <div class="save_ID">
-                        <input type="checkbox" name="save_ID" value="save_ID" id="save_ID">
-                        <label for="save_ID">
-                            아이디 저장
-                        </label>
-                    </div>
-
-                    <button class="login_submit" type="submit">로그인
-                    </button>
-                </section>
-                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-            </form>
-
-            <div class="find_info">
-                <a class="find_ID" th:href="@{findID}">아이디 찾기</a>
-                <a class="find_password" th:href="@{findPW}">비밀번호 찾기</a>
-                <a class="join" th:href="@{join}">회원가입</a>
-             </div>
-            &lt;!&ndash; ===============SNS 로그인 가능시 ==================================================== &ndash;&gt;
-            <section class="join_sns">
-                <p>SNS로 간편하게 로그인하세요.</p>
-                <a href="">간편 로그인 구현하기!!</a>
-            </section>
-            &lt;!&ndash; 기능 구현 가능 시  &ndash;&gt;
+            <!-- 기능 구현 가능 시-->
         </div>
     </main>
 </body>

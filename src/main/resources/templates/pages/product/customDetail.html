@@ -7,216 +7,326 @@
 <head>
     <meta charset="UTF-8">
     <link th:href="@{css/product/product.css}" rel="stylesheet">
-    <title>Custom</title>
+    <title>[[${category}]]</title>
 </head>
 <body>
     <main>
-        <h2>디자인 케이크</h2>
-        <div class="option-tags">
-           <p>검색을 원하는 태그들을 클릭하세요.</p>
-              <form>
-                  <div class="tags">
-                     <input class="tag" type="checkbox" name="tag" id="tag1" value="tag1" hidden>
-                     <label for="tag1">#기념일</label>
-
-                     <input class="tag" type="checkbox" name="tag" id="tag2" value="tag2" hidden>
-                     <label for="tag2">#부모님</label>
-
-                     <input class="tag" type="checkbox" name="tag" id="tag3" value="tag3" hidden>
-                      <label for="tag3">#캐릭터</label>
-
-                      <input class="tag" type="checkbox" name="tag" id="tag4" value="tag4" hidden>
-                      <label for="tag4">#베스트셀러</label>
-
-                      <input class="tag" type="checkbox" name="tag" id="tag5" value="tag5" hidden>
-                      <label for="tag5">#친구</label>
-
-                      <input class="tag" type="checkbox" name="tag" id="tag6" value="tag6" hidden>
-                      <label for="tag6">#신상</label>
-
-                      <input class="tag" type="checkbox" name="tag" id="tag7" value="tag7" hidden>
-                      <label for="tag7">#브라이덜샤워</label>
-
-                      <input class="tag" type="checkbox" name="tag" id="tag8" value="tag8" hidden>
-                      <label for="tag8">#티아라</label>
-
-                      <input class="tag" type="checkbox" name="tag" id="tag9" value="tag9" hidden>
-                      <label for="tag9">#파티</label>
-                  </div>
-                  <button type="reset">설정 취소</button>
-              </form>
-        </div>
-
-        <div class="align-filter">
-            <input type="radio" name="align" id="popular" hidden>
-            <label for="popular">인기순</label>
-            <input type="radio" name="align" id="rate" hidden>
-            <label for="rate">평점순</label>
-            <input type="radio" name="align" id="high-price" hidden>
-            <label for="high-price">높은 가격순</label>
-            <input type="radio" name="align" id="low-price" hidden>
-            <label for="low-price">낮은 가격순</label>
-        </div>
-
-        <div class="item-list">
-            <div class="item">
-                <div class="item-image">
-                    <a href="../item/design/item1.html">
-                        <img src="../images/cake/design/design1.png" alt="티아라 케이크">
-                    </a>
+        <h2>[[${productName}]]</h2>
+        <div class="product-detail">
+            <a class="gototop" href="#">
+                <i class="fas fa-arrow-circle-up"></i>
+            </a>
+            <div id="top">
+                <div class="top-left">
+                    <div class="main-image">
+                        <img th:src="${productDTO.image}" th:alt="${productDTO.name}">
+                    </div>
                 </div>
-                <p class="item-name">
-                    <a href="../item/design/item1.html"><strong>티아라 케이크</strong></a>
-                </p>
-                <p class="item-price">35,000원</p>
-                <p class="item-rating">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star-half-alt"></i>
-                    <span class="rating-number">(4.5)</span>
-                </p>
+
+                <div class="top-right">
+                    <div th:each="tag, i : ${tags}" class="tags">
+                        <span class="tag" th:classappend="${i.index+1}">
+                          <a href="#">[[${tag}]]</a>
+                        </span>
+                    </div>
+
+                    <div class="right-header">
+                        <h2>[[${productDTO.name}]]</h2>
+                        <div class="icons">
+                            <a th:href="@{wishList/{wish}(wish=${productDTO})}" class="heart" title="찜하기">
+                                <span class="visually-hidden">찜하기</span>
+                                <i class="far fa-heart"></i>
+                            </a>
+
+                            <a href="#" class="share" title="공유하기">
+                                <span class="visually-hidden">공유하기</span>
+                                <i class="fas fa-share-square"></i>
+                            </a>
+                        </div>
+
+                        <p class="rating">
+                            <!-- 여기에는 별표를 다섯개두고 0점부터 5점까지 평가 실수는 0.5점 단위로 -->
+                            <span class="visually-hidden">상품평점</span>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            <span class="rating-number">[[${productDTO.star}]]</span>
+                        </p>
+
+                    </div>
+
+                    <p class="price">[[${productDTO.price}]]]원</p>
+                    <p class="shipping-price">배송비<span>3,000원 (주문 시 결제)</span></p>
+
+                    <div class="select radio">
+                        <p>시트</p>
+                        <input type="radio" name="sheet" id="sheet1" value="white" hidden>
+                        <label for="sheet1" class="sheet">일반</label>
+
+                        <input type="radio" name="sheet" id="sheet2" value="red" hidden>
+                        <label for="sheet2" class="sheet">레드벨벳</label>
+
+                        <input type="radio" name="sheet" id="sheet3" value="blueberry" hidden>
+                        <label for="sheet3" class="sheet">블루베리</label>
+                    </div>
+
+                    <div class="select radio item-shape">
+                        <p>모양</p>
+                        <input type="radio" name="shape" id="shape1" value="round" hidden>
+                        <label for="shape1" class="shape">원형</label>
+
+                        <input type="radio" name="shape" id="shape2" value="rectangle" hidden>
+                        <label for="shape2" class="shape">사각형</label>
+
+                        <input type="radio" name="shape" id="shape3" value="heart" hidden>
+                        <label for="shape3" class="shape">하트</label>
+                    </div>
+
+                    <div class="select radio item-color">
+                        <p>크림</p>
+                        <input type="radio" name="color" id="color1" value="white" hidden>
+                        <label for="color1" class="color">크림색</label>
+
+                        <input type="radio" name="color" id="color2" value="red" hidden>
+                        <label for="color2" class="color">빨간색</label>
+
+                        <input type="radio" name="color" id="color3" value="choco" hidden>
+                        <label for="color3" class="color">초코색</label>
+                    </div>
+
+                    <div class="select item-lettering">
+                        <label for="lettering">원하는 문구를 입력하세요.</label>
+                        <input type="text" name="lettering" id="lettering" maxlength="15" placeholder="한글은 12글자 영어는 15글자 가능합니다.">
+                    </div>
+
+                    <div class="select file item-image">
+                        <p>이미지 업로드</p>
+                        <input type="file" name="image" id="image" accept="image/*" hidden>
+                        <input type="text" readonly class="image-upload-text">
+                        <label for="image">파일 찾기</label>
+                    </div>
+
+                    <div class="select more-request">
+                        <label for="more-request">추가 요청사항</label>
+                        <input type="text" name="moreRequest" id="more-request" maxlength="40" placeholder="방문수령 원하시면 1:1 문의 주세요">
+                    </div>
+
+                    <div class="option-complete">
+                        <button>선택 완료</button>
+                    </div>
+
+                    <p class="seleted-item">선택된 상품 총 <span>0</span>개</p>
+                    <div class="items"></div>
+
+                    <div class="buttons">
+                        <button>장바구니</button>
+                        <button>바로 구매</button>
+                    </div>
+                </div>
             </div>
 
-            <div class="item">
-                <div class="item-image">
-                    <a href="#">
-                        <img src="../images/cake/design/design2.jpg" alt="로투스 케이크">
-                    </a>
-                </div>
-                <p class="item-name">
-                    <a href="#"><strong>로투스 케이크</strong></a>
-                </p>
-                <p class="item-price">30,000원</p>
-                <p class="item-rating">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star-half-alt"></i>
-                    <span class="rating-number">(4.5)</span>
-                </p>
-            </div>
+            <h3>다른 상품 추천</h3>
+            <div class="other-items"></div>
 
-            <div class="item">
-                <div class="item-image">
-                    <a href="#">
-                        <img src="../images/cake/design/design3.jpg" alt="오레오 쇼콜라 갸또 케이크">
-                    </a>
-                </div>
-                <p class="item-name">
-                    <a href="#"><strong>오레오 쇼콜라 갸또 케이크</strong></a>
-                </p>
-                <p class="item-price">30,000원</p>
-                <p class="item-rating">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star-half-alt"></i>
-                    <span class="rating-number">(4.5)</span>
-                </p>
-            </div>
+            <div class="item-info">
+                <section id="details">
+                    <h3 class="visually-hidden">상품 상세 정보</h3>
+                    <ul>
+                        <li aria-selected="true">
+                            <a href="#details">상품 상세 정보</a>
+                        </li>
+                        <li aria-selected="false">
+                            <a href="#info">배송/교환/환불 안내</a>
+                        </li>
+                        <li aria-selected="false">
+                            <a href="#review">구매 후기</a>
+                        </li>
+                        <li aria-selected="false">
+                            <a href="#questions">상품 문의</a>
+                        </li>
+                    </ul>
 
-            <div class="item">
-                <div class="item-image">
-                    <a href="#">
-                        <img src="../images/cake/design/design4.jpg" alt="체리쥬빌레 케이크">
-                    </a>
-                </div>
-                <p class="item-name">
-                    <a href="#"><strong>체리쥬빌레 케이크</strong></a>
-                </p>
-                <p class="item-price">30,000원</p>
-                <p class="item-rating">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star-half-alt"></i>
-                    <span class="rating-number">(4.5)</span>
-                </p>
-            </div>
+                    <div class="content">
+                        <div class="description-grid">
+                            <div class="grid-title">제품명</div>
+                            <div class="grid-content">[[${productDTO.name}]]</div>
+                            <div class="grid-title">제품 종류</div>
+                            <div class="grid-content">빵류(케이크류)</div>
+                            <div class="grid-title">보관방법</div>
+                            <div class="grid-content">
+                                냉동보관 (영하18도)
+                            </div>
+                            <div class="grid-title">원재료명</div>
+                            <div class="grid-content">
+                                버터, 설탕, 전란, 박력분, 코코아분말, 베이킹파우더, 베이킹소다, 우유, 바닐라빈추출물, 갈색설탕, 식용유, 버터크림
+                            </div>
+                            <div class="grid-title">유통기한</div>
+                            <div class="grid-content">
+                                제조일로부터 3개월
+                            </div>
+                            <div class="grid-title">주의사항</div>
+                            <div class="grid-content">
+                                주의사항 - * 이 제품은 우유, 계란, 생크림을 사용한 제품과 같은 시설에서 제조합니다. * 본 제품은 공정거래위원회 고시 소비자 분쟁해결 기준에 의거 교환 또는 보상을 받을 수
+                                있습니다. 유통기한 이내라도 개봉
+                                이후 최대한 빠른 시일 내에 드시기 바랍니다. 부정 불량 식품 신고는 국번없이 1399</div>
+                        </div>
 
-            <div class="item">
-                <div class="item-image">
-                    <a href="#">
-                        <img src="../images/cake/design/design5.jpg" alt="헤이즐넛 로쉐 케이크">
-                    </a>
-                </div>
-                <p class="item-name">
-                    <a href="#"><strong>헤이즐넛 로쉐 케이크</strong></a>
-                </p>
-                <p class="item-price">32,000원</p>
-                <p class="item-rating">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star-half-alt"></i>
-                    <span class="rating-number">(4.5)</span>
-                </p>
-            </div>
+                        <!-- 제품 상세 부분 -->
+                        <div class="detail_info">
+                            <th:block th:each="image : ${detailImg}">
+                                <img th:src="${image.img_url}" th:alt="${image.img_name}">
+                            </th:block>
+                        </div>
+                    </div>
+                </section>
 
-            <div class="item">
-                <div class="item-image">
-                    <a href="#">
-                        <img src="../images/cake/design/design6.png" alt="브라운 베어 케이크">
-                    </a>
-                </div>
-                <p class="item-name">
-                    <a href="#"><strong>브라운 베어 케이크</strong></a>
-                </p>
-                <p class="item-price">30,000원</p>
-                <p class="item-rating">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star-half-alt"></i>
-                    <span class="rating-number">(4.5)</span>
-                </p>
-            </div>
+                <div class="item-info">
+                    <section id="info">
+                        <h3 class="visually-hidden">상품 상세 정보</h3>
+                        <ul>
+                            <li aria-selected="true">
+                                <a href="#details">상품 상세 정보</a>
+                            </li>
+                            <li aria-selected="false">
+                                <a href="#info">배송/교환/환불 안내</a>
+                            </li>
+                            <li aria-selected="false">
+                                <a href="#review">구매 후기</a>
+                            </li>
+                            <li aria-selected="false">
+                                <a href="#questions">상품 문의</a>
+                            </li>
+                        </ul>
+            <pre>
+  《 배송안내 》
+  - 배송비 : 기본 배송료는 3,000원입니다. (도서,산간,오지 일부지역은 배송이 불가합니다.)
 
-            <div class="item">
-                <div class="item-image">
-                    <a href="#">
-                        <img src="../images/cake/design/design7.png" alt="스마일 케이크">
-                    </a>
-                </div>
-                <p class="item-name">
-                    <a href="#"><strong>스마일 케이크</strong></a>
-                </p>
-                <p class="item-price">26,000원</p>
-                <p class="item-rating">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star-half-alt"></i>
-                    <span class="rating-number">(4.5)</span>
-                </p>
-            </div>
+  - 택배배송은 주문시점, 배송지에 따라 상이합니다. (서울지역만 당일택배배송이 가능합니다.)
 
-            <div class="item">
-                <div class="item-image">
-                    <a href="#">
-                        <img src="../images/cake/design/design8.jpg" alt="데이지 케이크">
-                    </a>
+  [서울 당일택배배송]
+
+  월요일~금요일 배송 (토요일, 일요일 휴무)
+
+  서울 당일택배배송의 경우 정확한 시간 지정은 어려우며, 우천시 다소 늦어질 수 있습니다.
+
+  [전국 우체국택배배송]
+
+  화요일~금요일 배송 (일요일, 월요일 휴무)
+
+  택배배송의 특성상 받는 시간대는 미리 알 수 없는 점 미리 말씀드립니다.
+
+
+  《 환불안내 》
+  - 케이크는 식품 특성상 주문 요청에 의해 제작되기 때문에 단순 변심, 임의 반품에 의한 교환(재배송) 환불이 불가한 점 양해 부탁드립니다.
+
+  - 고객님의 사정으로 인한 주소지 불충분 및 수취지연 시 발생되는 제품의 파손이나 변질에 대해 책임지지 않습니다.
+
+  - 파손/ 변질된 제품 사진을 접수하지 않는 경우 교환(재배송) 환불이 불가합니다.
+
+  - 배송된 상품의 신선도나 구성품 누락 시 KALL 의 책임인 경우 새로운 구성으로 교환해드립니다. (문의 1588-9780)
+              </pre>
+                    </section>
                 </div>
-                <p class="item-name">
-                    <a href="#"><strong>데이지 케이크</strong></a>
-                </p>
-                <p class="item-price">26,000원</p>
-                <p class="item-rating">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star-half-alt"></i>
-                    <span class="rating-number">(4.5)</span>
-                </p>
+
+                <div class="review"></div>
+                    <section id="review">
+                        <h3 class="visually-hidden">구매 후기</h3>
+                        <ul>
+                            <li aria-selected="false">
+                                <a href="#details">상품 상세 정보</a>
+                            </li>
+                            <li aria-selected="false">
+                                <a href="#info">배송/교환/환불 안내</a>
+                            </li>
+                            <li aria-selected="true">
+                                <a href="#review">구매 후기</a>
+                            </li>
+                            <li aria-selected="false">
+                                <a href="#questions">상품 문의</a>
+                            </li>
+                        </ul>
+
+                        <div class="content">
+                            <table>
+                                <div class="review_Box" th:each="review : ${review}">
+                                    <tr>
+                                        <th th:value="${review.title}"></th>
+                                        <td th:value="${review.userDTO.userId}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" th:value="${review.content}"></td>
+                                    </tr>
+
+                                    <th:block th:each="comment : ${reviewCmt}">
+                                        <th:block th:if="${comment != null}">
+                                            <table>
+                                                <tr>
+                                                    <span th:if="${comment.image1 != null}">
+                                                        <td class="reviewImg"><img th:src="${comment.image1}"></td>
+                                                    </span>
+                                                    <span th:if="${comment.image2 != null}">
+                                                        <td class="reviewImg"><img th:src="${comment.image2}"></td>
+                                                    </span>
+                                                    <td colspan="2" th:value="${review.comment}"></td>
+                                                </tr>
+                                            </table>
+                                        </th:block>
+                                    </th:block>
+                                </div>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+                <section id="questions">
+                    <h3 class="visually-hidden">상품 문의</h3>
+                    <ul>
+                        <li aria-selected="false">
+                            <a href="#details">상품 상세 정보</a>
+                        </li>
+                        <li aria-selected="false">
+                            <a href="#info">배송/교환/환불 안내</a>
+                        </li>
+                        <li aria-selected="false">
+                            <a href="#review">구매 후기</a>
+                        </li>
+                        <li aria-selected="true">
+                            <a href="#questions">상품 문의</a>
+                        </li>
+                    </ul>
+
+                    <div class="content question">
+                        <table>
+                            <div class="question_Box" th:each="question,i : ${product_q}">
+                                <tr>
+                                    <th th:value="${question.title}"></th>
+                                    <td th:value="${question.userDTO.userId}"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" th:value="${question.content}"></td>
+                                </tr>
+                                <tr>
+                                    <th:block th:if="${question.comment != null}">
+                                        <td colspan="2" th:value="${question.comment}"></td>
+                                    </th:block>
+                                </tr>
+                            </div>
+                        </table>
+
+                        <form th:action="@{product_q}" method="post">
+                            <th:block th:if="@{loginId != null}" th:object="${productQDTO}">
+                                <div class="question_input">
+                                    <input class="q_input1" type="text" th:field="*{title}" placeholder="제목">
+                                    <input class="q_input2" type="text" th:field="*{content}" placeholder="문의글을 작성해주세요">
+                                </div>
+                                <div class="question-buttons">
+                                    <button>문의하기</button>
+                                </div>
+                            </th:block>
+                        </form>
+                    </div>
+                </section>
             </div>
         </div>
     </main>

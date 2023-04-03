@@ -5,7 +5,7 @@ import com.refactoring.rekall.entity.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.security.crypto.password.PasswordEncoder;
+/*import org.springframework.security.crypto.password.PasswordEncoder;*/
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -63,7 +63,7 @@ public class UserDTO {
     }
 
 // -------------- ▷▶ 비밀번호 암호화 / role 변경 ----------------------------------------=--------
-    public static UserDTO createUser(UserDTO userDTO, PasswordEncoder passwordEncoder) {
+/*    public static UserDTO createUser(UserDTO userDTO, PasswordEncoder passwordEncoder) {
         if(userDTO == null) return null;
 
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
@@ -73,7 +73,7 @@ public class UserDTO {
         }
 
         return userDTO;
-    }
+    }*/
 // -------------- ▷▶ 암호화 2번----------------------------------------=--------
     @Builder
     public UserDTO(String userId, String name, String password) {

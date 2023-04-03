@@ -42,7 +42,7 @@ header {
     grid-template: repeat(2, 90px) / repeat(12, 1fr);
     grid-template-areas:
     "a a . . b b b b . . c c"
-    "a a d d d d d d d d c c";
+    "a a d d d d d d d d e e";
 
 /* 붉은색 생각보디 괜춘
     background: #CD5C5C;
@@ -59,11 +59,14 @@ header {
 .item_search {
     grid-area: b;
 }
-.user_menu {
+#header_name {
     grid-area: c;
 }
 .main_menu {
     grid-area: d;
+}
+.user_menu {
+    grid-area: e;
 }
 
 
@@ -134,15 +137,19 @@ svg {
     height: 45px;
 }
 
-.user_menu li:nth-child(1) a {
+.user_menu #header_login {
     background: url("/img/home/lock.svg") center/100% no-repeat;
 }
-
-.user_menu li:nth-child(2) a {
+.user_menu #header_logout {
+    background: url("/img/home/lock_open.svg") center/100% no-repeat;
+}
+.user_menu #header_join {
     background: url("/img/home/join.svg") center/100% no-repeat;
 }
-
-.user_menu li:nth-child(3) a {
+.user_menu #header_mypage {
+    background: url("/img/home/join.svg") center/100% no-repeat;
+}
+.user_menu #header_cart {
     background: url("/img/home/cart.svg") center/100% no-repeat;
 }
 

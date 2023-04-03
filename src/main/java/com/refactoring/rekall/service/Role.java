@@ -1,3 +1,4 @@
+/*
 package com.refactoring.rekall.service;
 
 import lombok.AllArgsConstructor;
@@ -11,3 +12,4 @@ public enum Role{
 
     private String value;
 }
+*/

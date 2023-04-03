@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <th:block th:if="${#strings.length(data.message) != 0}">
+      <script>
+          top.alert("[[${data.message}]]");
+      </script>
+  </th:block>
+  <th:block th:if="${#strings.length(data.href) != 0}">
+      <script>
+          location.replace("[[${data.href}]]");
+      </script>
+  </th:block>
+</head>
+</html>

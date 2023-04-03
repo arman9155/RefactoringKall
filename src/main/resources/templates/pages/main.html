@@ -32,7 +32,7 @@
         <form action="" method="get" th:object="${recommendProduct}">
             <div class="recommendContainer">
             <th:block th:each="item, i : ${recommendProduct}">
-                <div class="recommend item[[${i.index}]]">
+                <div class="recommend item">
                     <p>
                         <a ref=""><img th:src="${item.image}"></a>
                         <h3 th:text="${item.name}"></h3><br>
@@ -79,8 +79,8 @@
     <h2 class="animate__animated element">신상품</h2>
     <form action="" method="get" th:object="${recommendProduct}">
         <div class="recommendContainer">
-            <th:block th:each="item, i : ${recommendProduct}">
-                <div class="recommend item[[${i.index}]]">
+            <th:block th:each="item,i : ${recommendProduct}">
+                <div class="recommend item" th:classappend="${i.index+1}">
                     <p>
                         <a ref=""><img th:src="${item.image}"></a>
                     <h3 th:text="${item.name}"></h3><br>

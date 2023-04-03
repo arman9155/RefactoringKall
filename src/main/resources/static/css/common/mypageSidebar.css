@@ -9,3 +9,9 @@ tr > * {
     box-sizing : border-box;
     padding: 5px 10px;
 }
+
+tr a {
+      text-align: center;
+      text-decoration:none;
+      color: black;
+}

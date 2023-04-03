@@ -13,21 +13,21 @@
             <tbody class="sidebar">
             <tr>
                 <th>PROFILE</th>
-                <td>개인정보수정</td>
-                <td>배송지 관리</td>
-                <td>마일리지 내역</td>
+                <td><a th:href="@{userInfo}">개인정보수정</a></td>
+                <td><a th:href="@{address}">배송지 관리</a></td>
+                <td><a th:href="@{mileage}">마일리지 내역</a></td>
             </tr>
             <tr>
                 <th>Order</th>
-                <td>주문 내역</td>
-                <td>배송 내역</td>
-                <td>반품 내역</td>
+                <td><a th:href="@{order}">주문 내역</a></td>
+                <td><a th:href="@{delivery}">배송 내역</a></td>
+                <td><a th:href="@{refund}">반품 내역</a></td>
             </tr>
             <tr>
                 <th>Board</th>
-                <td>후기 내역</td>
-                <td>문의 내역</td>
-                <th>WISHLIST</th>
+                <td><a th:href="@{review}">후기 내역</a></td>
+                <td><a th:href="@{question}">문의 내역</a></td>
+                <th><a th:href="@{wishList}">WISHLIST</a></th>
             </tr>
             </tbody>
         </table>
