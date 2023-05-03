@@ -21,9 +21,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.swing.text.html.Option;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 @AllArgsConstructor
 public class UserService {
 
@@ -33,7 +36,6 @@ public class UserService {
     UserDelRepository userDelRepository;
 
     //  ---------------------------- ★ 회원정보 저장 ★ -------------------------------------------------------------------------
-    @Transactional
     public String signUp(UserDTO userDTO) {
         if (userDTO.getPassword().contains("admin123")) {
             userDTO.setRole("admin");
@@ -77,16 +79,46 @@ public class UserService {
         return null;
     }
 
-    //  ---------------------------- ★ 탈퇴 - 상태 변경 / us_del 이동 ★ -------------------------------------------------------------------------
-    public void deleteUser(String userId, UserDelDTO userDelDTO) {
-        Optional<UserEntity> optionalUserEntity = userRepository.findByUserId(userId);
-        if (optionalUserEntity.isPresent()) {
-            UserEntity userEntity = optionalUserEntity.get();
-            userEntity.setStatus("탈퇴계정");
-            // userEntity에 status 변경
 
-            userDelRepository.save(UserDelEntity.toUserDelEntity(userDelDTO));
+//  ---------------------------- ★ 전체 유저 리스트 ★ -------------------------------------------------------------------------
+    public List<UserDTO> getList(String status) {
+        List<UserEntity> userEntityList;
+        if (status.equals("all")) {
+            userEntityList = userRepository.findAll();
+        } else {
+            userEntityList = userRepository.findByStatus(status);
         }
+        List<UserDTO> userDTOList = new ArrayList<>();
+        for (UserEntity user : userEntityList) {
+            if (user != null) {
+                userDTOList.add(UserDTO.toUserDTO(user));
+            }
+        }
+        return userDTOList;
     }
 
+//  ---------------------------- ★ 회원 탈퇴★ -------------------------------------------------------------------------
+//  ---------------------------- ★ 탈퇴 - 상태 변경 / us_del 이동 ★ -------------------------------------------------------------------------
+    public void deleteUser(UserDelDTO userDelDTO, String userId) {
+        Optional<UserEntity> optionalUserEntity = userRepository.findByUserId(userId);
+        if(optionalUserEntity.isPresent()) {
+            UserEntity userEntity = optionalUserEntity.get();
+            userEntity.setStatus("탈퇴계정");
+            userRepository.save(userEntity);
+            // userEntity에 status 변경
+
+            userDelDTO.setUserDTO(UserDTO.toUserDTO(userEntity));
+        }
+
+        userDelRepository.save(UserDelEntity.toUserDelEntity(userDelDTO));
+    }
+
+//  ---------------------------- ★ 관리자 탈퇴처리 ★ -------------------------------------------------------------------------
+    public void a_deleteUser(List<String> userIds) {
+        for(String user : userIds) {
+            UserDelDTO userDelDTO = new UserDelDTO();
+            userDelDTO.setText("관리자가 탈퇴처리함");
+            deleteUser(userDelDTO , user);
+        }
+    }
 }

@@ -11,18 +11,86 @@
 </head>
 <body>
     <main>
+        <div class="top">
+            <div class="tags">
+                <th:block th:each="tag, i : ${tags}">
+                    <span class="tag" th:classappend="${i.index+1}" th:if="${i.index != 0}">
+                        <a href="#" th:utext="'#'+${tag.replace(',', ' ')}"></a>
+                    </span>
+                </th:block>
+            </div>
+        </div>
         <div class="wrapper">
             <th:block th:each="item,i : ${productList}">
                 <div class="custom" th:classappend="${i.index+1}">
+                    <div class="product_imgs">
+                        <th:block th:if="${wishList.size() == 0}">
+                            <span th:class="${active} ? 'active' : ''" th:onclick="'javascript:toggleActive(this)'"
+                                  th:attr="data-product=${item.productId},data-url=@{${item.categoryDTO.categoryId}}">하트</span>
+                        </th:block>
+
+                        <th:block th:if="${wishList.size() != 0}">
+                             <th:block th:each="wish,i : ${wishList}">
+                                 <span th:if="${wish != null}" th:class="${wish.productDTO.productId} == ${item.productId} ? 'active' : ''" th:onclick="'javascript:toggleActive(this)'"
+                                 th:attr="data-product=${item.productId},data-url=@{/${category}}">하트</span>
+                             </th:block>
+                        </th:block>
+                        <a th:href="@{product/{id}(id=${item.productId})}">
+                            <img th:src="@{${item.getImage()}}">
+                        </a>
+                    </div>
+
                     <a th:href="@{product/{id}(id=${item.productId})}">
-                    <p>
-                      <img th:src="${item.image}">
-                    <h3 th:text="${item.name}"></h3><br>
-                    </p>
+                          <h3 th:text="${item.name}"></h3><br>
                     </a>
                 </div>
             </th:block>
         </div>
     </main>
+
+<!--    <script th:inline="javascript">
+        function toggleActive(element) {
+            element.classList.toggle('active');
+
+            var product = parseInt(element.getAttribute('data-product'));
+            var url = window.location.href;
+            if(element.classList.contains('active')) {
+                window.location.href = 'u_wishList/'+product+ '?url='+url;
+            } else {
+                window.location.href = 'u_wishListDel/'+product+'?url='+url;
+            }
+        }
+    </script>-->
+    <script th:inline="javascript">
+
+        // 페이지 리다이렉트하기
+        var url = span.getAttribute('data-url');
+        window.location.href = url;
+        var productId = parseInt(element.getAttribute('data-product'));
+
+        function toggleActive(span) {
+            if (span.classList.contains('active')) {
+                $.ajax({
+                    url: "/u_wishListDel/"+productId,
+                    method: "GET",
+                    success: function() {
+                        span.classList.remove('active');
+                        alert("위시리스트에서 삭제하였습니다.");
+                        window.location.href = url;
+                    }
+                });
+            } else {
+                $.ajax({
+                        url: "/u_wishList/"+productId,
+                        method: "GET",
+                        success: function() {
+                            span.classList.add('active');
+                            alert("위시리스트에 추가하였습니다.");
+                            window.location.href = url;
+                        }
+                });
+            }
+        }
+    </script>
 </body>
 </html>

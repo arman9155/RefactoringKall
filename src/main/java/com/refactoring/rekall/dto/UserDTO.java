@@ -17,7 +17,6 @@ import java.util.List;
 @Getter @Setter
 @ToString
 @NoArgsConstructor
-@AllArgsConstructor
 public class UserDTO {
 
 
@@ -60,6 +59,26 @@ public class UserDTO {
         userDTO.setStatus(userEntity.getStatus());
 
         return userDTO;
+    }
+// -------------- ▷▶ set --------------------------------------------------------
+    public static UserDTO setUserDTO(UserDTO userDTO) {
+        if(userDTO == null) return null;
+        UserDTO userDTO1 = new UserDTO();
+
+        userDTO1.setUserId(userDTO.getUserId());
+        userDTO1.setName(userDTO.getName());
+        userDTO1.setPassword(userDTO.getPassword());
+        userDTO1.setPhoneNb(userDTO.getPhoneNb());
+        userDTO1.setEmail(userDTO.getEmail());
+        userDTO1.setBirthday(userDTO.getBirthday());
+        userDTO1.setRoot(userDTO.getRoot());
+        userDTO1.setEventagree(userDTO.getEventagree());
+        userDTO1.setRole(userDTO.getRole());
+        userDTO1.setMileage(userDTO.getMileage());
+        userDTO1.setDate(userDTO.getDate());
+        userDTO1.setStatus(userDTO.getStatus());
+
+        return userDTO1;
     }
 
 // -------------- ▷▶ 비밀번호 암호화 / role 변경 ----------------------------------------=--------

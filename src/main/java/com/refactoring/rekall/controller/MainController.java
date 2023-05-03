@@ -7,10 +7,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -26,7 +29,9 @@ public class MainController {
     public ModelAndView main(@SessionAttribute(name ="loginId", required = false) String loginId,
                              @SessionAttribute(name ="userRole", required = false) String userRole) {
         ModelAndView modelAndView = new ModelAndView();
-        List<ProductDTO> productDTOList = productService.findAll();
+        List<ProductDTO> productDTOS = productService.findAll();
+        List<ProductDTO> productDTOList = new ArrayList<>(productDTOS.subList(0, 6));
+
         modelAndView.addObject("loginId", loginId);
         modelAndView.addObject("userRole", userRole);
         modelAndView.addObject("recommendProduct", productDTOList);
@@ -48,6 +53,14 @@ public class MainController {
         return modelAndView;
     }
 
+//  ------------------------------------- ★ admin 페이지 ★ ---------------------------------------------------------------
+    @GetMapping("admin")
+    public ModelAndView admin() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("admin/adminPage.html");
+
+        return modelAndView;
+    }
 
 }
 

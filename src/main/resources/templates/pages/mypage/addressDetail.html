@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>배송지 정보</title>
+    <link th:href="@{css/mypage/addressDetail.css}" rel="stylesheet">
+</head>
+  <body>
+        <h3 class="underline">배송지 정보</h3>
+
+        <table class="address_info">
+          <tbody>
+            <tr>
+              <th><label>이름</label></th>
+              <td th:text="${usAddressDTO.name}"></td>
+            </tr>
+            <tr>
+              <th><label >배송지명</label></th>
+              <td th:text="${usAddressDTO.addressName}"></td>
+            </tr>
+            <tr>
+              <th><label>전화번호</label></th>
+              <td id="phoneNb" th:text="${usAddressDTO.phoneNb}" minlength="11" maxlength="13"></td>
+            </tr>
+            <tr>
+              <th><label>우편번호</label></th>
+              <td th:text="${usAddressDTO.zipCode}"></td>
+            </tr>
+            <tr>
+              <th><label>주소</label></th>
+              <td th:text="${usAddressDTO.address_1}"></td>
+            </tr>
+            <tr>
+              <th><label>상세주소</label></th>
+              <td th:text="${usAddressDTO.address_2}"></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="buttons">
+          <a th:href="@{u_address_change(addressId=${usAddressDTO.addressId})}" id="change">수정</a>
+          <a th:href="@{u_address_del(popup=${usAddressDTO.addressId})}">삭제</a>
+          <a onclick="window.close();">닫기</a>
+        </div>
+  </body>
+</html>

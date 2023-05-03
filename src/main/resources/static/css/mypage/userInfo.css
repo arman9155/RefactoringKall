@@ -1,3 +1,4 @@
+
 form {
     margin: 10px 0;
 }
@@ -12,8 +13,7 @@ form a {
     text-decoration: none;
 }
 
-form input,
-#back {
+table input {
    box-sizing: border-box;
    display:inline-block;
    padding: 5px 20px;
@@ -22,7 +22,6 @@ form input,
    border: 1px solid RGB(255, 227, 227);
    outline: none;
    line-height: 1.2rem;
-
    margin: 3px 0;
 }
 
@@ -92,21 +91,32 @@ form table td {
 #agree td{
     text-align:left;
 }
+/*--------- 탈퇴 ------------------------------------------------------*/
+textarea {
+    width: 100%;
+}
 
 /*--------- 버튼 ------------------------------------------------------*/
+.buttons {
+    display: flex;
+    justify-content :center;
+    gap : 30px;
+}
 
-#join,
-#back,
-#change {
+.buttons * {
+      all : unset;
       background-color: RGB(255, 200, 200);
       cursor: pointer;
       font-weight: bold;
       color: white;
       text-align:center;
+      border-radius: 20px;
+      width: 30%;
 }
 
 #join:hover,
 #back:hover,
+#deleteUser:hover,
 #change:hover{
   background-color: #FB9DA7;
 }

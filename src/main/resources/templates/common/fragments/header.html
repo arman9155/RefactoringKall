@@ -6,13 +6,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link th:href="@{css/common/header.css}" rel="stylesheet">
+    <link th:href="@{/css/common/header.css}" rel="stylesheet">
 </head>
 <body>
 <header>
 <!-- -------------------❤ 로고 ❤️-------------------------------------------------------------------------------------- -->
     <h1 class="animate__animated animate__tada title_logo">
-        <a th:href="@{main}">
+        <a th:href="@{/main}">
             <span>SGL</span>
         </a>
     </h1>
@@ -26,10 +26,10 @@
 <!-- -------------------❤ ~님 / 관리자면 관리자 모드 ❤️-------------------------------------------------------------------------------------- -->
 
     <div id="header_name">
-        <th:block th="${userRole != null && userRole != ''}">
+        <th:block th:if="${userRole != null && userRole != ''}">
             반갑습니다. <br><span th:text="${loginId}"></span>님
             <th:block th:if="${userRole == 'admin'}">
-                <a th:href="@{admin}" id="admin_page">관리자모드</a>
+                <a th:href="@{/admin}" id="admin_page">관리자모드</a>
             </th:block>
         </th:block>
     </div>
@@ -37,18 +37,18 @@
 <!-- -------------------❤ 유저 메뉴 ❤️-------------------------------------------------------------------------------------- -->
     <ul class="user_menu">
             <th:block th:if="${loginId != null}">
-                <li><a th:href="@{logout}" id="header_logout">Logout</a></li>
+                <li><a th:href="@{/logout}" id="header_logout">Logout</a></li>
             </th:block>
             <th:block th:if="${loginId == null}">
-                <li><a th:href="@{login}" id="header_login">Login</a></li>
+                <li><a th:href="@{/login}" id="header_login">Login</a></li>
              </th:block>
         <th:block th:if="${loginId != null}">
-            <li><a th:href="@{mypage}" id="header_mypage">Mypage</a></li>
+            <li><a th:href="@{/mypage}" id="header_mypage">Mypage</a></li>
         </th:block>
         <th:block th:if="${loginId == null}">
-            <li><a th:href="@{login}" id="header_join">join</a></li>
+            <li><a th:href="@{/join}" id="header_join">join</a></li>
         </th:block>
-        <li><a th:href="@{cart}" id="header_cart" >Cart</a></li>
+        <li><a th:href="@{/cart}" id="header_cart" >Cart</a></li>
     </ul>
 <!--    <div sec:authorize="isAuthenticated()" id="header_name">반갑습니다. <br><span sec:authentication="name"></span>님
         <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{admin}" id="admin_page">관리자모드</a></div>
@@ -67,10 +67,10 @@
 
 <!-- -------------------❤ 상단메뉴 ❤️-------------------------------------------------------------------------------------- -->
     <ul class="main_menu">
-        <li><a th:href="@{customList}" class="animate__animated">Custom</a></li>
-        <li><a th:href="@{designList}" class="animate__animated">Design</a></li>
-        <li><a th:href="@{etcList}" class="animate__animated">ETC</a></li>
-        <li><a th:href="@{notice}" class="animate__animated">Community</a></li>
+        <li><a th:href="@{/custom}" class="animate__animated">Custom</a></li>
+        <li><a th:href="@{/design}" class="animate__animated">Design</a></li>
+        <li><a th:href="@{/etc}" class="animate__animated">ETC</a></li>
+        <li><a th:href="@{/notice}" class="animate__animated">Community</a></li>
     </ul>
 
 </header>

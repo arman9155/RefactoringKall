@@ -24,7 +24,7 @@ public class ProductDTO {
     private LocalDateTime date = LocalDateTime.now(); //  ▷▶ 등록날짜
     private Float star; //  ▷▶ 별점
     private String tag; //  ▷▶ 태그
-    private String image; //  ▷▶ 메인 이미지
+    private String image = "example"; //  ▷▶ 메인 이미지
     private Integer cnt; //  ▷▶ 조회수
 
 // -------------- ▷▶ Entity -> DTO ---------------------------------------------------------

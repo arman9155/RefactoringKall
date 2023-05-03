@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>관리자 레이아웃</title>
+</head>
+
+<body>
+    <!-- Header 영역을 참조합니다. -->
+    <header th:replace="admin/header::HeaderFragment"></header>
+
+    <!-- 내용 영역을 참조합니다. -->
+    <main>
+        <div class="container">
+            <!-- Content 내용 영역을 참조 -->
+            <th:block layout:fragment ="Content"></th:block>
+        </div>
+    </main>
+
+</body>
+</html>

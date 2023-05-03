@@ -8,7 +8,7 @@
     var HOME_PATH = window.HOME_PATH || '.';
 
     var map = new naver.maps.Map(document.getElementById('mapping_naver'), {
-        center:  new naver.maps.LatLng(37.349733, 127.106970),
+        center:  new naver.maps.LatLng(37.404340, 127.116291),
         zoom: 17,
     });
     
@@ -17,7 +17,7 @@
     //     map:map
     // });
     var markerOptions = {
-        position: new naver.maps.LatLng(37.349733, 127.106970),
+        position: new naver.maps.LatLng(37.404340, 127.116291),
         map:map,
         icon: {
             content: [ '<div id="customoverlay">',
@@ -32,25 +32,3 @@
     }
 
     var marker = new naver.maps.Marker(markerOptions);
-    // var markers = [];
-    // var infowindows = [];
-
-    // var KALL = new naver.maps.LatLng(37.349733, 127.106970);
-
-    // markers.push(new naver.map.Marker({
-    //     map: map,
-    //     position: KALL
-    // }));
-    
-
-    // infowindows.push(new naver.maps.InfoWindow({
-    //     content: [
-    //         '<div id="customoverlay">'+
-    //             '<span class="title_map">'+
-    //                 'KALL'+
-    //             '</span>'+
-    //         '</div>'
-    //     ]
-    // }));
-
-    // infowindows[0].open(map, markers[0]);

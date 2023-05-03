@@ -12,14 +12,14 @@
 <body>
     <main>
         <div class="wrapper">
-            <th:block th:each="item, i : ${productList}">
-                <div th:if="item == null">
+            <th:block th:each="item, i : ${wishList}">
+                <div th:if="${item == null}">
                     <span>WishList 가 없습니다.</span>
                 </div>
                 <div class="custom" th:classappend="${i.index+1}">
                     <p>
-                        <a ref=""><img th:src="${item.image}"></a>
-                    <h3 th:text="${item.name}"></h3><br>
+                        <a ref=""><img th:src="${item.productDTO.image}"></a>
+                    <h3 th:text="${item.productDTO.name}"></h3><br>
                     </p>
                 </div>
             </th:block>

@@ -15,7 +15,7 @@
             <fieldset>
                 <legend><h3>필수입력 사항</h3> </legend>
 <!--                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">-->
-                <table id="requi red">
+                <table id="required">
                     <tbody>
                     <tr>
                         <th><label for="id">아이디</label></th>
@@ -90,8 +90,11 @@
                     </tbody>
                 </table>
             </fieldset>
-            <input type="submit" id="change" value="수정완료">
-            <a href="javascript:history.go(-1)" id="back">이전으로</a>
+            <div class="buttons">
+                <input type="submit" id="change" value="수정완료">
+                <a href="javascript:history.go(-1)" id="back">이전으로</a>
+                <a th:href="@{u_deleteUser}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=800,height=800'); return false;" id="deleteUser">회원탈퇴</a>
+            </div>
         </form>
     </div>
 </body>

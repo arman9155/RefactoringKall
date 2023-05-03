@@ -9,25 +9,25 @@
 </head>
 <<body>
     <aside>
-        <table>
-            <tbody class="sidebar">
+        <table class="mypageSidebar">
+            <tbody>
             <tr>
                 <th>PROFILE</th>
-                <td><a th:href="@{userInfo}">개인정보수정</a></td>
-                <td><a th:href="@{address}">배송지 관리</a></td>
-                <td><a th:href="@{mileage}">마일리지 내역</a></td>
+                <td><a th:href="@{u_userInfo}">개인정보수정</a></td>
+                <td><a th:href="@{u_address}">배송지 관리</a></td>
+                <td><a th:href="@{u_mileage}">마일리지 내역</a></td>
             </tr>
             <tr>
                 <th>Order</th>
-                <td><a th:href="@{order}">주문 내역</a></td>
-                <td><a th:href="@{delivery}">배송 내역</a></td>
-                <td><a th:href="@{refund}">반품 내역</a></td>
+                <td><a th:href="@{u_order}">주문 내역</a></td>
+                <td><a th:href="@{u_delivery}">배송 내역</a></td>
+                <td><a th:href="@{u_refund}">반품 내역</a></td>
             </tr>
             <tr>
                 <th>Board</th>
-                <td><a th:href="@{review}">후기 내역</a></td>
-                <td><a th:href="@{question}">문의 내역</a></td>
-                <th><a th:href="@{wishList}">WISHLIST</a></th>
+                <td><a th:href="@{u_review}">후기 내역</a></td>
+                <td><a th:href="@{u_question}">문의 내역</a></td>
+                <th><a th:href="@{u_wishList}">WISHLIST</a></th>
             </tr>
             </tbody>
         </table>

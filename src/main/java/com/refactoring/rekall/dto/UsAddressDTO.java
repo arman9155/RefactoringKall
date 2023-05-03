@@ -21,8 +21,8 @@ public class UsAddressDTO {
     private String status = "false"; // ▷▶  상태 ( 기본배송지 / 다른배송지인지)
     private String name; // ▷▶ 수령자 이름
     private String addressName; // ▷▶ 배송지명 (집 / 회사 등..)
-    private String phone_nb; // ▷▶ 수령자 연락처
-    private String zip_code; // ▷▶ 우편번호
+    private String phoneNb; // ▷▶ 수령자 연락처
+    private String zipCode; // ▷▶ 우편번호
     private String address_1; // ▷▶ 주소1
     private String address_2; // ▷▶ 주소2
 
@@ -36,8 +36,8 @@ public class UsAddressDTO {
         usAddressDTO.setStatus(usAddressEntity.getStatus());
         usAddressDTO.setName(usAddressEntity.getName());
         usAddressDTO.setAddressName(usAddressEntity.getAddressName());
-        usAddressDTO.setPhone_nb(usAddressEntity.getPhone_nb());
-        usAddressDTO.setZip_code(usAddressEntity.getZip_code());
+        usAddressDTO.setPhoneNb(usAddressEntity.getPhoneNb());
+        usAddressDTO.setZipCode(usAddressEntity.getZipCode());
         usAddressDTO.setAddress_1(usAddressEntity.getAddress_1());
         usAddressDTO.setAddress_2(usAddressEntity.getAddress_2());
 

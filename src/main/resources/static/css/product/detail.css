@@ -1,0 +1,113 @@
+
+/* 디테일 _ 상단 정렬 */
+
+#top {
+    display: flex;
+    gap : 20px;
+}
+
+/* 왼쪽 상단 */
+.top-left {
+    border: 1px black solid;
+}
+
+/*오른쪽 상단 */
+/*태그들*/
+.tags {
+    padding: 10px;
+    padding-top:0;
+}
+
+.tag * {
+    color: white;
+    font-weight : bold;
+    text-decoration : none;
+    background-color: #FB9DA7;
+    padding : 0 5px;
+    margin: 0 10px;
+    line-height : 1.2rem;
+}
+
+/*button*/
+.complete button,
+.buttons button{
+    all : unset;
+    width: 45%;
+    box-sizing : border-box;
+    padding : 10px 0;
+    text-align: center;
+    border-radius: 20px;
+    background : RGB(255, 200, 200);
+    cursor : pointer;
+    font-weight : bold;
+    margin : 3px 0;
+    line-height : 1.2rem;
+    color: white;
+}
+
+.complete button:hover,
+.buttons button:hover{
+    background : #FB9DA7;
+}
+
+.buttons {
+    display : flex;
+    justify-content : space-evenly;
+}
+.complete {
+    display: flex;
+    justify-content : flex-end;
+}
+.complete button {
+    margin-right : 3%;
+}
+
+/* 다른 상품 추천 */
+.other_items {
+    display:flex;
+    height: 300px;
+    gap: 10px;
+    padding: 5px;
+}
+.recommend > .random{
+    height: 60%;
+    box-sizing : border-box;
+}
+
+.recommend random_image {
+    width: 100%;
+    height: 100%;
+}
+
+.recommend a {
+    display : flex;
+    flex-direction : column;
+    align-items : center;
+    text-decoration : none;
+    color: black;
+    text-align: center;
+}
+.recommend a span {
+    box-sizing : border-box
+    padding: 5px 0;
+}
+
+
+/* 이미지 */
+.product_imgs {
+    position: relative;
+}
+
+.product_imgs span {
+        position: absolute;
+        right: 0px;
+        z-index: 2;
+        background: url("/img/product/heart.svg") no-repeat center/100% ;
+        width: 50px;
+        height: 50px;
+        text-indent: -9999em;
+}
+
+.product_imgs span.active {
+        background: url("/img/product/full_heart.svg") no-repeat center/100% ;
+}

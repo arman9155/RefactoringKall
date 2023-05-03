@@ -8,21 +8,16 @@
     <meta charset="UTF-8">
     <title>자주 묻는 질문</title>
     <link th:href="@{css/community/notice.css}" rel="stylesheet">
-    <script th:src="@{myLib/jquery-3.2.1.min.js}"></script>
-    <script th:inline="javascript">
-        $("#categoryID").click(function(){
-            $("#categoryID").removeClass("click");
-            $(this).addClass("click");
-        });
-    </script>
+    <script type="text/javascript" th:src="@{myLib/jquery-3.2.1.min.js}"></script>
 </head>
 <body>
     <section class="content">
         <h3 class="underline">자주 묻는 질문</h3>
         <div class="select">
-            <a th:href="@{qna}" id="categoryID 0" class="category">전체</a>
+            <a th:href="@{qna}" th:class="${'all' == categoryId} ? 'category active' : 'category'">전체</a>
             <th:block th:each="category,i : ${category}">
-                <a th:href="@{${category.categoryId}}" th:id="'categoryID '+${i.index+1}" class="category">[[${category.categoryName}]]</a>
+                <a th:href="@{qna(sort=${category.categoryId})}" th:value="${category.categoryId}" th:class="${category.categoryId == categoryId} ? 'category active' : 'category'">
+                    [[${category.categoryName}]]</a>
             </th:block>
         </div>
         <table id="QAList">
@@ -35,7 +30,7 @@
             </thead>
             <tbody id="toggle_container">
             <th:block th:each="qna, i : ${qnaList}">
-                <tr class="toggle_Q">
+                <tr class="toggle_Q" th:data-target="'#answer_'+${i.index}">
                     <td scope="row" th:text="${i.index+1}"></td>
                     <td th:text="${qna.categoryDTO?.categoryName}"></td>
                     <td class="QA_content">
@@ -44,8 +39,7 @@
                          </span>
                     </td>
                 </tr>
-
-                <tr class="toggle_A">
+                <tr class="toggle_A" th:if="${qna.content != null}" th:id="'#answer_'+${i.index}">
                     <td colspan="3" class="QA_q_a">
                         <div class="QA_a_content"
                             th:text="${qna.content}">
@@ -56,5 +50,37 @@
             </tbody>
         </table>
     </section>
+<!--    <script th:inline="javascript">
+        $(document).ready(function() {
+           $('tr.toggle_Q').click(function() {
+            var target = $(this).data('target');
+            $(target).toggle('fast');
+            });
+        });
+    </script>-->
+    <script th:inline="javascript">
+
+    /* 토글 선택시 열리고 닫고 */
+        $(document).ready(function() {
+           $('tr.toggle_Q').click(function() {
+                $(this).next('tr.toggle_A').toggle('fast');
+            });
+        });
+
+    /* QnA 정렬 -> 버튼 색상 변경하는거가 안되냐,,*/
+             $(document).ready(function() {
+                 $('a.category').click(function() {
+                    if( $(this).hasClass("bkcolor")) {
+                        $(this).removeClass("bkcolor");
+                    } else {
+                        $(this).addClass("bkcolor");
+                    }
+                    var sortOption = $(this).data('sort-option');
+                    var urlParams = new URLSearchParams(window.location.search);
+                    urlParams.set('sort', sortOption);
+                    window.location.search = urlParams.toString();
+                 });
+             });
+    </script>
 </body>
 </html>

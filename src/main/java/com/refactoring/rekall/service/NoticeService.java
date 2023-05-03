@@ -60,8 +60,12 @@ public class NoticeService {
 
         for(NoticeDTO noticeDTO : List) {
             if (noticeDTO != null) {
-                if (noticeDTO.getCategoryDTO().getCategoryId().contains(categoryId)){
+                if (noticeDTO.getCategoryDTO().getCategoryId().equals(categoryId)){
                     noticeDTOList.add(noticeDTO);
+                } else if (categoryId.equals("all")) {
+                    if (noticeDTO.getCategoryDTO().getCategoryId().contains("faq")) {
+                        noticeDTOList.add(noticeDTO);
+                    }
                 }
             }
         }

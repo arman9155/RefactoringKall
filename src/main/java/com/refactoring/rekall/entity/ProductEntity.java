@@ -66,8 +66,8 @@ public class ProductEntity {
     private Float star; //  ▷▶ 별점
     @Column(length = 100)
     private String tag; //  ▷▶ 태그
-    @Column(nullable = false, length = 100)
-    private String image; //  ▷▶ 메인 이미지
+    @Column(length = 100)
+    private String image = "example"; //  ▷▶ 메인 이미지
     @ColumnDefault("0")
     @Column(length = 5)
     private Integer cnt; //  ▷▶ 조회수

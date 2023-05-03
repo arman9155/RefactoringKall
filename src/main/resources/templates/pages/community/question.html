@@ -7,6 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <title>1:1 문의</title>
+    <script type="text/javascript" th:src="@{myLib/jquery-3.2.1.min.js}"></script>
     <link th:href="@{css/community/question.css}" rel="stylesheet">
 </head>
 <body>
@@ -15,11 +16,11 @@
         <form th:action="@{question}" name="question" method="post" th:object="${usq}">
             <div>
                 <label for="userid">아이디</label>
-                <input type="text" id="userid" name="userid" placeholder="userid"  th:field="*{userDTO.userId}">
+                <input type="text" id="userid" name="userid" th:field="*{userDTO.userId}" readonly>
             </div>
             <div>
                 <label for="email">이메일</label>
-                <input type="text" id="email" name="email" placeholder="@"> <!--th:field="*{userDTO.email}"-->
+                <input type="text" id="email" name="email" th:field="*{userDTO.email}" required>
             </div>
             <div>
                 <label for="title">제목</label>
@@ -28,30 +29,21 @@
 
             <div>
                 <label for="category">카테고리</label>
-                <select name="category" id="category" th:field="*{categoryDTO.categoryId}">
+                <select name="category" id="category" onchange="updateContent(this)" th:field="*{categoryDTO.categoryId}">
                     <option value="q_01">로그인 / 계정</option>
                     <option value="q_02">상품</option>
                     <option value="q_03">배송</option>
                     <option value="q_04">기타</option>
                 </select>
             </div>
-
             <div>
                 <label for="description">문의내용</label>
-<!--                <span th:if="${usq.categoryDTO?.categoryId =='q_01' || usq.categoryDTO?.categoryId =='q_02' || usq.categoryDTO?.categoryId =='q_04'}">-->
-                  <textarea name="description" id="description" rows="10" placeholder="문의 내용"
-                  th:value="*{content}" th:field="*{content}">문의 내용:</textarea>
-                </span>
-                <span th:if="*{categoryDTO?.categoryId} =='q_03'">
-                    <textarea name="description" id="description" rows="10" placeholder="문의 내용"
-                              th:value="${usq.content}" th:text="${usq.content}">
-                        주문 번호(주문하신 경우) :
-                        문의 내용:
-
-                    </textarea>
-                </span>
-
+                <textarea name="description" id="description" rows="10" th:field="*{content}"></textarea>
             </div>
+
+          <script>>
+
+            </script>
 
             <div class="file-upload">
                 <input class="upload-name" value="" placeholder="첨부파일" readonly>
@@ -62,5 +54,30 @@
             <button>문의하기</button>
         </form>
     </section>
+    <script th:inline="javascript">
+    // 문의 내용 변경
+
+        $(document).ready(function() {
+            var description = $('#description');
+            description.val(" 문의 내용 : ");
+            $('#category').change(function() {
+                var category = $(this).val();
+                if(category === "q_02") {
+                    description.val(" 문의 상품 : \n\n 문의 내용 : ");
+                    } else if(category === "q_03") {
+                    description.val(" 주문 번호(주문하신 경우) : \n\n 문의 내용 : ");
+                    } else {
+                    description.val(" 문의 내용 : ");
+                    }
+                });
+            });
+
+    // 아이디 / 이메일 초기값 설정
+
+        $(document).ready(function() {
+            $('input#userid').val(/*[[${loginId}]]*/ '');
+            $('input#email').val(/*[[${email}]]*/ '');
+        });
+    </script>
 </body>
 </html>

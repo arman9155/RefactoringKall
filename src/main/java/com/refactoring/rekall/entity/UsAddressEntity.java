@@ -34,9 +34,9 @@ public class UsAddressEntity {
     @Column(length = 30)
     private String addressName; // ▷▶ 배송지명 (집 / 회사 등..)
     @Column(nullable = false, length = 15)
-    private String phone_nb; // ▷▶ 수령자 연락처
+    private String phoneNb; // ▷▶ 수령자 연락처
     @Column(nullable = false, length = 10)
-    private String zip_code; // ▷▶ 우편번호
+    private String zipCode; // ▷▶ 우편번호
     @Column(nullable = false, length = 100)
     private String address_1; // ▷▶ 주소1
     @Column(length = 100)
@@ -58,8 +58,8 @@ public class UsAddressEntity {
         usAddressEntity.setStatus(usAddressDTO.getStatus());
         usAddressEntity.setName(usAddressDTO.getName());
         usAddressEntity.setAddressName(usAddressDTO.getAddressName());
-        usAddressEntity.setPhone_nb(usAddressDTO.getPhone_nb());
-        usAddressEntity.setZip_code(usAddressDTO.getZip_code());
+        usAddressEntity.setPhoneNb(usAddressDTO.getPhoneNb());
+        usAddressEntity.setZipCode(usAddressDTO.getZipCode());
         usAddressEntity.setAddress_1(usAddressDTO.getAddress_1());
         usAddressEntity.setAddress_2(usAddressDTO.getAddress_2());
 

@@ -1,7 +1,13 @@
 
 /* ========================================================== */
 /* main 시작 */
-
+a {
+    text-decoration : none;
+    color : black;
+}
+a:hover {
+    text-decoration : dote;
+}
 /* 메인 사진  */
 
 .main_wrapper {

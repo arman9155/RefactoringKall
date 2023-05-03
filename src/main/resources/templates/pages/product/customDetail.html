@@ -6,16 +6,12 @@
       layout:fragment="Content">
 <head>
     <meta charset="UTF-8">
-    <link th:href="@{css/product/product.css}" rel="stylesheet">
-    <title>[[${category}]]</title>
+    <link th:href="@{/css/product/detail.css}" rel="stylesheet">
+    <title>[[${productName}]]</title>
 </head>
 <body>
     <main>
-        <h2>[[${productName}]]</h2>
-        <div class="product-detail">
-            <a class="gototop" href="#">
-                <i class="fas fa-arrow-circle-up"></i>
-            </a>
+        <div class="product_detail">
             <div id="top">
                 <div class="top-left">
                     <div class="main-image">
@@ -23,17 +19,19 @@
                     </div>
                 </div>
 
-                <div class="top-right">
-                    <div th:each="tag, i : ${tags}" class="tags">
-                        <span class="tag" th:classappend="${i.index+1}">
-                          <a href="#">[[${tag}]]</a>
-                        </span>
+                <div class="top_right">
+                    <div class="tags">
+                        <th:block th:each="tag, i : ${tags}">
+                            <span class="tag" th:classappend="${i.index+1}" th:if="${i.index != 0}">
+                                  <a href="#" th:utext="'#'+${tag.replace(',', ' ')}"></a>
+                            </span>
+                        </th:block>
                     </div>
 
-                    <div class="right-header">
+                    <div class="right_header">
                         <h2>[[${productDTO.name}]]</h2>
                         <div class="icons">
-                            <a th:href="@{wishList/{wish}(wish=${productDTO})}" class="heart" title="찜하기">
+                            <a th:href="@{wishList/{wish}(wish=${productDTO.productId})}" class="heart" title="찜하기">
                                 <span class="visually-hidden">찜하기</span>
                                 <i class="far fa-heart"></i>
                             </a>
@@ -57,63 +55,66 @@
 
                     </div>
 
-                    <p class="price">[[${productDTO.price}]]]원</p>
-                    <p class="shipping-price">배송비<span>3,000원 (주문 시 결제)</span></p>
+                    <div class="orderInfo">
 
-                    <div class="select radio">
-                        <p>시트</p>
-                        <input type="radio" name="sheet" id="sheet1" value="white" hidden>
-                        <label for="sheet1" class="sheet">일반</label>
+                        <p class="price">[[${productDTO.price}]]원</p>
+                        <p class="delivery_price">배송비<span> 3,000원 (주문 시 결제) </span></p>
 
-                        <input type="radio" name="sheet" id="sheet2" value="red" hidden>
-                        <label for="sheet2" class="sheet">레드벨벳</label>
+                        <div class="select radio">
+                            <p>시트</p>
+                            <input type="radio" name="sheet" id="sheet1" value="white" hidden>
+                            <label for="sheet1" class="sheet">일반</label>
 
-                        <input type="radio" name="sheet" id="sheet3" value="blueberry" hidden>
-                        <label for="sheet3" class="sheet">블루베리</label>
+                            <input type="radio" name="sheet" id="sheet2" value="red" hidden>
+                            <label for="sheet2" class="sheet">레드벨벳</label>
+
+                            <input type="radio" name="sheet" id="sheet3" value="blueberry" hidden>
+                            <label for="sheet3" class="sheet">블루베리</label>
+                        </div>
+
+                        <div class="select radio item-shape">
+                            <p>모양</p>
+                            <input type="radio" name="shape" id="shape1" value="round" hidden>
+                            <label for="shape1" class="shape">원형</label>
+
+                            <input type="radio" name="shape" id="shape2" value="rectangle" hidden>
+                            <label for="shape2" class="shape">사각형</label>
+
+                            <input type="radio" name="shape" id="shape3" value="heart" hidden>
+                            <label for="shape3" class="shape">하트</label>
+                        </div>
+
+                        <div class="select radio item-color">
+                            <p>크림</p>
+                            <input type="radio" name="color" id="color1" value="white" hidden>
+                            <label for="color1" class="color">크림색</label>
+
+                            <input type="radio" name="color" id="color2" value="red" hidden>
+                            <label for="color2" class="color">빨간색</label>
+
+                            <input type="radio" name="color" id="color3" value="choco" hidden>
+                            <label for="color3" class="color">초코색</label>
+                        </div>
+
+                        <div class="select item-lettering">
+                            <label for="lettering">원하는 문구를 입력하세요.</label>
+                            <input type="text" name="lettering" id="lettering" maxlength="15" placeholder="한글은 12글자 영어는 15글자 가능합니다.">
+                        </div>
+
+                        <div class="select file item-image">
+                            <p>이미지 업로드</p>
+                            <input type="file" name="image" id="image" accept="image/*" hidden>
+                            <input type="text" readonly class="image-upload-text">
+                            <label for="image">파일 찾기</label>
+                        </div>
+
+                        <div class="select more-request">
+                            <label for="more-request">추가 요청사항</label>
+                            <input type="text" name="moreRequest" id="more-request" maxlength="40" placeholder="방문수령 원하시면 1:1 문의 주세요">
+                        </div>
                     </div>
 
-                    <div class="select radio item-shape">
-                        <p>모양</p>
-                        <input type="radio" name="shape" id="shape1" value="round" hidden>
-                        <label for="shape1" class="shape">원형</label>
-
-                        <input type="radio" name="shape" id="shape2" value="rectangle" hidden>
-                        <label for="shape2" class="shape">사각형</label>
-
-                        <input type="radio" name="shape" id="shape3" value="heart" hidden>
-                        <label for="shape3" class="shape">하트</label>
-                    </div>
-
-                    <div class="select radio item-color">
-                        <p>크림</p>
-                        <input type="radio" name="color" id="color1" value="white" hidden>
-                        <label for="color1" class="color">크림색</label>
-
-                        <input type="radio" name="color" id="color2" value="red" hidden>
-                        <label for="color2" class="color">빨간색</label>
-
-                        <input type="radio" name="color" id="color3" value="choco" hidden>
-                        <label for="color3" class="color">초코색</label>
-                    </div>
-
-                    <div class="select item-lettering">
-                        <label for="lettering">원하는 문구를 입력하세요.</label>
-                        <input type="text" name="lettering" id="lettering" maxlength="15" placeholder="한글은 12글자 영어는 15글자 가능합니다.">
-                    </div>
-
-                    <div class="select file item-image">
-                        <p>이미지 업로드</p>
-                        <input type="file" name="image" id="image" accept="image/*" hidden>
-                        <input type="text" readonly class="image-upload-text">
-                        <label for="image">파일 찾기</label>
-                    </div>
-
-                    <div class="select more-request">
-                        <label for="more-request">추가 요청사항</label>
-                        <input type="text" name="moreRequest" id="more-request" maxlength="40" placeholder="방문수령 원하시면 1:1 문의 주세요">
-                    </div>
-
-                    <div class="option-complete">
+                    <div class="complete">
                         <button>선택 완료</button>
                     </div>
 
@@ -122,17 +123,32 @@
 
                     <div class="buttons">
                         <button>장바구니</button>
-                        <button>바로 구매</button>
+                        <button>구매</button>
                     </div>
                 </div>
             </div>
 
-            <h3>다른 상품 추천</h3>
-            <div class="other-items"></div>
+            <h3 class="underline">다른 상품 추천</h3>
+
+            <div class="other_items">
+                <div class="recommend" th:classappend="${i.index+1}" th:each="item, i : ${randomList}">
+                    <div class="rec_imgs">
+                        <a th:href="@{product/{id}(id=${item.productId})}">
+                                <img th:src="${item.image}">
+                        </a>
+                    </div>
+                    <a th:href="@{product/{id}(id=${item.productId})}">
+                        <span th:text="${item.name}"></span>
+                        <span th:text="${item.price}"></span>
+                        <span th:text="'('+${item.star}+')'"></span>
+                    </a>
+                </div>
+                <!--Math.random 함수로 돌려서 값 가져오기-->
+            </div>
 
             <div class="item-info">
                 <section id="details">
-                    <h3 class="visually-hidden">상품 상세 정보</h3>
+                    <h3 class="underline">상품 상세 정보</h3>
                     <ul>
                         <li aria-selected="true">
                             <a href="#details">상품 상세 정보</a>
@@ -314,7 +330,7 @@
                             </div>
                         </table>
 
-                        <form th:action="@{product_q}" method="post">
+                        <form th:action="@{product_q/{id}(id=${productDTO.productId})}" method="post">
                             <th:block th:if="@{loginId != null}" th:object="${productQDTO}">
                                 <div class="question_input">
                                     <input class="q_input1" type="text" th:field="*{title}" placeholder="제목">

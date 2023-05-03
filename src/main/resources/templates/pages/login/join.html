@@ -7,8 +7,8 @@
 <head>
   <meta charset="UTF-8">
   <title>회원가입</title>
-  <link th:href="@{css/login/join.css}" rel="stylesheet">
-  <script th:src="@{js/login/join.js}"></script>
+<!--  <link th:href="@{css/login/join.css}" rel="stylesheet">-->
+  <link th:href="@{css/mypage/userInfo.css}" rel="stylesheet">
 </head>
 <body>
 <main>
@@ -16,7 +16,7 @@
   <form th:action="@{join}" method="post"  th:object="${userDTO}">
     <fieldset>
       <legend><h3>필수입력 사항</h3> </legend>
-      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+<!--      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">-->
       <table id="required">
         <tbody>
         <tr>
@@ -120,9 +120,10 @@
         </tbody>
       </table>
     </fieldset>
-    <input type="submit" id="join" value="회원가입">
-    <a href="javascript:history.go(-1)" id="back">이전으로</a>
-
+    <div class="buttons">
+      <input type="submit" id="join" value="회원가입">
+      <a href="javascript:history.go(-1)" id="back">이전으로</a>
+    </div>
   </form>
 </main>
 </body>

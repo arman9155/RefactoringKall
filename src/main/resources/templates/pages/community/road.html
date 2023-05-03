@@ -8,9 +8,6 @@
     <meta charset="UTF-8">
     <title>찾아 오시는 길</title>
     <script difer type="text/javascript" th:src="@{https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=dllgt4prde&callback=CALLBACK_FUNCTION}"></script>
-    <script defer th:src="@{js/map_naver.js}"></script>
-    <script difer type="text/javascript" th:src="@{https://maps.googleapis.com/maps/api/js?key=AIzaSyBp9KXWMiBH9ONB4xp3C_JR5xqLaXmNrvw}"></script>
-    <script defer th:src="@{js/map_google.js}"></script>
     <link th:href="@{css/community/road.css}" rel="stylesheet">
 </head>
 <body>
@@ -18,18 +15,10 @@
         <h3 class="underline">찾아오시는 길</h3>
         <div class="map_box">
 
-            <div id="mapList">
-                <a href="#" id="naver" class="naver">N</a>
-                <a href="#" id="google" class="google">G</a>
-            </div>
-
             <div id="mapping_naver" class="mapping_naver">
 
             </div>
 
-            <div id="mapping_google" class="mapping_google">
-
-            </div>
 
             <div class="visit-info">
                 <p><span>주소</span> 경기 성남시 분당구 돌마로 46 (광천빌딩 5층)</p>
@@ -41,5 +30,6 @@
             </div>
         </div>
     </section>
+    <script th:src="@{js/map_naver.js}"></script>
 </body>
 </html>

@@ -7,8 +7,8 @@
 <head>
     <meta charset="UTF-8">
     <title>공지사항</title>
+    <script type="text/javascript" th:src="@{myLib/jquery-3.2.1.min.js}"></script>
     <link th:href="@{css/community/notice.css}" rel="stylesheet">
-    <script defer th:src="@{js/community/notice.js}" type="text/javascript"></script>
 </head>
 <body>
     <section class="content">
@@ -24,7 +24,7 @@
 
             <tbody id="toggle_container">
                 <th:block th:each="notice, i : ${noticeList}">
-                    <tr class="toggle_Q">
+                    <tr class="toggle_Q" th:data-target="'answer_'+${i.index}">
                         <td scope="row" th:text="${i.index+1}"></td>
                         <td th:text="${notice.categoryDTO?.categoryName}"></td>
                         <td class="notice_content">
@@ -33,7 +33,7 @@
                             </span>
                         </td>
                     </tr>
-                    <tr class="toggle_A">
+                    <tr class="toggle_A" th:if="${notice.content != null}" th:id="'answer_'+${i.index}">
                         <td colspan="3" class="notice_a" scope="row">
                             <div class="notice_a_content"
                                 th:text="${notice.content}" >
@@ -44,6 +44,21 @@
             </tbody>
         </table>
     </section>
+    <script th:inline="javascript">
+    /* 왜 안되느지 모르지만 안됨
+        $(document).ready(function() {
+           $('tr.toggle_Q').click(function() {
+                var target = $(this).data('target');
+                $(target).toggle('fast');
+           });
+        }); */
 
+    /* 토글 선택시 열리고 닫고 */
+        $(document).ready(function() {
+           $('tr.toggle_Q').click(function() {
+                $(this).next('tr.toggle_A').toggle('fast');
+            });
+        });
+    </script>
 </body>
 </html>

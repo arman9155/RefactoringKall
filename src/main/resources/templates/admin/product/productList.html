@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{admin/adminLayout}"
+      layout:fragment="Content">
+<head>
+    <meta charset="UTF-8">
+    <title>상품 관리</title>
+    <script type="text/javascript" th:src="@{myLib/jquery-3.2.1.min.js}"></script>
+    <link th:href="@{css/admin/userList.css}" rel="stylesheet">
+</head>
+<body>
+    <section class="content">
+        <h3 class="underline">상품 관리</h3>
+
+        <div class="sort">
+                <a th:href="@{a_product}" th:text="전체" th:class="${status == 'all'} ? 'active' : '' "></a>
+                <a th:href="@{a_product(sort='custom')}" th:text="custom" th:class="${status == 'custom'} ? 'active' : '' "></a>
+                <a th:href="@{a_product(sort='design')}" th:text="design" th:class="${status == 'design'} ? 'active' : '' "></a>
+                <a th:href="@{a_product(sort='etc')}" th:text="etc" th:class="${status == 'etc'} ? 'active' : '' "></a>
+        </div>
+
+        <form id="deleteProduct" method="post" th:action="@{a_deleteProduct}">
+            <table class="list">
+                <thead>
+                <tr>
+                    <th>
+                        <input type="checkbox" id="selectAll">
+                        <label for="selectAll">전체 선택</label>  <!--자바로 구현 필요-->
+                    </th>
+                    <th>상품번호</th>
+                    <th>카테고리</th>
+                    <th>메인사진</th>
+                    <th>상품명</th>
+                    <th> 재고 </th>
+                </tr>
+                </thead>
+
+                <tbody id="productList">
+                <th:block th:each="product : ${productList}">
+                    <tr>
+                        <td scope="row">
+                            <input type="checkbox" name="productIds" th:value="${product.productId}">
+                        </td>
+                        <td>[[${product.productId}]]</td>
+                        <td>[[${product.categoryDTO.categoryId}]]</td>
+                        <td>
+                            <img class="main_image" th:src="@{${product.getImage()}}">
+                        </td>
+                        <td>
+                         <a th:href="@{a_product_detail(productId=${product.productId})}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=800,height=800'); return false;">
+                             [[${product.name}]] </a>
+                        </td>
+                        <td>[[${product.amount}]]</td>
+                    </tr>
+                </th:block>
+                </tbody>
+                <tfoot>
+                    <div class="buttons">
+                        <button>선택 삭제</button>
+                        <input type="reset" value="선택 취소">
+                        <a th:href="@{a_product_add}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=800,height=800'); return false;">상품 추가</a>
+                    </div>
+                </tfoot>
+            </table>
+        </form>
+    </section>
+    <script th:inline="javascript">
+        $(document).ready(function() {
+            $('#selectAll').click(function() {
+                if($('#selectAll').is(':checked'))
+                    $("input[name=productIds]").prop("checked", true);
+                else
+                    $("input[name=productIds]").prop("checked", false);
+            });
+        });
+    </script>
+</body>
+</html>

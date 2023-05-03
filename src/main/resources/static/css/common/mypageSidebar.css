@@ -1,16 +1,16 @@
 
-table tr {
+.mypageSidebar tr {
     display:flex;
     flex-direction: column;
     text-align:center;
 }
 
-tr > * {
+.mypageSidebar tr > * {
     box-sizing : border-box;
     padding: 5px 10px;
 }
 
-tr a {
+.mypageSidebar tr a {
       text-align: center;
       text-decoration:none;
       color: black;

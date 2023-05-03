@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>상품 정보</title>
+    <link th:href="@{css/admin/detail.css}" rel="stylesheet">
+</head>
+  <body>
+        <h3 class="underline">상품 정보</h3>
+
+        <table class="product_info">
+          <tbody>
+            <tr>
+              <th><label>상품번호</label></th>
+              <td th:text="${productDTO.productId}"></td>
+            </tr>
+            <tr>
+              <th><label >카테고리</label></th>
+              <td th:text="${productDTO.categoryDTO.categoryId}"></td>
+            </tr>
+            <tr>
+              <th><label>상품명</label></th>
+                <td th:text="${productDTO.name}"></td>
+            </tr>
+            <tr>
+                <th><label>태그</label></th>
+                <td th:text="${productDTO.tag}"></td>
+            </tr>
+            <tr>
+                <th><label>가격</label></th>
+                <td th:text="${productDTO.price}"></td>
+            </tr>
+            <tr>
+                <th><label>재고</label></th>
+                <td th:text="${productDTO.amount}"></td>
+            </tr>
+            <tr>
+                <th><label>상세설명</label></th>
+                <td th:text="${productDTO.info}"></td>
+            </tr>
+            <tr>
+                <th><label>별점</label></th>
+                <td th:text="${productDTO.star}"></td>
+            </tr>
+            <tr>
+                <th><label>메인이미지</label></th>
+                <td>
+                    <img class="main_image" th:src ="@{${productDTO.getImage()}}">
+                </td>
+            </tr>
+            <tr>
+                <th><label>등록일</label></th>
+                <td th:text="${productDTO.date}"></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="buttons">
+          <a th:href="@{a_product_change(productId=${productDTO.productId})}" id="change">수정</a>
+          <a th:href="@{a_product_del(popup=${productDTO.productId})}">삭제</a>
+          <a onclick="window.close();">닫기</a>
+        </div>
+  </body>
+</html>

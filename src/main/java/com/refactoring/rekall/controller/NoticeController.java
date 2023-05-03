@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -26,9 +27,9 @@ public class NoticeController {
         ModelAndView modelAndView = new ModelAndView();
         List<NoticeDTO> noticeDTOList = noticeService.findList("notice");
 
-        modelAndView.addObject("noticeList", noticeDTOList);
         modelAndView.addObject("loginId", loginId);
         modelAndView.addObject("userRole", userRole);
+        modelAndView.addObject("noticeList", noticeDTOList);
         modelAndView.setViewName("pages/community/notice.html");
         return modelAndView;
     }
@@ -36,75 +37,21 @@ public class NoticeController {
 //  ★ FAQ ★ ---------------------------------------------------------------
     @GetMapping("qna") // 자주 묻는 질문
     public ModelAndView qna(@SessionAttribute(name ="loginId", required = false) String loginId,
-                            @SessionAttribute(name ="userRole", required = false) String userRole) {
+                            @SessionAttribute(name ="userRole", required = false) String userRole,
+                            @RequestParam(value="sort", defaultValue = "all") String categoryId) {
+
         ModelAndView modelAndView = new ModelAndView();
-        List<NoticeDTO> noticeDTOList = noticeService.findList("q");
+
+        List<NoticeDTO> noticeDTOList = noticeService.findList(categoryId);
         List<CategoryDTO> category = noticeService.findCategory();
 
-        modelAndView.addObject("qnaList", noticeDTOList);
-        modelAndView.addObject("category", category);
         modelAndView.addObject("loginId", loginId);
         modelAndView.addObject("userRole", userRole);
+        modelAndView.addObject("categoryId", categoryId);
+        modelAndView.addObject("category", category);
+        modelAndView.addObject("qnaList", noticeDTOList);
         modelAndView.setViewName("pages/community/qna.html");
         return modelAndView;
     }
 
-//  ------------------------------------- ★ FAQ 검색★ ---------------------------------------------------------------
-    @GetMapping("faq_01") // QnA 선택 정렬
-    public ModelAndView faq_01(@SessionAttribute(name ="loginId", required = false) String loginId,
-                               @SessionAttribute(name ="userRole", required = false) String userRole) {
-        ModelAndView modelAndView = new ModelAndView();
-        List<NoticeDTO> noticeDTOList = noticeService.findList("faq_01");
-        List<CategoryDTO> category = noticeService.findCategory();
-        System.out.println(noticeDTOList);
-
-        modelAndView.addObject("qnaList", noticeDTOList);
-        modelAndView.addObject("category", category);
-        modelAndView.addObject("loginId", loginId);
-        modelAndView.addObject("userRole", userRole);
-        modelAndView.setViewName("pages/community/qna.html");
-        return modelAndView;
-    }
-    @GetMapping("faq_02") // QnA 선택 정렬
-    public ModelAndView faq_02(@SessionAttribute(name ="loginId", required = false) String loginId,
-                               @SessionAttribute(name ="userRole", required = false) String userRole) {
-        ModelAndView modelAndView = new ModelAndView();
-        List<NoticeDTO> noticeDTOList = noticeService.findList("faq_02");
-        List<CategoryDTO> category = noticeService.findCategory();
-
-        modelAndView.addObject("qnaList", noticeDTOList);
-        modelAndView.addObject("category", category);
-        modelAndView.addObject("loginId", loginId);
-        modelAndView.addObject("userRole", userRole);
-        modelAndView.setViewName("pages/community/qna.html");
-        return modelAndView;
-    }
-    @GetMapping("faq_03") // QnA 선택 정렬
-    public ModelAndView faq_03(@SessionAttribute(name ="loginId", required = false) String loginId,
-                               @SessionAttribute(name ="userRole", required = false) String userRole) {
-        ModelAndView modelAndView = new ModelAndView();
-        List<NoticeDTO> noticeDTOList = noticeService.findList("faq_03");
-        List<CategoryDTO> category = noticeService.findCategory();
-
-        modelAndView.addObject("qnaList", noticeDTOList);
-        modelAndView.addObject("category", category);
-        modelAndView.addObject("loginId", loginId);
-        modelAndView.addObject("userRole", userRole);
-        modelAndView.setViewName("pages/community/qna.html");
-        return modelAndView;
-    }
-    @GetMapping("faq_04") // QnA 선택 정렬
-    public ModelAndView faq_04(@SessionAttribute(name ="loginId", required = false) String loginId,
-                               @SessionAttribute(name ="userRole", required = false) String userRole) {
-        ModelAndView modelAndView = new ModelAndView();
-        List<NoticeDTO> noticeDTOList = noticeService.findList("faq_04");
-        List<CategoryDTO> category = noticeService.findCategory();
-
-        modelAndView.addObject("qnaList", noticeDTOList);
-        modelAndView.addObject("category", category);
-        modelAndView.addObject("loginId", loginId);
-        modelAndView.addObject("userRole", userRole);
-        modelAndView.setViewName("pages/community/qna.html");
-        return modelAndView;
-    }
 }

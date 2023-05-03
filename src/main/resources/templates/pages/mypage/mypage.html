@@ -26,13 +26,13 @@
             </div>
 
             <div class="mypage_menu">
-                <div><a th:href="@{mypage}"><i class="fa-regular fa-user fa-3x"></i>PROFILE</a></div>
-                <div><a href="./deliveryAdress.html"><i class="fa-solid fa-house fa-3x"></i>ADRESS</a></div>
-                <div class="DJ_mileage"><a href="#"><i class="fa-solid fa-coins fa-3x"></i>MILEAGE</a></div>
-                <div><a href="../cart/index.html"><i class="fa-solid fa-cart-shopping fa-3x"></i>CART</a></div>
-                <div><a href="#"><i class="fa-solid fa-clipboard-check fa-3x"></i>ORDER</a></div>
-                <div><a href="#"><i class="fa-solid fa-clipboard-list fa-3x"></i>BOARD</a></div>
-                <div><a th:href="@{wishList}"><i class="fa-regular fa-heart fa-3x"></i>WISH LIST</a></div>
+                <div><a th:href="@{u_userInfo}"><i class="fa-regular fa-user fa-3x"></i>PROFILE</a></div>
+                <div><a href="@{u_Address}"><i class="fa-solid fa-house fa-3x"></i>ADRESS</a></div>
+                <div class="@{u_mileage}"><a href="#"><i class="fa-solid fa-coins fa-3x"></i>MILEAGE</a></div>
+                <div><a href="@{u_cart}"><i class="fa-solid fa-cart-shopping fa-3x"></i>CART</a></div>
+                <div><a href="@{u_order}"><i class="fa-solid fa-clipboard-check fa-3x"></i>ORDER</a></div>
+                <div><a href="@{u_review}"><i class="fa-solid fa-clipboard-list fa-3x"></i>BOARD</a></div>
+                <div><a th:href="@{u_wishList}"><i class="fa-regular fa-heart fa-3x"></i>WISH LIST</a></div>
             </div>
         <!-- 마이페이지 하단메뉴 -->
         </div>

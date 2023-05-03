@@ -1,4 +1,6 @@
 
+/* ----- ★ notice/QnA 틀 설정 ★ ------------------------------------------------------------*/
+
 .content {
      width: 100%;
      padding-left: 20px;
@@ -17,6 +19,8 @@ h3.underline {
   border-bottom: 1px solid #33333330;
   margin-bottom: 20px;
 }
+
+/* ----- ★ notice/QnA table 기본 설정 ★ ------------------------------------------------------------*/
 
 table {
   table-layout: fixed; /* 이게 없으면... column 넓이 하나도 안멱혀요...*/
@@ -38,11 +42,14 @@ table tr th:nth-child(3) {
     width: 60%;
 }
 
+/* ----- ★ QnA의 버튼 파트 ★ ------------------------------------------------------------*/
+
 .select {
     display: flex;
     gap : 30px;
     margin: 10px auto;
     text-align: center;
+    cursor: pointer;
 }
 
 .select a {
@@ -53,17 +60,20 @@ table tr th:nth-child(3) {
     box-sizing: border-box;
     padding: 5px 20px;
 }
-.click {
+
+/* ----- ★ QnA 정렬 컬러 설정 ★ ------------------------------------------------------------*/
+.select a.active {
     background-color: #FB9DA7;
 }
 
 
+/* ----- ★ notice/QnA toggle 설정 ★ ------------------------------------------------------------*/
 
-section .toggle_Q .guide_content,
 section .toggle_Q .QA_content,
 section .toggle_Q .notice_content{
   text-align: left;
 }
+
 section .toggle_A {
   display: none;
   text-align: justify;
@@ -86,14 +96,19 @@ thead tr {
   margin-right: 10px;
   text-align: center;
 }
+
+/*
  section .guide_q_title::before,
  section .toggle_Q .notice_content::before {
-  /* content: '\f2c4';  q마크왜 안될까나*/
+  */
+/* content: '\f2c4';  q마크왜 안될까나*//*
+
   content: '\f00c';
   font-family: 'Font Awesome 5 Free', sans-serif;
   font-weight: 900;
   margin:0 10px;
 }
+
 
 section .QA_q_title::before,
 section .QA_q_content::before {
@@ -102,8 +117,8 @@ section .QA_q_content::before {
   font-weight: 900;
 
 }
+*/
 
-section .guide_q_a,
 section .QA_q_a,
 section .notice_a {
 
@@ -112,7 +127,7 @@ section .notice_a {
   border-bottom: 1px solid #333333;
 }
 
-section .toggle_A .open {
+/*section .toggle_A .open {
   display: flex;
   content: '\f107';
   font-family: 'Font Awesome 5 Free', sans-serif;
@@ -120,6 +135,4 @@ section .toggle_A .open {
   right: 20px;
   top: 50%;
   transform: translateY(-50%);
-}
-
-
+}*/

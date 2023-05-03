@@ -1,0 +1,71 @@
+
+/*--------- h3 ------------------------------------------------------*/
+
+h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  padding-bottom: 20px;
+}
+
+h3.underline {
+  border-bottom: 1px solid  #33333330;
+  margin-bottom: 20px;
+}
+
+/*--------- table ------------------------------------------------------*/
+
+table {
+    margin: 10px 0;
+    width: 100%;
+    border-collapse : collapse;
+}
+
+table th,
+table td {
+    box-sizing: border-box;
+    padding: 3px 10px;
+    border :  1px solid RGB(255, 227, 227);
+}
+table th:nth-child(1) {
+    width: 45%;
+}
+
+table a {
+    text-decoration: none;
+}
+
+table input {
+    all: unset;
+    padding: 0 10px;
+    width: 100%;
+}
+
+table input: focus {
+    border: 3px solid #FB9DA7;
+}
+
+/*--------- 버튼 ------------------------------------------------------*/
+.buttons {
+    all: unset;
+    display : flex;
+    justify-content : center;
+    gap : 30px;
+}
+
+.buttons a,
+.buttons button {
+      all:unset;
+      background-color: RGB(255, 200, 200);
+      cursor: pointer;
+      font-weight: bold;
+      color: white;
+      text-align:center;
+      text-decoration:none;
+      width: 30%;
+      border-radius : 20px;
+}
+
+.buttons a:hover,
+.buttons button:hover {
+  background-color: #FB9DA7;
+}
