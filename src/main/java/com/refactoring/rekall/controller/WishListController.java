@@ -42,41 +42,23 @@ public class WishListController {
     }
 
 //  ------------------------------------- ★ wishList 저장★ ------------------------------------------------------------
-/*    @GetMapping("u_wishList/{wish}")
-    public void getWishList(@PathVariable("wish") Integer productId,
-                            @RequestParam(name = "url", required = false) String url,
-                             @SessionAttribute(name ="loginId", required = false) String loginId) {
-
-        System.out.println("productId"+productId);
-        System.out.println("url"+url);
-        wishListService.getWishList(productId, loginId);
-        ModelAndView model = new ModelAndView();
-        model.addObject("data", new Message("저장되었습니다.", url));
-        model.addObject("url",url);
-        model.setViewName("common/fragments/message.html");
-        // 이거 자바로 alert만 뜨게 수정할 방법 찾기
-    }*/
-    //alert으로 jquery로 해결해서 message 제외한
     @GetMapping("u_wishList/{wish}")
-    public void getWishList(@PathVariable("wish") Integer productId,
-                        @SessionAttribute(name ="loginId", required = false) String loginId) {
+    public String getWishList(@PathVariable("wish") Integer productId,
+                              @RequestParam(name ="loginId", required = false) String loginId,
+                              @RequestParam(name ="url", required = false) String url,
+                              @RequestParam(name ="userRole", required = false) String userRole) {
 
-    System.out.println("productId"+productId);
-    wishListService.getWishList(productId, loginId);
+        wishListService.getWishList(productId, loginId);
+        return "redirect:/"+url;
     }
-/*    @GetMapping("u_wishListDel/{wish}")
-    public void delWishList(@PathVariable("wish") Integer productId,
-                            @RequestParam(name = "url", required = false) String url,
-                            @SessionAttribute(name ="loginId", required = false) String loginId) {
-        wishListService.delWishList(productId, loginId);
-        ModelAndView model = new ModelAndView();
-        model.addObject("data", new Message("삭제되었습니다.", url));
-        model.setViewName("common/fragments/message.html");
-        // 이거 자바로 alert만 뜨게 수정할 방법 찾기
-    }*/
+
     @GetMapping("u_wishListDel/{wish}")
-    public void delWishList(@PathVariable("wish") Integer productId,
-                            @SessionAttribute(name ="loginId", required = false) String loginId) {
+    public String delWishList(@PathVariable("wish") Integer productId,
+                              @RequestParam(name ="loginId", required = false) String loginId,
+                              @RequestParam(name ="url", required = false) String url,
+                              @RequestParam(name ="userRole", required = false) String userRole) {
+
         wishListService.delWishList(productId, loginId);
+        return "redirect:/"+url;
     }
 }

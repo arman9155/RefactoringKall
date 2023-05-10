@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>공지 추가</title>
+    <script type="text/javascript" th:src="@{myLib/jquery-3.2.1.min.js}"></script>
+    <link th:href="@{css/admin/detail.css}" rel="stylesheet">
+    <script th:inline="javascript">
+        function closeWindow() {
+            window.opener.parent.location.reload();
+            window.close();
+        }
+    </script>
+</head>
+  <body>
+        <h3 class="underline">공지 추가</h3>
+
+        <form th:action="@{notice_Add}" method="post" th:object="${noticeDTO}">
+            <table class="notice_detail">
+              <tbody>
+                <tr>
+                  <th><label >카테고리</label></th>
+                  <td>
+                      <select name="category" id="category" th:field="*{categoryDTO.categoryId}">
+                          <option value="notice"> 공지사항 </option>
+                          <th:block th:each="category,i : ${category}">
+                              <option th:value="${category.categoryId}">[[${category.categoryName}]]</option>
+                          </th:block>
+                      </select>
+                  </td>
+                </tr>
+                <tr>
+                  <th><label>제목</label></th>
+                    <td>
+                        <input type="text" th:field="*{title}">
+                    </td>
+                </tr>
+                <tr>
+                    <th><label>내용</label></th>
+                    <td>
+                        <textarea name="description" id="description" rows="10" th:field="*{content}"></textarea>
+                    </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="buttons">
+              <button>완료</button>
+              <a onclick="closeWindow();">닫기</a>
+            </div>
+        </form>
+  </body>
+</html>

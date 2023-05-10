@@ -9,7 +9,15 @@
   </th:block>
   <th:block th:if="${#strings.length(data.href) != 0}">
       <script>
-          location.replace("[[${data.href}]]");
+         var href = "";
+          if("[[${data.href}]]".includes("&amp;")) {
+            href = "[[${data.href}]]".replace(/&amp;/g, '&');
+            alert(href);
+            }
+          else
+            href = "[[${data.href}]]";
+
+          location.replace(href);
       </script>
   </th:block>
 </head>

@@ -7,7 +7,7 @@
     <link th:href="@{css/mypage/addressDetail.css}" rel="stylesheet">
 </head>
 <body>
-  <form th:action="@{u_address_add}" method="post" th:object="${usAddressDTO}">
+  <form th:action="@{u_address_add}" method="post" th:object="${usAddressDTO}" name="addressForm" id="address-form">
 
       <h3 class="underline">배송지 추가</h3>
 
@@ -40,10 +40,12 @@
           </tr>
         </tbody>
       </table>
+
       <div class="buttons">
-        <button>완료</button>
-        <a onclick="window.close();" th:href="@{u_address}">닫기</a>
+          <button>완료</button>
+          <a onclick="window.close();" th:href="@{u_address}">닫기</a>
       </div>
   </form>
+
 </body>
 </html>

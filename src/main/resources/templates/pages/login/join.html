@@ -7,12 +7,12 @@
 <head>
   <meta charset="UTF-8">
   <title>회원가입</title>
-<!--  <link th:href="@{css/login/join.css}" rel="stylesheet">-->
-  <link th:href="@{css/mypage/userInfo.css}" rel="stylesheet">
+   <link th:href="@{css/login/join.css}" rel="stylesheet">
 </head>
 <body>
 <main>
-  <h1 class="logo"><a th:href="@{main}">메인으로</a></h1>
+  <h1 class="logo">
+    <a th:href="@{main}">메인으로</a></h1>
   <form th:action="@{join}" method="post"  th:object="${userDTO}">
     <fieldset>
       <legend><h3>필수입력 사항</h3> </legend>

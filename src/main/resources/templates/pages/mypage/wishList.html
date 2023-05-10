@@ -6,6 +6,7 @@
       layout:fragment="Content">
 <head>
     <meta charset="UTF-8">
+    <script type="text/javascript" th:src="@{myLib/jquery-3.2.1.min.js}"></script>
     <link th:href="@{css/product/product.css}" rel="stylesheet">
     <title>wishList</title>
 </head>
@@ -13,17 +14,48 @@
     <main>
         <div class="wrapper">
             <th:block th:each="item, i : ${wishList}">
-                <div th:if="${item == null}">
-                    <span>WishList 가 없습니다.</span>
-                </div>
                 <div class="custom" th:classappend="${i.index+1}">
-                    <p>
-                        <a ref=""><img th:src="${item.productDTO.image}"></a>
-                    <h3 th:text="${item.productDTO.name}"></h3><br>
-                    </p>
+                    <div class="product_imgs">
+                        <span th:class="active" th:onclick="'javascript:toggleActive(this)'"
+                              th:attr="data-product=${item.productDTO.productId},data-url=@{u_wishList}">하트</span>
+
+                        <a th:href="@{product/{id}(id=${item.productDTO.productId})}">
+                            <img th:src="${item.productDTO.image}">
+                        </a>
+                    </div>
+                    <a th:href="@{product/{id}(id=${item.productDTO.productId})}">
+                        <h3 th:text="${item.productDTO.name}"></h3><br>
+                    </a>
                 </div>
             </th:block>
         </div>
     </main>
+
+    <script th:inline="javascript">
+
+        function toggleActive(element) {
+            // 페이지 리다이렉트하기
+            var url = element.getAttribute('data-url');
+            var loginId = /*[[${loginId}]]*/ null;
+            var userRole = /*[[${userRole}]]*/ null;
+            var productId = parseInt(element.getAttribute('data-product'));
+
+            alert("script에 들어옴"+loginId);
+
+            $.ajax({
+                url: "/u_wishListDel/"+productId,
+                method: "GET",
+                data : {loginId: loginId,
+                        userRole: userRole,
+                        url : url
+                        },
+            }).done(function() {
+                        element.classList.remove('active');
+                        alert("위시리스트에서 삭제하였습니다.");
+            }).fail(function() {
+                        alert("위시리스트 삭제에 실패했습니다.");
+            });
+        }
+    </script>
 </body>
 </html>

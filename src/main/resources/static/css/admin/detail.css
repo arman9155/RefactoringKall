@@ -59,7 +59,10 @@ table input: focus {
 }
 
 .buttons a,
-.buttons button {
+.buttons button,
+.commentF button,
+.completeComment,
+.changeComment {
       all:unset;
       background-color: RGB(255, 200, 200);
       cursor: pointer;
@@ -74,4 +77,9 @@ table input: focus {
 .buttons a:hover,
 .buttons button:hover {
   background-color: #FB9DA7;
+}
+
+.commentF,
+.completeComment {
+    display : none;
 }

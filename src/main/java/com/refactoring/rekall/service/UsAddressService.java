@@ -63,10 +63,8 @@ public class UsAddressService {
 
 //  ------------------------------------- ★ 배송지 저장★ ---------------------------------------------------------------
     public void saveAddress(UsAddressDTO usAddressDTO, String loginId) {
-        System.out.println("loginId"+loginId);
         UserDTO userDTO = userService.findByUserID(loginId);
         usAddressDTO.setUserDTO(userDTO);
-        System.out.println("loginId"+usAddressDTO.getUserDTO().getName());
 
         usAddressRepository.save(UsAddressEntity.toUsAddressEntity(usAddressDTO));
     }

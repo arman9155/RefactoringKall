@@ -13,7 +13,8 @@
 <body>
   <section class="content">
     <h3 class="underline">문의 내역</h3>
-    <form id="deleteusQ" method="post" th:action="@{u_deleteUsQ}">
+
+    <form id="deleteusQ" method="post" th:action="@{deleteUsQ(page='mypage')}">
       <table class="list">
         <thead>
         <tr>
@@ -38,12 +39,20 @@
             </td>
           </tr>
           <tr class="toggle_A" th:if="${usQ.content != null}" th:id="'#answer_'+${i.index}">
-            <td colspan="3" class="notice_a" scope="row">
-              <div class="notice_a_content"
-                   th:text="${usQ.content}" >
-              </div>
-            </td>
+              <td colspan="3" class="notice_a" scope="row">
+                <div class="notice_a_content"
+                     th:text="${usQ.content}" >
+                </div>
+              </td>
           </tr>
+          <tr class="toggle_C" th:if="${usQ.comment != null}" th:id="'#answer_'+${i.index}">
+              <td colspan="3" class="notice_a" scope="row">
+                <div class="notice_a_comment"
+                     th:text="${usQ.comment}" >
+                </div>
+              </td>
+          </tr>
+
         </th:block>
         </tbody>
         <div class="buttons">
@@ -57,6 +66,7 @@
         $(document).ready(function() {
            $('tr.toggle_Q').click(function() {
                 $(this).next('tr.toggle_A').toggle('fast');
+                $(this).next('tr.toggle_A').next('tr.toggle_C').toggle('fast');
             });
 
             $('#selectAll').click(function() {

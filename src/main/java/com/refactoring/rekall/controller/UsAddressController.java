@@ -63,17 +63,21 @@ public class UsAddressController {
         UsAddressDTO usAddressDTO = usAddressService.getAddress(addressId);
 
         modelAndView.addObject("usAddressDTO", usAddressDTO);
+        modelAndView.addObject("addressId", addressId);
         modelAndView.setViewName("pages/mypage/addressChange.html");
         return modelAndView;
     }
 
 //  ★ 마이페이지 - 배송지 수정 완료★ ---------------------------------------------------------------
     @PostMapping("u_address_change")
-    public ModelAndView addressChange(@ModelAttribute UsAddressDTO usAddressDTO) {
+    public ModelAndView addressChange(@ModelAttribute UsAddressDTO usAddressDTO,
+                                      @RequestParam("addressId") Integer addressId,
+                                      @SessionAttribute(name ="loginId", required = false) String loginId) {
         ModelAndView modelAndView = new ModelAndView();
+        usAddressDTO.setAddressId(addressId);
+        usAddressService.saveAddress(usAddressDTO, loginId);
 
-        modelAndView.addObject("data", new Message("수정되었습니다.", "u_address_detail"));
-        modelAndView.addObject("addressId", usAddressDTO.getAddressId());
+        modelAndView.addObject("data", new Message("수정되었습니다.", "u_address_detail?addressId=" + addressId));
         modelAndView.setViewName("common/fragments/message.html");
         return modelAndView;
     }
@@ -101,6 +105,7 @@ public class UsAddressController {
         ModelAndView modelAndView = new ModelAndView();
 
         usAddressService.saveAddress(usAddressDTO, loginId);
+
         modelAndView.addObject("data", new Message("추가되었습니다.", "close"));
         modelAndView.setViewName("common/fragments/message.html");
         return modelAndView;

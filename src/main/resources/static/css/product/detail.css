@@ -1,17 +1,26 @@
 
+
 /* 디테일 _ 상단 정렬 */
 
 #top {
     display: flex;
     gap : 20px;
+    margin-bottom : 20px;
 }
-
+.other_items {
+    margin-bottom : 20px;
+}
 /* 왼쪽 상단 */
-.top-left {
+/*.top-left {
     border: 1px black solid;
-}
+}*/
 
 /*오른쪽 상단 */
+.top_right {
+    box-sizing : border-box;
+    padding : 5px;
+}
+
 /*태그들*/
 .tags {
     padding: 10px;
@@ -27,6 +36,130 @@
     margin: 0 10px;
     line-height : 1.2rem;
 }
+
+/* right - header */
+.right_header {
+    display : flex;
+    flex-direction : column;
+    border-bottom : 1px solid #33333330;
+}
+
+.right_header .block {
+    display : flex;
+    align-items : end;
+}
+
+.right_header .block h2 {
+    border-bottom : none;
+    padding : 0;
+    line-height : 2rem;
+}
+
+.right_header .block .icons {
+    display : flex;
+    align-items : flex-end;
+    flex-direction : column;
+    gap : 5px;
+}
+
+.icons span.heart {
+    display : block;
+    background: url("/img/product/heart.svg") no-repeat center/100% ;
+    width: 30px;
+    height: 30px;
+    text-indent: -9999em;
+}
+
+.icons span.heart active {
+    background: url("/img/product/full_heart.svg") no-repeat center/100% ;
+}
+
+.icons span.share {
+    display:block;
+    background: url("/img/product/share.svg") no-repeat center/100% ;
+    width: 30px;
+    height: 30px;
+    text-indent: -9999em;
+}
+
+/* rating */
+
+.rating {
+    display : flex;
+}
+.rating span nth-child(2) {
+    text-align:start;
+}
+.rating .star {
+    display : flex;
+}
+.fa-solid,
+.fa-star{
+    color: #FB9DA7;
+}
+i {
+    display: inline-block;
+}
+
+/* 주문정보 */
+.order_info,
+.detail_info {
+   table-layout: fixed;
+   box-sizing : border-box;
+   padding: 10px;
+}
+
+.order_info tr {
+    line-height : 2.5rem;
+}
+
+.order_info .col1 {
+    width: 20%;
+}
+
+.order_info td .flex {
+    display:flex;
+    gap: 30px;
+}
+
+.order_info td .flex label,
+.file_upload label {
+    padding: 0 3px;
+    background: RGB(255, 200, 200);
+    border-radius : 20px;
+    color : white;
+    text-align: center;
+    font-weight : bold;
+    cursor : pointer;
+    line-height : 1.2rem;
+}
+input[type="radio"]:checked+label,
+.file_upload label:hover {
+     background-color: #FB9DA7;
+}
+
+.order_info tr input {
+   box-sizing: border-box;
+   padding: 0 20px;
+   width: 100%;
+   border-radius: 20px;
+   border: 1px solid RGB(255, 200, 200);
+   outline: none;
+   line-height: 1.2rem;
+}
+
+.order_info tr input:focus {
+   border: 3px solid #FB9DA7;
+}
+
+
+/*file*/
+.file_upload {
+    display : flex;
+}
+
+/* 선택 */
+
 
 /*button*/
 .complete button,
@@ -62,35 +195,45 @@
     margin-right : 3%;
 }
 
+/* ---------------------------------------------*/
 /* 다른 상품 추천 */
 .other_items {
     display:flex;
     height: 300px;
+    width : 100%;
     gap: 10px;
     padding: 5px;
+    align-items : center;
 }
-.recommend > .random{
-    height: 60%;
-    box-sizing : border-box;
-}
-
-.recommend random_image {
-    width: 100%;
+.recommend {
     height: 100%;
 }
 
 .recommend a {
+    box-sizing : border-box;
+    text-decoration : none;
+}
+
+.recommend .random_image {
+    width: 100%;
+    height: 70%;
+    box-sizing : border-box;
+}
+
+.recommend .info {
     display : flex;
     flex-direction : column;
     align-items : center;
     text-decoration : none;
     color: black;
     text-align: center;
+    height: 30%;
+    font-weight : bold;
 }
-.recommend a span {
-    box-sizing : border-box
-    padding: 5px 0;
+.recommend .info > * {
+    padding: 3px 0;
 }
+
 
 
 /* 이미지 */
@@ -98,16 +241,55 @@
     position: relative;
 }
 
-.product_imgs span {
-        position: absolute;
-        right: 0px;
-        z-index: 2;
-        background: url("/img/product/heart.svg") no-repeat center/100% ;
-        width: 50px;
-        height: 50px;
-        text-indent: -9999em;
+
+/*---------------------------------------------*/
+.content {
+    border: 2px solid #FB9DA7;
+    box-sizing : border-box;
+    padding: 10px;
 }
 
-.product_imgs span.active {
-        background: url("/img/product/full_heart.svg") no-repeat center/100% ;
+/* 상품상세정보 */
+.detail_info {
+    border-collapse : collapse;
+}
+.detail_info tr {
+    line-height : 2rem;
+}
+.detail_info th {
+    width : 20%;
+}
+.detail_info tr > * {
+    border : 1px solid RGB(255, 200, 200);
+}
+
+
+
+
+
+
+/* 아코디언 */
+.index {
+    display: flex;
+    background: RGB(255, 200, 200);
+    text-align : center;
+    border: 1.5px solid #FB9DA7;
+}
+
+.index li {
+    text-decoration : none;
+    line-height : 50px;
+    font-size : 1.2rem;
+    font-weight : bold;
+    height : 50px;
+}
+.index a {
+    display: block;
+    text-decoration : none;
+    color : white;
+}
+
+[aria-selected="true"] {
+    background-color: #FB9DA7;
+    border: 1px solid #FB9DA7;
 }

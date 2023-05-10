@@ -6,8 +6,9 @@
       layout:fragment="Content">
 <head>
     <meta charset="UTF-8">
+    <script type="text/javascript" th:src="@{myLib/jquery-3.2.1.min.js}"></script>
     <link th:href="@{css/product/product.css}" rel="stylesheet">
-    <title>[[${category}]]</title>
+    <title th:text="${category}"></title>
 </head>
 <body>
     <main>
@@ -24,17 +25,22 @@
             <th:block th:each="item,i : ${productList}">
                 <div class="custom" th:classappend="${i.index+1}">
                     <div class="product_imgs">
-                        <th:block th:if="${wishList.size() == 0}">
-                            <span th:class="${active} ? 'active' : ''" th:onclick="'javascript:toggleActive(this)'"
+                        <th:block th:if="${loginId != null}">
+                            <th:block th:if="${wishList.size() == 0}">
+                                <span th:class="${active} ? 'active' : ''" th:onclick="'javascript:toggleActive(this)'"
                                   th:attr="data-product=${item.productId},data-url=@{${item.categoryDTO.categoryId}}">하트</span>
+                            </th:block>
+                            <th:block th:if="${wishList.size() != 0}">
+                                <th:block th:each="wish,i : ${wishList}">
+                                 <span th:if="${wish != null}" th:class="${wish.productDTO.productId} == ${item.productId} ? 'active' : ''" th:onclick="'javascript:toggleActive(this)'"
+                                       th:attr="data-product=${item.productId},data-url=@{${item.categoryDTO.categoryId}}">하트</span>
+                                </th:block>
+                            </th:block>
+                        </th:block>
+                        <th:block th:if="${loginId == null}">
+                            <span th:onclick="'javascript:toggleNoActive()'">하트</span>
                         </th:block>
 
-                        <th:block th:if="${wishList.size() != 0}">
-                             <th:block th:each="wish,i : ${wishList}">
-                                 <span th:if="${wish != null}" th:class="${wish.productDTO.productId} == ${item.productId} ? 'active' : ''" th:onclick="'javascript:toggleActive(this)'"
-                                 th:attr="data-product=${item.productId},data-url=@{/${category}}">하트</span>
-                             </th:block>
-                        </th:block>
                         <a th:href="@{product/{id}(id=${item.productId})}">
                             <img th:src="@{${item.getImage()}}">
                         </a>
@@ -48,48 +54,46 @@
         </div>
     </main>
 
-<!--    <script th:inline="javascript">
+   <script th:inline="javascript">
+
         function toggleActive(element) {
-            element.classList.toggle('active');
 
-            var product = parseInt(element.getAttribute('data-product'));
-            var url = window.location.href;
-            if(element.classList.contains('active')) {
-                window.location.href = 'u_wishList/'+product+ '?url='+url;
-            } else {
-                window.location.href = 'u_wishListDel/'+product+'?url='+url;
-            }
-        }
-    </script>-->
-    <script th:inline="javascript">
+            var url = element.getAttribute('data-url');
+            var loginId = /*[[${loginId}]]*/ null;
+            var productId = parseInt(element.getAttribute('data-product'));
 
-        // 페이지 리다이렉트하기
-        var url = span.getAttribute('data-url');
-        window.location.href = url;
-        var productId = parseInt(element.getAttribute('data-product'));
-
-        function toggleActive(span) {
-            if (span.classList.contains('active')) {
+            if (element.classList.contains('active')) {
+                      alert("if절에 들어옴"+productId);
                 $.ajax({
                     url: "/u_wishListDel/"+productId,
                     method: "GET",
-                    success: function() {
-                        span.classList.remove('active');
+                    data : {loginId: loginId,
+                            url : url
+                            },
+                }).done(function() {
+                        element.classList.remove('active');
                         alert("위시리스트에서 삭제하였습니다.");
-                        window.location.href = url;
-                    }
+                }).fail(function() {
+                        alert("위시리스트 삭제에 실패했습니다.");
                 });
             } else {
                 $.ajax({
-                        url: "/u_wishList/"+productId,
-                        method: "GET",
-                        success: function() {
-                            span.classList.add('active');
-                            alert("위시리스트에 추가하였습니다.");
-                            window.location.href = url;
-                        }
+                    url: "/u_wishList/"+productId,
+                    method: "GET",
+                    data : {loginId: loginId,
+                            url : url
+                            },
+                }).done(function() {
+                           element.classList.add('active');
+                           alert("위시리스트에 추가하였습니다.");
+                }).fail(function() {
+                        alert("위시리스트 추가에 실패했습니다.");
                 });
             }
+        }
+
+        function toggleNoActive() {
+            alert("로그인 후 이용해주세요");
         }
     </script>
 </body>

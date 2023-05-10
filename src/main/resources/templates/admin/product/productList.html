@@ -21,8 +21,16 @@
                 <a th:href="@{a_product(sort='etc')}" th:text="etc" th:class="${status == 'etc'} ? 'active' : '' "></a>
         </div>
 
-        <form id="deleteProduct" method="post" th:action="@{a_deleteProduct}">
+        <form id="deleteProduct" th:action="@{a_product_del}" method="post" >
             <table class="list">
+                <colgroup>
+                    <col class="col1">
+                    <col class="col2">
+                    <col class="col3">
+                    <col class="col4">
+                    <col class="col5">
+                    <col class="col6">
+                </colgroup>
                 <thead>
                 <tr>
                     <th>
@@ -66,6 +74,7 @@
             </table>
         </form>
     </section>
+
     <script th:inline="javascript">
         $(document).ready(function() {
             $('#selectAll').click(function() {

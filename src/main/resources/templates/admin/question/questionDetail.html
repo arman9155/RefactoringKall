@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>1:1 문의 디테일</title>
+    <script type="text/javascript" th:src="@{myLib/jquery-3.2.1.min.js}"></script>
+    <link th:href="@{css/admin/detail.css}" rel="stylesheet">
+    <script th:inline="javascript">
+
+        function closeWindow() {
+            window.opener.parent.location.reload();
+            window.close();
+        }
+
+        $(document).ready(function () {
+            $('a.openForm').click( function() {
+                $('tr.commentF').toggle('fast');
+               if($('.originalF').css('display') == 'table-row') {
+                    $('.originalF').css('display', 'none');
+               } else {
+                $('.originalF').css('display', 'table-row');
+               }
+            });
+        });
+
+        function inputChange(button) {
+        alert("function");
+            var textarea = document.querySelector('.change');
+            textarea.removeAttribute('readonly');
+            button.style.display='none';
+            document.querySelector('.inputComment').value='';
+            document.querySelector('.completeComment').style.display='inline-block';
+        }
+
+    function submitForm() {
+
+         const form = document.createElement('form');
+         form.method = 'POST';
+         form.action = '/deleteUsQ';
+
+         const id = document.querySelector('.usqId');
+         const input = document.createElement('input');
+         input.type = 'hidden';
+         input.name = 'questionId';
+         input.value = id.value;
+         form.appendChild(input);
+
+         const input2 = document.createElement('input');
+         input2.type = 'hidden';
+         input2.name = 'page';
+         input2.value = 'detail';
+         form.appendChild(input2);
+
+         document.body.appendChild(form);
+         form.submit();
+    }
+</script>
+</head>
+  <body>
+        <h3 class="underline">1:1 문의 디테일</h3>
+
+        <form th:action="@{question_comment(questionId=${question.usqId})}" th:method="post" th:object="${question}">
+            <table class="question_detail">
+              <tbody>
+                <tr>
+                  <th><label>번호</label></th>
+                  <td><input class="usqId" type="text" th:field="*{usqId}" readonly></td>
+                </tr>
+                <tr>
+                    <th><label>아이디</label></th>
+                    <td><input type="text" th:field="*{userDTO.userId}" readonly></td>
+                </tr>
+                <tr>
+                  <th><label >카테고리</label></th>
+                  <td><input type="text" th:field="*{categoryDTO.categoryName}" readonly>
+                      <input type="hidden" th:field="*{categoryDTO.categoryId}">
+                  </td>
+                </tr>
+                <tr>
+                  <th><label>제목</label></th>
+                    <td><input type="text" th:field="*{title}" readonly></td>
+                </tr>
+                <tr>
+                    <th><label>내용</label></th>
+                    <td><textarea rows="10" th:field="*{content}" readonly></textarea></td>
+                </tr>
+                <tr class="originalF">
+                    <th><label>답변</label></th>
+                    <td>
+                         <th:block th:if="*{comment != null}">
+                            <textarea class="change" rows="10" th:field="*{comment}" readonly></textarea>
+                            <button type="button" class="changeComment" onclick="inputChange(this)">답변 수정</button>
+                            <button class="completeComment">완료</button>
+                         </th:block>
+
+                    </td>
+                </tr>
+                <tr class="commentF">
+                    <th>답변 입력</th>
+                    <td>
+                        <textarea class="inputComment" rows="10" th:field="*{comment}">답변 : </textarea>
+                        <button>완료</button>
+                    </td>
+                </tr>
+              </tbody>
+            </table>
+        </form>
+
+        <div class="buttons">
+          <a class="openForm">답변</a>
+<!--          <a th:href="@{deleteUsQ(questionId=${question.usqId}, page='detail')}">삭제</a>-->
+            <a href="#" onclick="submitForm()" >삭제</a>
+          <a onclick="closeWindow();">닫기</a>
+        </div>
+
+  </body>
+
+</html>

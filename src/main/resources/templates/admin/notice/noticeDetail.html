@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>공지사항 디테일</title>
+    <script type="text/javascript" th:src="@{myLib/jquery-3.2.1.min.js}"></script>
+    <link th:href="@{css/admin/detail.css}" rel="stylesheet">
+    <script th:inline="javascript">
+        function closeWindow() {
+            window.opener.parent.location.reload();
+            window.close();
+        }
+
+        function submitForm() {
+
+             const form = document.createElement('form');
+             form.method = 'POST';
+             form.action = '/notice_Del';
+
+             const id = document.querySelector('.noticeId');
+             const input = document.createElement('input');
+             input.type = 'hidden';
+             input.name = 'noticeId';
+             input.value = id.value;
+             form.appendChild(input);
+
+             const input2 = document.createElement('input');
+             input2.type = 'hidden';
+             input2.name = 'page';
+             input2.value = 'detail';
+             form.appendChild(input2);
+
+             document.body.appendChild(form);
+             form.submit();
+        }
+</script>
+</head>
+  <body>
+        <h3 class="underline">공지사항 디테일</h3>
+
+        <table class="notice_detail">
+          <tbody>
+            <tr>
+              <th><label>번호</label></th>
+              <td><input type="text" class="noticeId" th:value="${noticeList.noticeId}" readonly></td>
+            </tr>
+            <tr>
+              <th><label >카테고리</label></th>
+              <td th:text="${noticeList.categoryDTO.categoryId}"></td>
+            </tr>
+            <tr>
+              <th><label>제목</label></th>
+                <td th:text="${noticeList.title}"></td>
+            </tr>
+            <tr>
+                <th><label>내용</label></th>
+                <td th:text="${noticeList.content}"></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="buttons">
+          <a th:href="@{notice_change(noticeId=${noticeList.noticeId})}" id="change">수정</a>
+          <a href="#" onclick="submitForm();">삭제</a>
+          <a onclick="closeWindow();">닫기</a>
+        </div>
+
+  </body>
+</html>

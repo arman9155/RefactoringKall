@@ -7,7 +7,7 @@
     <link th:href="@{css/mypage/addressDetail.css}" rel="stylesheet">
 </head>
 <body>
-  <form th:action="@{u_address_change}" method="post" th:object="${usAddressDTO}">
+  <form th:action="@{u_address_change(addressId=${addressId})}" method="post" th:object="${usAddressDTO}">
 
       <h3 class="underline">배송지 수정</h3>
 

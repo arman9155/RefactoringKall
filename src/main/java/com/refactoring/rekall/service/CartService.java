@@ -5,17 +5,19 @@ import com.refactoring.rekall.dto.UserDTO;
 import com.refactoring.rekall.entity.CartEntity;
 import com.refactoring.rekall.repository.CartRepository;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
+@Service
 @Transactional
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CartService {
 
     @Autowired

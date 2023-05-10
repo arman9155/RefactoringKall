@@ -16,5 +16,5 @@ public interface WishListRepository extends JpaRepository<WishListEntity, Intege
 
 
     @Query("Select w.wishlistId from WishListEntity w join w.productEntity p join w.userEntity u where p.productId =(:productId) and u.userId = (:userId)")
-    Object findWishListId(@Param("productId") Integer productId, @Param("userId") String userId);
+    Integer findWishListId(@Param("productId") Integer productId, @Param("userId") String userId);
 }

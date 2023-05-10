@@ -54,17 +54,11 @@ public class ProductService {
         int i = 0;
         for(ProductDTO productDTO : productDTOList) { //각 상품카테고리별 상품 돌리고
             String[] tags = findtags(productDTO); // detail에 상품 각 태그 뽑을 때 만든 method
-            System.out.println("프로덕트 들어옴" + productDTO.getProductId());
-            System.out.println("태그"+tags[1]);
             for(String tag : tagList) { // 넘기려는 tag List
-                System.out.println("태그1 for문"+tag);  //--> 여기부터 안찍힘
                 for(String tagItem : tags) { //받아온 tags
-                    System.out.println("태그2 for문"+tagItem);
                     if (!tagItem.equals(tag)) { // 받아온 값이 tagList에 없을 때 저장
                         tagList.add(tagItem);
-                        System.out.println("tagItem" + tagItem);
                     }
-                    System.out.println("tagItem밖" + tagItem);
                 }
             }
         }
@@ -168,15 +162,22 @@ public class ProductService {
     }
 
 //   ★ 상품관리 _ 추가 기능 ★ -----------------------------------------------------------------
-    public void productAdd(ProductDTO productDTO, MultipartFile imgFile) throws Exception {
+    public Integer productAdd(ProductDTO productDTO, MultipartFile imgFile, String sort) throws Exception {
 
         if(imgFile != null && !imgFile.isEmpty()) {
             String imgPath = saveImg(productDTO.getCategoryDTO().getCategoryId(), productDTO.getName(), productDTO.getProductId(), imgFile);
             productDTO.setImage(imgPath);
-            saveDTO(productDTO);
-        } else {
-            saveDTO(productDTO);
         }
+        saveDTO(productDTO);
+        if(sort == "a") {
+            return findProductId(productDTO);
+        }
+
+        return productDTO.getProductId();
+    }
+//   ★ 상품관리 _ 상품 날짜로 productId 찾기 ★ -----------------------------------------------------------------
+    public Integer findProductId(ProductDTO productDTO) {
+        return productRepository.findByNameAndDate(productDTO.getName());
     }
 
 // 사진저장 기능 -> 사진 여러개면 이거 for문으로 돌려서 받아라..
@@ -204,6 +205,15 @@ public class ProductService {
          return "";
     }
 
+//   ★ 상품관리 _ 삭제 기능 ★ -----------------------------------------------------------------
 
-
+    public void productDel(List<Integer> productIds, Integer productId) {
+        if(productId == 0) {
+            for(Integer Id : productIds) {
+                productRepository.deleteById(Id);
+            }
+        } else {
+            productRepository.deleteById(productId);
+        }
+    }
 }

@@ -75,7 +75,8 @@ section .toggle_Q .notice_content{
   text-align: left;
 }
 
-section .toggle_A {
+section .toggle_A,
+section .toggle_C {
   display: none;
   text-align: justify;
   word-break: break-all;

@@ -57,7 +57,7 @@
         </table>
         <div class="buttons">
           <a th:href="@{a_product_change(productId=${productDTO.productId})}" id="change">수정</a>
-          <a th:href="@{a_product_del(popup=${productDTO.productId})}">삭제</a>
+          <a th:href="@{a_product_del(productId=${productDTO.productId})}">삭제</a>
           <a onclick="window.close();">닫기</a>
         </div>
   </body>

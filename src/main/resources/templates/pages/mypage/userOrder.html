@@ -8,17 +8,17 @@
   <link th:href="@{css/mypage/address.css}" rel="stylesheet">
   <script type="text/javascript" th:src="@{myLib/jquery-3.2.1.min.js}"></script>
   <meta charset="UTF-8">
-  <title>배송지 관리</title>
+  <title>주문•배송 관리</title>
 </head>
 <body>
   <section class="content">
-    <h3 class="underline">배송지 관리</h3>
-    <form id="default_address" method="post" th:action="@{u_default_address}">
-      <table class="address list">
+    <h3 class="underline">주문•배송 관리</h3>
+    <form id="delete_order" method="post" th:action="@{u_delete_order}">
+      <table class="order list">
         <thead>
           <tr>
-            <th>기본배송지</th>
-            <th>배송지명</th>
+            <th>전체선택</th>
+            <th></th>
             <th>우편번호</th>
             <th>주소</th>
           </tr>
@@ -66,5 +66,4 @@
       </table>
     </form>
   </section>
-</body>
 </html>
