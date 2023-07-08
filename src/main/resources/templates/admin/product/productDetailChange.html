@@ -5,6 +5,29 @@
     <meta charset="UTF-8">
     <title>상품 정보 수정</title>
     <link th:href="@{css/admin/detail.css}" rel="stylesheet">
+    <script>
+    // 첨부파일명 / 사진 미리보기
+        function loadFile(input) {
+            var container = document.querySelector('.main_image');
+            container.innerHTML = "";
+
+            if(input.files[0]) {
+                var file = input.files[0];
+                var name = document.querySelector('.upload_name');
+                name.value = file.name;
+
+                var newImage = document.createElement("img");
+                newImage.setAttribute("class","img");
+                newImage.src = URL.createObjectURL(file);
+                container.appendChild(newImage);
+            }
+        }
+
+        function windowClose() {
+            window.opener.parent.location.reload();
+            window.close();
+        }
+    </script>
 </head>
   <body>
         <h3 class="underline">상품 정보 수정</h3>
@@ -66,10 +89,15 @@
                 </tr>
                 <tr>
                     <th><label>메인이미지</label></th>
-                    <td>
-                        <img class="main_image" th:src="@{${productDTO.getImage()}}">
-                        <input display="none" th:field="*{image}" value="*{image}">
-                        <input type="file" id="imgFile" name="imgFile" class="img_file">
+                    <td class="file">
+                        <div class="main_image">
+                            <img th:src="@{${productDTO.getImage()}}">
+                        </div>
+                        <div class="file_upload">
+                            <input class="upload_name" placeholder="파일명"  readonly>
+                            <label for="imgFile">파일 첨부</label>
+                            <input type="file" name="imgFile" id="imgFile" accept="image/*" onchange="loadFile(this)" >
+                        </div>
                     </td>
                 </tr>
                 <tr>
@@ -82,7 +110,7 @@
             </table>
             <div class="buttons">
                 <button>완료</button>
-                <a onclick="window.close();">닫기</a>
+                <a onclick="windowClose();">닫기</a>
             </div>
         </form>
   </body>

@@ -2,16 +2,311 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{common/layouts/listLayout}"
-      layout:fragment="Content">
+      layout:decorate="~{common/layouts/listLayout}">
+ <!--     layout:fragment="Content">-->
 <head>
     <meta charset="UTF-8">
     <link th:href="@{/css/product/detail.css}" rel="stylesheet">
     <script type="text/javascript" th:src="@{/myLib/jquery-3.2.1.min.js}"></script>
     <script src="https://kit.fontawesome.com/57290c96a5.js" crossorigin="anonymous"></script>
+
+    <script th:inline="javascript">
+
+        // 로그인 없이  wishList 클릭 -> OK
+         function toggleNoActive() {
+             alert("로그인 후 이용해주세요");
+         }
+
+        // wishList -> OK
+        function toggleActive(element) {
+
+            var url = element.getAttribute('data-url');
+            var loginId = /*[[${loginId}]]*/ null;
+            var userRole = /*[[${userRole}]]*/ null;
+            alert(loginId);
+            var productId = parseInt(element.getAttribute('data-product'));
+
+            if(element.classList.contains('active')) {
+                $.ajax({
+                    url: "/u_wishListDel/"+productId,
+                    method: "GET",
+                    data : {loginId: loginId,
+                            url : url,
+                            userRole: userRole,
+                            },
+                }).done(function() {
+                        element.classList.remove('active');
+                        alert("위시리스트에서 삭제하였습니다.");
+                }).fail(function() {
+                        alert("위시리스트 삭제에 실패했습니다.");
+                });
+            } else {
+                $.ajax({
+                    url: "/u_wishList/"+productId,
+                    method: "GET",
+                    data : {loginId: loginId,
+                            url : url,
+                            userRole: userRole,
+                            },
+                }).done(function() {
+                           element.classList.add('active');
+                           alert("위시리스트에 추가하였습니다.");
+                }).fail(function() {
+                        alert("위시리스트 추가에 실패했습니다.");
+                });
+            }
+        }
+    </script>
+    <script th:inline="javascript">
+    // 선택완료 시 값
+        const itemList = [];
+        var formData = new FormData();
+
+        let index = 0;
+//-----선택완료 ---------------------------------------------------------------------------------------------------------
+        function infoCheck() {
+            const price = document.querySelector('.price').textContent.replace('원', '');
+            const sheet = document.querySelector('input[name="sheet"]:checked + label').textContent;
+            const shape = document.querySelector('input[name="shape"]:checked + label').textContent;
+            const cream = document.querySelector('input[name="color"]:checked + label').textContent;
+            let img = document.querySelector('.upload_name').value;
+            let lettering = document.getElementById('lettering').value;
+            let request = document.getElementById('request').value;
+            let count = /*[[${productDTO.amount}]]*/ null;
+
+            if(lettering == "") lettering = "";
+            if(request == "") request = "";
+            if(img == "") img = "";
+
+            alert("가져오기");
+
+            const item = {
+                price : price,
+                option_sheet : sheet,
+                option_shape : shape,
+                option_cream : cream,
+                option_lettering : lettering,
+                request : request,
+                option_image : img,
+                amount : count
+            };
+
+            itemList.push(item);
+
+            alert("item push");
+
+            //선택한 것들 틀에 넣기
+            const list = document.createElement('div');
+            list.classList.add('item');
+            list.setAttribute('data-index', index);
+            list.innerHTML = `
+              <table class='item_detail'>
+                <tr>
+                    <th colspan='2' class='item_price'>${price} 원</th>
+                </tr>
+                <tr>
+                    <th>옵션</th>
+                    <td class='item_option'>${sheet}  |  ${shape} | ${cream}</td>
+                </tr>
+              </table>`;
+            if(lettering !== '') {
+                list.innerHTML += `
+              <table class='item_detail'>
+                <tr th:if='${lettering != ''}'>
+                    <th>레터링</th>
+                    <td class='item_option'>${lettering}</td>
+                </tr>
+              </table>
+                `;
+            }
+            if(img !== '') {
+                list.innerHTML += `
+                <table class='item_detail'>
+                <tr th:if='${name != ''}'>
+                    <th>첨부사진</th>
+                    <td class='item_option'>${img}</td>
+                </tr>
+                </table>`;
+            }
+            if(request !== '') {
+                list.innerHTML += `
+                 <table class='item_detail'>
+                 <tr th:if='${request != ''}'>
+                    <th>추가 요청사항</th>
+                    <td class='item_option'>${request}</td>
+                </tr>
+                </table>`;
+            }
+            list.innerHTML += `
+            <table class='item_detail'>
+                <tr>
+                    <th>수량</th>
+                    <td class='countBtn'>
+                        <input type='button' onclick='count("minus")' value='-'/>
+                        <span id='amount'>1</span>
+                        <input type='button' onclick='count("plus")' value='+'/>
+                    </td>
+                </tr>
+            </table>
+            <button type="button" onclick="deleteItem(event)">삭제</button>
+            `;
+
+            const itemsContainer = document.querySelector('.items');
+            itemsContainer.appendChild(list);
+
+            alert(img);
+
+               // 사진 관련 처리
+              if(img != "") {
+                saveImg();
+                $('.file_image').empty();
+                img.value = '';
+              }
+
+            index++;
+
+            // 기본값 설정해야되넹 --> ok
+            document.querySelector('#sheet1').checked = true;
+            document.querySelector('#shape1').checked = true;
+            document.querySelector('#color1').checked = true;
+            document.getElementById('lettering').value = '';
+            document.getElementById('request').value = '';
+
+                //선택된 상품
+            countItem();
+        }
+
+ //-----선택된 상품 갯수 --------------------------------------------------------------------------------------------------
+        function countItem() {
+            const itemsContainer = document.querySelector('.items');
+            const selectedItemsCount = itemsContainer.children.length;
+            document.querySelector('.selected-item span').textContent = selectedItemsCount;
+        }
+
+//------사진 저장  ------------------------------------------------------------------------------------------------------
+        function saveImg() {
+            var imgFile = document.querySelector('#file');
+            var files = imgFile.files;
+            formData.append('photos[]', files[index]);
+        }
+
+
+//------값 +/- count 하는   ---------------------------------------------------------------------------------------------
+        function count(type)  {
+          const resultElement = document.getElementById('amount');
+
+          var number = resultElement.innerText;
+          var count = /*[[${productDTO.amount}]]*/ null;
+
+          // 더하기/빼기 -> ok
+          if(type === "plus") {
+            if(number == count)
+                alert("추가할 수 없습니다.");
+            else
+                number = parseInt(number) + 1;
+          } else if(type === "minus")  {
+            if(number == 1)
+                alert("최소값은 1개 입니다.");
+            else
+                number = parseInt(number) - 1;
+          }
+
+
+          // 결과 출력
+          resultElement.innerText = number;
+        }
+
+
+//------첨부파일명 / 사진 미리보기 -----------------------------------------------------------------------------------------
+        function loadFile(input) {
+            var container = document.querySelector('.file_image');
+            container.innerHTML = "";
+
+            if(input.files && input.files[0]) {
+                var names = [];
+                for(let i = 0; i < input.files.length; i ++ ) {
+                    var file = input.files[i];
+                    names.push(file.name);
+
+                    var newImage = document.createElement("img");
+                    newImage.setAttribute("class","img");
+                    newImage.src = URL.createObjectURL(file);
+
+                    container.appendChild(newImage);
+                }
+                var name = document.querySelector('.upload_name');
+                name.value = names.join(`  /  `);
+            }
+        }
+
+//------선택 삭제 -------------------------------------------------------------------------------------------------------
+        function deleteItem(event) {
+            const item = event.target.parentNode;
+            const i = item.getAttribute('data-index');
+
+            item.remove();
+            itemList.splice(index, i);
+            //itemList에서도 remove해야함.
+
+            //저장 사진 삭제
+            formData.delete('photos[]', files[index]);
+
+            //선택된 상품 수정
+            countItem();
+
+        }
+
+//------장바구니 / 구매 --------------------------------------------------------------------------------------------------
+        function intoOrder(element) {
+            var loginId = /*[[${loginId}]]*/ null;
+            var userRole = /*[[${userRole}]]*/ null;
+            var sort = element.getAttribute('data-element');
+            var productId = element.getAttribute('data-product');
+            const dto = [];
+            alert(loginId);
+            alert(userRole);
+            alert(sort);
+
+            for(let i = 0 ; i < itemList.length; i++) {
+                const {price, sheet, shape, cream, lettering, request, img, count} = itemList[i];
+                const item = {
+                        price : price,
+                        option_sheet : sheet,
+                        option_shape : shape,
+                        option_cream : cream,
+                        option_lettering : lettering,
+                        request : request,
+                        option_image : img,
+                        amount : count
+                };
+                dto.push(item);
+            }
+
+            // 사진 처리
+
+            $.ajax({
+                    url: sort === "cart"? "/cart/"+loginId : "/order/"+loginId,
+                    method: "POST",
+                    data : {loginId: loginId,
+                            userRole: userRole,
+                            DTO : dto,
+                            files : formData,
+                            productId : productId
+                            },
+                    contentType:false,
+                    processData:false,
+                }).done(function() {
+                        if(element.equals("cart")) alert("장바구니에 추가되었습니다.");
+                        else alert("주문페이지로 이동합니다.");
+                }).fail(function() {
+                        alert("다시시도해주세요");
+            });
+        }
+</script>
+
     <title>[[${productName}]]</title>
 </head>
-<body>
+<body layout:fragment="Content">
     <main>
         <div class="product_detail">
 
@@ -37,7 +332,7 @@
                             <div class="icons">
                                 <th:block th:if="${loginId != null}">
                                     <span th:class="${wish} ? 'heart active' : 'heart'" th:onclick="'javascript:toggleActive(this)'"
-                                          th:attr="data-product=${productDTO.productId},data-url=@{product/{productId}}">하트</span>
+                                          th:attr="data-product=${productDTO.productId},data-url=@{/product/{productId}}">하트</span>
                                 </th:block>
                                 <th:block th:if="${loginId == null}">
                                     <span class="heart" th:onclick="'javascript:toggleNoActive()'">하트</span>
@@ -163,10 +458,12 @@
                                     <th colspan="2"> 이미지 업로드</th>
                                 </tr>
                                 <tr>
-                                    <td colspan="2" class="file_upload">
-                                        <input type="file" name="image" id="image" accept="image/*" hidden>
-                                        <input type="text" readonly class="upload">
-                                        <label for="image">파일 찾기</label>
+                                    <td colspan="2">
+                                        <div class="file_upload">
+                                            <input class="upload_name" placeholder="선택 시 1개 첨부 가능"  readonly>
+                                            <label for="file">파일 첨부</label>
+                                            <input type="file" name="files" id="file" accept="image/*"  multiple onchange="loadFile(this)">
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr>
@@ -180,17 +477,22 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="file_image"></div>
                     <div class="complete">
-                        <button onclick="infoCheck()">선택 완료</button>
+                        <button onclick="infoCheck();">선택 완료</button>
                     </div>
 
 
-                    <p class="seleted-item">선택된 상품 총 <span>0</span>개</p>
-                    <div class="items"> </div>
+                    <h4 class="selected-item">선택된 상품 총 <span>0</span>개</h4>
+
+                    <div class="items">
+
+                    </div>
+
 
                     <div class="buttons">
-                        <button>장바구니</button>
-                        <button>구매</button>
+                        <button type="button" onclick="intoOrder(this);" th:attr="data-element='cart'">장바구니</button>
+                        <button type="buttton" onclick="intoOrder(this);" th:attr="data-element='order'">구매</button>
                     </div>
                 </div>
             </div>
@@ -440,14 +742,12 @@
                             </div>
                         </table>
 
-                        <form th:if="${loginId != null}" th:action="@{product_q/{id}(id=${productDTO.productId})}" method="post">
+                        <form th:if="${loginId != null}" th:action="@{/productQ/{id}(id=${productDTO.productId})}" method="post">
                             <th:block th:object="${productQDTO}">
-                                <div class="question_input">
-                                    <input class="q_input1" type="text" th:field="*{title}" placeholder="제목">
-                                    <input class="q_input2" type="text" th:field="*{content}" placeholder="문의글을 작성해주세요">
-                                </div>
-                                <div class="question-buttons">
-                                    <button>문의하기</button>
+                                <div class="productQ_input">
+                                    <input class="productQ" type="text" th:field="*{title}" placeholder="제목">
+                                    <textarea name="productQ" id="productQQ" rows="10" th:field="*{content}">문의글을 작성해주세요</textarea>
+                                    <button id="QBtn">문의하기</button>
                                 </div>
                             </th:block>
                         </form>
@@ -456,110 +756,5 @@
             </div>
         </div>
     </main>
-
-    <script th:inline="javascript">
-        function toggleNoActive() {
-            alert("로그인 후 이용해주세요");
-        }
-
-        function toggleActive(element) {
-
-            var url = element.getAttribute('data-url');
-            var loginId = /*[[${loginId}]]*/ null;
-            var userRole = /*[[${userRole}]]*/ null;
-            var productId = parseInt(element.getAttribute('data-product'));
-
-            if (element.classList.contains('active')) {
-                $.ajax({
-                    url: "/u_wishListDel/"+productId,
-                    method: "GET",
-                    data : {loginId: loginId,
-                            url : url,
-                            userRole: userRole,
-                            },
-                }).done(function() {
-                        element.classList.remove('active');
-                        alert("위시리스트에서 삭제하였습니다.");
-                }).fail(function() {
-                        alert("위시리스트 삭제에 실패했습니다.");
-                });
-            } else {
-                alert("url"+url);
-                $.ajax({
-                    url: "/u_wishList/"+productId,
-                    method: "GET",
-                    data : {loginId: loginId,
-                            url : url,
-                            userRole: userRole,
-                            },
-                }).done(function() {
-                           element.classList.add('active');
-                           alert("위시리스트에 추가하였습니다.");
-                }).fail(function() {
-                        alert("위시리스트 추가에 실패했습니다.");
-                });
-            }
-        }
-
-        function infoCheck() {
-            const price = document.querySelector('.price').textContent;
-            const sheet = document.querySelector('input[name="sheet"]:checked + label').textContent;
-            const shape = document.querySelector('input[name="shape"]:checked + label').textContent;
-            const cream = document.querySelector('input[name="color"]:checked + label').textContent;
-            var lettering = document.getElementById('lettering').value;
-            var request = document.getElementById('request').value;
-            var count = /*[[${productDTO.amount}]]*/ null;
-
-            if(lettering == "") lettering = "";
-            if(request == "") request = "";
-
-            const item = document.createElement('div');
-            item.classList.add('item');
-            item.innerHTML = `
-                <div class="item_price">${price} 원 </div>
-                <div class="item_option"> ${sheet}  |  ${shape} | ${cream}</div>
-                ${lettering ? `<div class="item_option"> 문구 : ${lettering} </div>` : ''}
-                ${request ? `<div class="item_option"> 요청사항 : ${request} </div>` : ''}
-                <input type='button' onclick='count("minus")' value='-'/>
-                <div id='amount'>1</div>
-                <input type='button' onclick='count("plus")' value='+'/>
-            `;
-
-            const itemsContainer = document.querySelector('.items');
-            itemsContainer.appendChild(item);
-
-            document.querySelector('input[name="sheet"]:checked').checked = false;
-            document.querySelector('input[name="shape"]:checked').checked = false;
-            document.querySelector('input[name="color"]:checked').checked = false;
-            document.getElementById('lettering').value = '';
-            document.getElementById('request').value = '';
-
-            const selectedItemsCount = itemsContainer.children.length;
-            document.querySelector('.seleted-item span').textContent = selectedItemsCount;
-        }
-
-        function count(type)  {
-          const resultElement = document.getElementById('amount');
-
-          var number = resultElement.innerText;
-          var count = /*[[${productDTO.amount}]]*/ null;
-
-          // 더하기/빼기
-          if(type === "plus") {
-            if(number == count)
-                alert("추가할 수 없습니다.");
-            else
-                number = parseInt(number) + 1;
-          } else if(type === "minus")  {
-            if(number == 1)
-                alert("최소값은 1개 입니다.");
-            else
-                number = parseInt(number) - 1;
-          }
-
-          // 결과 출력
-          resultElement.innerText = number;
-        }
-    </script>
 </body>
 </html>

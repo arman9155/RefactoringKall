@@ -11,7 +11,9 @@
     <title>wishList</title>
 </head>
 <body>
-    <main>
+    <main class="content">
+        <h3 class="underline">WISHLIST</h3>
+
         <div class="wrapper">
             <th:block th:each="item, i : ${wishList}">
                 <div class="custom" th:classappend="${i.index+1}">
@@ -54,6 +56,8 @@
                         alert("위시리스트에서 삭제하였습니다.");
             }).fail(function() {
                         alert("위시리스트 삭제에 실패했습니다.");
+            }).always(function() {
+                        location.reload();
             });
         }
     </script>

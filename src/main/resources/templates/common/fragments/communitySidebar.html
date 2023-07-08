@@ -5,16 +5,16 @@
 
 <head>
     <meta charset="UTF-8">
-    <link th:href="@{css/common/communitySidebar.css}" rel="stylesheet">
+    <link th:href="@{/css/common/communitySidebar.css}" rel="stylesheet">
 </head>
 <body>
     <aside>
         <ul>
-            <li><a th:href="@{notice(sort='notice')}">공지사항</a></li>
-            <li><a th:href="@{road}">찾아오시는 길</a></li>
-            <li><a th:href="@{notice(sort='faq')}">자주 묻는 질문</a></li>
-            <li><a th:href="@{question}">1:1 문의</a></li>
-            <li><a th:href="@{review}">구매후기</a></li>
+            <li><a th:href="@{/community/notice(sort='notice')}">공지사항</a></li>
+            <li><a th:href="@{/community/road}">찾아오시는 길</a></li>
+            <li><a th:href="@{/community/notice(sort='faq')}">자주 묻는 질문</a></li>
+            <li><a th:href="@{/community/question}">1:1 문의</a></li>
+            <li><a th:href="@{/community/review}">구매후기</a></li>
         </ul>
     </aside>
 </body>

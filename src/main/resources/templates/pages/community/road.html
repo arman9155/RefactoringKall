@@ -2,13 +2,13 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{common/layouts/communityLayout}"
+      layout:decorate="~{/common/layouts/communityLayout}"
       layout:fragment="Content">
 <head>
     <meta charset="UTF-8">
     <title>찾아 오시는 길</title>
     <script difer type="text/javascript" th:src="@{https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=dllgt4prde&callback=CALLBACK_FUNCTION}"></script>
-    <link th:href="@{css/community/road.css}" rel="stylesheet">
+    <link th:href="@{/css/community/road.css}" rel="stylesheet">
 </head>
 <body>
     <section class="content">
@@ -21,15 +21,15 @@
 
 
             <div class="visit-info">
-                <p><span>주소</span> 경기 성남시 분당구 돌마로 46 (광천빌딩 5층)</p>
-                <p><span>지하철</span> 신분당, 수인분당 / 미금역 6번출구, 약 112m</p>
-                <p><span>일반버스</span> 250, 310, 380, 700-2, 720-1</p>
-                <p><span>마을버스</span> 11, 14, 15, 16, 17(미금역-동천역), 32, 5(상현지구대,금호5단지-미금역,2001아울렛), 7(보바스기념병원-서울대병원)</p>
-                <p><span>직행버스</span> 1241</p>
-                <p><span>연락처</span> 031-712-7447</p>
+                <p><span>주소</span> 경기 성남시 분당구 동판교로 </p>
+                <p><span>지하철</span> 신분당 (판교역) / 수인분당 (야탑역) </p>
+                <p><span>일반버스</span> 390, 380, 350 </p>
+                <p><span>마을버스</span> 73-1, 73-1, 76, 602, 누리2호</p>
+                <p><span>연락처</span> 010-2222-2222</p>
             </div>
         </div>
     </section>
-    <script th:src="@{js/map_naver.js}"></script>
 </body>
+<script th:src="@{/js/map_naver.js}"></script>
+
 </html>

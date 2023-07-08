@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>배송지 수정</title>
+    <link th:href="@{css/mypage/addressDetail.css}" rel="stylesheet">
+    <script th:src="@{js/address/postCode.js}"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script>
+        function windowClose() {
+            window.opener.parent.location.reload();
+            window.close();
+        }
+    </script>
+</head>
+<body>
+  <form th:action="@{u_address_change(addressId=${addressId})}" method="post" th:object="${usAddressDTO}">
+
+      <h3 class="underline">배송지 수정</h3>
+
+      <table class="address_info">
+        <tbody>
+          <tr>
+            <th><label for="name">이름</label></th>
+            <td><input id="name" type="test" name="name" th:field="*{name}" th:value="*{name}"></td>
+          </tr>
+          <tr>
+            <th><label for="address_name">배송지명</label></th>
+            <td> <input id="address_name" type="text" name="address_name"  th:field="*{addressName}" th:value="*{addressName}"></td>
+          </tr>
+          <tr>
+            <th><label for="phone">전화번호</label></th>
+            <td id="phoneNb">
+              <input id="phone" type="text" name="phoneNb" th:field="*{phoneNb}" th:value="*{phoneNb}" minlength="11" maxlength="13"></td>
+          </tr>
+          <tr>
+              <th><label for="zip_code">우편번호</label></th>
+              <td class="zipCode">
+                  <input id="zip_code" type="text" name="zip_code" th:field="*{zipCode}" th:value="*{zipCode}">
+                  <input type="button" id="findZipCode" onclick="daumPostCode();" value="우편번호 찾기">
+              </td>
+          </tr>
+          <tr>
+            <th><label for="address_1">주소</label></th>
+            <td><input id="address_1" type="text" name="address_1" th:field="*{address_1}" th:value="*{address_1}"></td>
+          </tr>
+          <tr>
+            <th><label for="address_2">상세주소</label></th>
+            <td><input id="address_2" type="text" name="address_2" th:field="*{address_2}" th:value="*{address_2}"></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="buttons">
+        <button>수정완료</button>
+        <a onclick="windowClose();" th:href="@{u_address}">닫기</a>
+      </div>
+  </form>
+</body>
+</html>

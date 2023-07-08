@@ -10,10 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -24,11 +27,11 @@ public class UsQService {
     UsQRepository usQRepository;
     @Autowired
     UserService userService;
-
+    @Autowired
+    ImageService imageService;
 
     //  ---------------------------------- ★ 1:1 문의 저장★ ---------------------------------------------------------------
     public void saveQuestion(UsQDTO usQDTO) {
-        System.out.println("service : usqId "+usQDTO.getUsqId());
         if(usQDTO != null)
             usQRepository.save(UsQEntity.toUsQEntity(usQDTO));
     }
@@ -103,6 +106,30 @@ public class UsQService {
             }
         }
         return usQDTOList;
+    }
+//  --------------------- ★ 업로드 파일 처리★ ---------------------------------------------------------------
+
+    public UsQDTO file(UsQDTO usQDTO, MultipartFile[] files) throws Exception {
+        String id = "0";
+        if(usQRepository.findId() == null) id = "1";
+        else id = usQRepository.findId() + 1 + "";
+
+        String saveName = "";
+
+        if (files.length > 0) {
+            for (MultipartFile file : files) {
+                if (!file.isEmpty()) {
+                    saveName = imageService.saveImg(usQDTO.getCategoryDTO().getCategoryId(), usQDTO.getUserDTO().getUserId(), id, file);
+                    if (usQDTO.getImage1() == null) {
+                        usQDTO.setImage1(saveName);
+                    } else {
+                        usQDTO.setImage2(saveName);
+                    }
+                }
+            }
+        }
+
+        return usQDTO;
     }
 
 }

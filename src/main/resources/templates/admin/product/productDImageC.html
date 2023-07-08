@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>상품 상세 이미지 수정</title>
+    <link th:href="@{css/admin/detail.css}" rel="stylesheet">
+    <script>
+        function windowClose() {  //부모창 / 현재창 닫기
+            window.opener.parent.close();
+            window.close();
+        }
+
+    // 첨부파일명 / 사진 미리보기
+        function loadFile(input) {
+            var container = document.querySelector('.detail_image');
+            container.innerHTML = "";
+
+             if(input.files && input.files[0]) {
+                var names = [];
+                for(let i = 0; i < input.files.length; i ++ ) {
+                    var file = input.files[i];
+                    names.push(file.name);
+
+                    var newImage = document.createElement("img");
+                    newImage.setAttribute("class","img");
+                    newImage.src = URL.createObjectURL(file);
+
+                    container.appendChild(newImage);
+                }
+                var name = document.querySelector('.upload_name');
+                name.value = names.join(`  /  `);
+            }
+        }
+    </script>
+</head>
+  <body>
+        <h3 class="underline">상품 상세 이미지 수정</h3>
+
+        <div class="noImg">
+            <form th:action="@{a_product_DImageC}" th:method="post" th:object="${productImg}" enctype="multipart/form-data">
+                <input type="hidden" name="productId" th:value="${productId}">
+                <div class="detail_image"></div>
+
+                <div class="file_upload">
+                    <input class="upload_name" placeholder="첨부파일"  readonly>
+                    <label for="file">파일 첨부</label>
+                    <input type="file" name="files" id="file" accept="image/*"  multiple onchange="loadFile(this)">
+                </div>
+
+                <div class="buttons">
+                    <button>완료</button>
+                    <a onclick="windowClose();">닫기</a>
+                </div>
+            </form>
+        </div>
+  </body>
+</html>

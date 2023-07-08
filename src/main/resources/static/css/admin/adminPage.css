@@ -32,6 +32,7 @@ main {
 .admin_menu a {
     color: white;
     text-decoration : none;
+    font-weight : bold;
 }
 
 .admin_menu li {

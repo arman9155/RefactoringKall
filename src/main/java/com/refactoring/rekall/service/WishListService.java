@@ -43,9 +43,6 @@ public class WishListService {
 //  ------------------------------------- ★ wishList 저장★ ------------------------------------------------------------
     public void getWishList(Integer productId, String loginId) {
         WishListDTO wishListDTO = new WishListDTO();
-
-        System.out.println("get wishList loginId" + loginId);
-        System.out.println("productId"+productId);
         UserDTO userDTO = userService.findByUserID(loginId); // 회원정보 찾기
         ProductDTO productDTO = productService.findByProductId(productId); // 상품
 
@@ -65,7 +62,6 @@ public class WishListService {
              if(answer)
                  wishListRepository.save(WishListEntity.toWishListEntity(wishListDTO));
          } else { // null이면 저장바로 하면 됨
-             System.out.println("null");
              wishListDTO.setProductDTO(productDTO);
              wishListDTO.setUserDTO(userDTO);
              wishListRepository.save(WishListEntity.toWishListEntity(wishListDTO));
@@ -75,13 +71,8 @@ public class WishListService {
 //  ------------------------------------- ★ wishList 삭제★ ------------------------------------------------------------
     public void delWishList(Integer productId, String userId) {
 
-      System.out.println("delete" + productId+userId);
       Integer wishListId   = wishListRepository.findWishListId(productId, userId);
 
-      System.out.println("wishListId"+wishListId);
-      if(wishListId != null)
-        wishListRepository.deleteById(wishListId);
-      else
-          System.out.println("null");
+      if(wishListId != null) wishListRepository.deleteById(wishListId);
     }
 }

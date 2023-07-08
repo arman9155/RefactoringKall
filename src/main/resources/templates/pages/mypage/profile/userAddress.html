@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/mypageLayout}"
+      layout:fragment="Content">
+<head>
+  <link th:href="@{css/mypage/address.css}" rel="stylesheet">
+  <script type="text/javascript" th:src="@{myLib/jquery-3.2.1.min.js}"></script>
+  <meta charset="UTF-8">
+  <title>배송지 관리</title>
+</head>
+<body>
+  <section class="content">
+    <h3 class="underline">배송지 관리</h3>
+    <form id="default_address" method="post" th:action="@{u_default_address}">
+      <table class="address list">
+        <thead>
+          <tr>
+            <th>기본배송지</th>
+            <th>배송지명</th>
+            <th>우편번호</th>
+            <th>주소</th>
+          </tr>
+        </thead>
+
+        <tbody id="address">
+          <th:block th:each="address, i : ${addressList}">
+            <tr>
+              <td>
+                <th:block th:if="${address.status != '기본배송지'}">
+                  <input type="radio" name="addressId" th:id="'select'+${i.index}" th:value="${address.addressId}">
+                </th:block>
+                <th:block th:if="${address.status == '기본배송지'}">
+                  <div id="check"><span>체크</span></div>
+                </th:block>
+
+              </td>
+              <td>
+                <a th:href="@{u_address_detail(addressId=${address.addressId})}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=500,height=500'); return false;">
+                  <th:block th:if="${address.addressName == null}">
+                    [[${address.userDTO.userId}]]
+                  </th:block>
+                  <th:block th:if="${address.addressName != null}">
+                    [[${address.addressName}]]
+                  </th:block>
+                </a>
+              </td>
+              <td>[[${address.zipCode}]]</td>
+              <td>[[${address.address_1}]]
+                  <th:block th:if="${address.address_2 != null}">
+                    [[${address.address_2}]]
+                  </th:block>
+              </td>
+            </tr>
+
+            <div class="buttons">
+              <th:block th:if="${i.last}">
+                <button>기본 배송지로 설정</button>
+                <a th:href="@{u_address_add}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=500,height=500'); return false;">배송지 추가</a>
+                <a th:href="@{u_address_del(addressId=${address.addressId})}">삭제</a>
+              </th:block>
+            </div>
+          </th:block>
+          <th:block th:if="${addressList == null || addressList.size() == 0}">
+            <div class="buttons">
+              <a th:href="@{u_address_add}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=500,height=500'); return false;">배송지 추가</a>
+            </div>
+          </th:block>
+        </tbody>
+      </table>
+    </form>
+  </section>
+</body>
+</html>

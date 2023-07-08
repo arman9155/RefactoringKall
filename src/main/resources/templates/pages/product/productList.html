@@ -6,56 +6,10 @@
       layout:fragment="Content">
 <head>
     <meta charset="UTF-8">
-    <script type="text/javascript" th:src="@{myLib/jquery-3.2.1.min.js}"></script>
-    <link th:href="@{css/product/product.css}" rel="stylesheet">
-    <title th:text="${category}"></title>
-</head>
-<body>
-    <main>
-        <div class="top">
-            <div class="tags">
-                <th:block th:each="tag, i : ${tags}">
-                    <span class="tag" th:classappend="${i.index+1}" th:if="${i.index != 0}">
-                        <a href="#" th:utext="'#'+${tag.replace(',', ' ')}"></a>
-                    </span>
-                </th:block>
-            </div>
-        </div>
-        <div class="wrapper">
-            <th:block th:each="item,i : ${productList}">
-                <div class="custom" th:classappend="${i.index+1}">
-                    <div class="product_imgs">
-                        <th:block th:if="${loginId != null}">
-                            <th:block th:if="${wishList.size() == 0}">
-                                <span th:class="${active} ? 'active' : ''" th:onclick="'javascript:toggleActive(this)'"
-                                  th:attr="data-product=${item.productId},data-url=@{${item.categoryDTO.categoryId}}">하트</span>
-                            </th:block>
-                            <th:block th:if="${wishList.size() != 0}">
-                                <th:block th:each="wish,i : ${wishList}">
-                                 <span th:if="${wish != null}" th:class="${wish.productDTO.productId} == ${item.productId} ? 'active' : ''" th:onclick="'javascript:toggleActive(this)'"
-                                       th:attr="data-product=${item.productId},data-url=@{${item.categoryDTO.categoryId}}">하트</span>
-                                </th:block>
-                            </th:block>
-                        </th:block>
-                        <th:block th:if="${loginId == null}">
-                            <span th:onclick="'javascript:toggleNoActive()'">하트</span>
-                        </th:block>
+    <script type="text/javascript" th:src="@{/myLib/jquery-3.2.1.min.js}"></script>
+    <script th:inline="javascript">
 
-                        <a th:href="@{product/{id}(id=${item.productId})}">
-                            <img th:src="@{${item.getImage()}}">
-                        </a>
-                    </div>
-
-                    <a th:href="@{product/{id}(id=${item.productId})}">
-                          <h3 th:text="${item.name}"></h3><br>
-                    </a>
-                </div>
-            </th:block>
-        </div>
-    </main>
-
-   <script th:inline="javascript">
-
+        // WISHlIST -> Ok
         function toggleActive(element) {
 
             var url = element.getAttribute('data-url');
@@ -75,6 +29,9 @@
                         alert("위시리스트에서 삭제하였습니다.");
                 }).fail(function() {
                         alert("위시리스트 삭제에 실패했습니다.");
+                }).always(function() {
+                        location.reload();
+
                 });
             } else {
                 $.ajax({
@@ -88,6 +45,8 @@
                            alert("위시리스트에 추가하였습니다.");
                 }).fail(function() {
                         alert("위시리스트 추가에 실패했습니다.");
+                }).always(function() {
+                        location.reload();
                 });
             }
         }
@@ -95,6 +54,103 @@
         function toggleNoActive() {
             alert("로그인 후 이용해주세요");
         }
+
+
+    //태그 찾기 -> Nope
+
+        function labelClick(event) {
+
+              alert(event);
+
+              var label = event.target;
+              var checkboxId = label.getAttribute('for');
+              var checkbox = document.getElementById(checkboxId);
+              alert(checkboxId);
+              alert(checkbox);
+
+              checkbox.dispatchEvent(new Event('change'));
+        }
+
+
+     function findtag() {
+    var checkedTags = [];
+    var categoryName = /*[[${category}]]*/ null;
+
+    $('input[name=tags]:checked').each(function() {
+        checkedTags.push($(this).val());
+        console.log($(this).val());
+        console.log(checkedTags);
+    });
+
+    if (checkedTags.length > 0) {
+        alert("checked");
+        $.ajax({
+            url: "/u_tagList/",
+            method: "POST",
+            data : { tags: checkedTags,
+                     category: categoryName },
+        }).done(function() {
+            element.classList.add('active');
+            alert("검색 완료");
+        }).fail(function() {
+            alert("검색 실패");
+        }).always(function() {
+            location.reload();
+        });
+    } else {
+        console.log("checked 해제");
+    }
+}
+
     </script>
+    <link th:href="@{/css/product/product.css}" rel="stylesheet">
+    <title th:text="${category}"></title>
+</head>
+<body>
+    <main>
+        <div class="top">
+            <div class="tags">
+                <th:block th:each="tag, i : ${tags}">
+                    <div th:if="${i.index != 0}" class="tag">
+                        <input type="checkbox" name="tags" th:id="check+${i.index}" onchange="findtag();" th:value="${#strings.replace(tag, ',', '').trim()}">
+<!--                        <label th:for="check+${i.index}" onclick="findtag(event);" th:utext="${#strings.replace(tag, ',', '')}"></label>-->
+                                                <label th:for="check+${i.index}" onclick="labelClick(event);" th:utext="${#strings.replace(tag, ',', '')}"></label>
+
+                    </div>
+                </th:block>
+            </div>
+        </div>
+        <div class="wrapper">
+            <th:block th:each="item,i : ${productList}">
+                <div th:class="custom+${i.index+1}"><!-- th:classappend=""-->
+                    <div class="product_imgs">
+                        <th:block th:if="${loginId != null}">
+                            <th:block th:if="${wishList.size() == 0}">
+                                <span th:class="${active} ? 'active' : ''" th:onclick="'javascript:toggleActive(this)'"
+                                  th:attr="data-product=${item.productId},data-url=@{${item.categoryDTO.categoryId}}">하트</span>
+                            </th:block>
+                            <th:block th:if="${wishList.size() != 0}">
+                                <th:block th:each="wish,i : ${wishList}">
+                                 <span th:if="${wish != null}" th:class="${wish.productDTO.productId} == ${item.productId} ? 'active' : ''" th:onclick="'javascript:toggleActive(this)'"
+                                       th:attr="data-product=${item.productId},data-url=@{${item.categoryDTO.categoryId}}">하트</span>
+                                </th:block>
+                            </th:block>
+                        </th:block>
+                        <th:block th:if="${loginId == null}">
+                            <span th:onclick="'javascript:toggleNoActive()'">하트</span>
+                        </th:block>
+
+                        <a th:href="@{/product/{id}(id=${item.productId})}">
+                            <img th:src="@{${item.getImage()}}">
+                        </a>
+                    </div>
+
+                    <a th:href="@{/product/{id}(id=${item.productId})}">
+                          <h3 th:text="${item.name}"></h3><br>
+                    </a>
+                </div>
+            </th:block>
+        </div>
+    </main>
 </body>
 </html>

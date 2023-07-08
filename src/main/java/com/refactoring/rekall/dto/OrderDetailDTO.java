@@ -12,7 +12,6 @@ public class OrderDetailDTO {
     private Integer odetailId; // ▷▶ id _ 자동 count  _ 주문상세번호
 
     // -------- ▷▶   odetailId 가 외래키로 가져오는 DTO ----------------------------------------------
-    private OrderDTO orderDTO; // ▷▶ 주문번호
     private ProductDTO productDTO; // ▷▶ 상품번호
 // -------------------------------------------------------------------------------------------
 
@@ -25,6 +24,7 @@ public class OrderDetailDTO {
     private Integer amount;  // ▷▶ 개수
     private Integer price;  // ▷▶ 가격
     private String status;  // ▷▶ 상태 (반품안내칸)
+    private String request; // ▷▶ 요청사항
 
 // -------------- ▷▶ Entity -> DTO ---------------------------------------------------------
     public static OrderDetailDTO toOrderDeatilDTO(OrderDetailEntity orderDetailEntity) {
@@ -32,7 +32,6 @@ public class OrderDetailDTO {
         OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
 
         orderDetailDTO.setOdetailId(orderDetailEntity.getOdetailId());
-        orderDetailDTO.setOrderDTO(OrderDTO.toOrderDTO(orderDetailEntity.getOrderEntity()));
         orderDetailDTO.setProductDTO(ProductDTO.toProductDTO(orderDetailEntity.getProductEntity()));
         orderDetailDTO.setOption_sheet(orderDetailEntity.getOption_sheet());
         orderDetailDTO.setOption_shape(orderDetailEntity.getOption_shape());
@@ -43,6 +42,7 @@ public class OrderDetailDTO {
         orderDetailDTO.setAmount(orderDetailEntity.getAmount());
         orderDetailDTO.setPrice(orderDetailEntity.getPrice());
         orderDetailDTO.setStatus(orderDetailEntity.getStatus());
+        orderDetailDTO.setRequest(orderDetailEntity.getRequest());
 
         return orderDetailDTO;
     }

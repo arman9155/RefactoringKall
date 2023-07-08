@@ -11,18 +11,14 @@
         center:  new naver.maps.LatLng(37.404340, 127.116291),
         zoom: 17,
     });
-    
-    // var marker = new naver.maps.Marker ({
-    //     position: new naver.maps.LatLng(37.349733, 127.106970),
-    //     map:map
-    // });
+
     var markerOptions = {
         position: new naver.maps.LatLng(37.404340, 127.116291),
         map:map,
         icon: {
             content: [ '<div id="customoverlay">',
                         '<span class="title_map">',
-                            'KALL',
+                            'Bambi',
                         '</span>',
                     '</div>'].join(''),
             size: new naver.maps.Size(38,58),

@@ -24,15 +24,14 @@ public class OrderEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer orderId; // ▷▶ id _ 자동 count _ 주문번호
 
-// -------- ▷▶  orderId를 사용하는 Entity ----------------------------------------------
-    @OneToMany(mappedBy = "orderEntity", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<OrderDetailEntity> orderDetailEntities = new ArrayList<>();
 
 // -------- ▷▶  orderId 가 외래키로 가져오는 Entity ----------------------------------------------
     @JoinColumn(name = "userId")
     @ManyToOne
     private UserEntity userEntity; // ▷▶ 유저Id
+    @JoinColumn(name = "odetailId")
+    @ManyToOne
+    private OrderDetailEntity orderDetailEntity; // ▷▶ 유저Id
 // -------------------------------------------------------------------------------------------
 
     @Column(nullable = false, length = 10)
@@ -56,7 +55,7 @@ public class OrderEntity {
     @Column(nullable = false, length = 40)
     private String payment; //  ▷▶ 결제방식
     @Column(length = 40)
-    private String order_status = "결제완료"; //  ▷▶ 주문 처리 현황
+    private String status = "결제 완료"; //  ▷▶ 주문 처리 현황
     @Column(length = 8)
     private Integer mileage2=0; //  ▷▶ 적립 마일리지
 
@@ -72,6 +71,7 @@ public class OrderEntity {
 
         orderEntity.setOrderId(orderDTO.getOrderId());
         orderEntity.setUserEntity(UserEntity.toUserEntity(orderDTO.getUserDTO()));
+        orderEntity.setOrderDetailEntity(OrderDetailEntity.toOrderDetailEntity(orderDTO.getOrderDetailDTO()));
         orderEntity.setName(orderDTO.getName());
         orderEntity.setZip_code(orderDTO.getZip_code());
         orderEntity.setAddress_1(orderDTO.getAddress_1());
@@ -82,7 +82,7 @@ public class OrderEntity {
         orderEntity.setMileage(orderDTO.getMileage());
         orderEntity.setPrice(orderDTO.getPrice());
         orderEntity.setPayment(orderDTO.getPayment());
-        orderEntity.setOrder_status(orderDTO.getOrder_status());
+        orderEntity.setStatus(orderDTO.getStatus());
         orderEntity.setMileage2(orderDTO.getMileage2());
 
         return orderEntity;

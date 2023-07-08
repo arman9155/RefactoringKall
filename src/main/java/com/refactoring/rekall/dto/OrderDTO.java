@@ -22,6 +22,7 @@ public class OrderDTO {
 
 // -------- ▷▶  orderId 가 외래키로 가져오는 DTO ----------------------------------------------
     private UserDTO userDTO; // ▷▶ 유저Id
+    private OrderDetailDTO orderDetailDTO; // ▷▶ 주문상세번호
 // -------------------------------------------------------------------------------------------
 
     private String name; //  ▷▶ 수령자 이름
@@ -34,7 +35,7 @@ public class OrderDTO {
     private Integer mileage=0; //  ▷▶ 사용 마일리지
     private Integer price; //  ▷▶ 결제총액
     private String payment; //  ▷▶ 결제방식
-    private String order_status = "결제완료"; //  ▷▶ 주문 처리 현황
+    private String status = "결제 완료"; //  ▷▶ 주문 처리 현황
     private Integer mileage2=0; //  ▷▶ 적립 마일리지
 
 // -------------- ▷▶ Entity -> DTO ---------------------------------------------------------
@@ -44,6 +45,7 @@ public class OrderDTO {
 
         orderDTO.setOrderId(orderEntity.getOrderId());
         orderDTO.setUserDTO(UserDTO.toUserDTO(orderEntity.getUserEntity()));
+        orderDTO.setOrderDetailDTO(OrderDetailDTO.toOrderDeatilDTO(orderEntity.getOrderDetailEntity()));
         orderDTO.setName(orderEntity.getName());
         orderDTO.setZip_code(orderEntity.getZip_code());
         orderDTO.setAddress_1(orderEntity.getAddress_1());
@@ -54,7 +56,7 @@ public class OrderDTO {
         orderDTO.setMileage(orderEntity.getMileage());
         orderDTO.setPrice(orderEntity.getPrice());
         orderDTO.setPayment(orderEntity.getPayment());
-        orderDTO.setOrder_status(orderEntity.getOrder_status());
+        orderDTO.setStatus(orderEntity.getStatus());
         orderDTO.setMileage2(orderEntity.getMileage2());
 
         return orderDTO;

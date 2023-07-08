@@ -17,9 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 
 @Service
@@ -35,6 +33,8 @@ public class ProductService {
     ReviewRepository reviewRepository;
     @Autowired
     ProductQRepository productQRepository;
+    @Autowired
+    ImageService imageService;
 
 //  ------------------------------------- ★ Product List ★ ------------------------------------------------------------
     public List<ProductDTO> findAll() {
@@ -50,20 +50,48 @@ public class ProductService {
         return productDTOList;
     }
     public  List<String> findtaglist(List<ProductDTO> productDTOList) {
+
         List<String> tagList = new ArrayList<>();
-        int i = 0;
+
         for(ProductDTO productDTO : productDTOList) { //각 상품카테고리별 상품 돌리고
             String[] tags = findtags(productDTO); // detail에 상품 각 태그 뽑을 때 만든 method
-            for(String tag : tagList) { // 넘기려는 tag List
-                for(String tagItem : tags) { //받아온 tags
-                    if (!tagItem.equals(tag)) { // 받아온 값이 tagList에 없을 때 저장
-                        tagList.add(tagItem);
-                    }
+            List<String> tempList = new ArrayList<>(); // 임시 컬렉션 생성
+
+            for (String tagItem : tags) {
+                if (!tagList.contains(tagItem) && !tempList.contains(tagItem)) {
+                    tempList.add(tagItem); // tagList와 tempList에 뽑은 tag가 없을 때 tagList에 저장함
                 }
             }
+            tagList.addAll(tempList); // 임시 컬렉션의 모든 요소를 tagList에 추가
+
         }
         return tagList;
     }
+
+//  ★ 제품 리스트 뽑기_tag로★ ------------------------------------------------------------
+
+    public List<ProductDTO> findProductByTagList(String[] tags) {
+        List<ProductDTO> productDTOList = new ArrayList<>();
+
+        if(Arrays.stream(tags).count()>0) {
+            for(String tag : tags) {
+                if(tag != null) {
+                    productDTOList.add(findByTag(tag));
+                }
+            }
+        }
+        return productDTOList;
+    }
+
+//  -★ 제품 리스트 뽑기_tag로★ ------------------------------------------------------------
+    public ProductDTO findByTag(String tag) {
+        Optional<ProductEntity> OpProductEntity = productRepository.findByTag(tag);
+        ProductDTO productDTO = new ProductDTO();
+        if(OpProductEntity.isPresent()) productDTO = ProductDTO.toProductDTO(OpProductEntity.get());
+
+        return productDTO;
+    }
+
 
 //  ------------------------------------- ★ 제품 리스트 뽑기 기능 ★ ------------------------------------------------------------
     public List<ProductDTO> findById(String categoryId) {
@@ -86,6 +114,7 @@ public class ProductService {
     }
 //  -------------------------------------★ 태그 리스트 보내기 ★ ------------------------------------------------------------
     public String[] findtags(ProductDTO productDTO) {
+        System.out.println("findtags에 들어옴");
         String tag = productDTO.getTag();
         String[] tags = tag.split("#");
         return tags;
@@ -94,7 +123,7 @@ public class ProductService {
 //  -----------------------------------★ 상세이미지리스트 ★ ------------------------------------------------------------
 //  ★  상품상세사진★ ------------------------------------------------------------
     public List<ProductImgDTO> productImgList(Integer productId) {
-        List<ProductImgEntity> productImgEntityList = productImgRepository.findByProductEntityProductId(productId);
+        List<ProductImgEntity> productImgEntityList = productImgRepository.findimg(productId);
         List<ProductImgDTO> productImgDTOList = new ArrayList<>();
         for(ProductImgEntity productImgEntity : productImgEntityList) {
             if(productImgEntity != null) {
@@ -118,7 +147,7 @@ public class ProductService {
 
 //  ★ 문의리스트 ★ ------------------------------------------------------------
     public List<ProductQDTO> findproductQ(Integer productId) {
-        List<ProductQEntity> productQEntityList = productQRepository.findByProductEntityProductIdOrderByProductQIdDesc(productId);
+        List<ProductQEntity> productQEntityList = productQRepository.findByProductEntityProductIdOrderByProductqIdDesc(productId);
         List<ProductQDTO> productQDTOList = new ArrayList<>();
         for(ProductQEntity productQEntity : productQEntityList) {
             if(productQEntity != null) {
@@ -134,23 +163,33 @@ public class ProductService {
         List<ProductDTO> productDTOList = findAll();
         List<ProductDTO> productDTOS = new ArrayList<>(5);
 
-        for(int i = 0, j = 0, p = 0; ; i++) {
-            if(p ==5) break;
-            j = (int)(Math.random()*productDTOList.size());
-            if(productDTOList.get(j).getProductId() != productId) {
-                productDTOS.add(productDTOList.get(j));
-                p++;
+        if(productDTOList.size() > 5) {
+            for (int i = 0, j = 0, p = 0; ; i++) {
+                if (p == 5) break;
+                j = (int) (Math.random() * productDTOList.size());
+                if (productDTOList.get(j).getProductId() != productId) {
+                    productDTOS.add(productDTOList.get(j));
+                    p++;
+                }
             }
+            return productDTOS;
+        } else {
+            return productDTOS;
         }
-        return productDTOS;
     }
 
 
 //  ------------------------------------- ★ 관리자페이지 ★ -----------------------------------------------------------------
 //   ★ 상품관리 _ 리스트  ★ -----------------------------------------------------------------
     public List<ProductDTO> getList(String categoryId) {
-        if(categoryId.equals("all"))
-            return findAll();
+        if(categoryId.equals("all")) {
+            List<ProductEntity> productEntityList = productRepository.findAll();
+            List<ProductDTO> productDTOList = new ArrayList<>();
+            for (ProductEntity productEntity : productEntityList) {
+                if(productEntity != null) productDTOList.add(ProductDTO.toProductDTO(productEntity));
+            }
+            return productDTOList;
+        }
         else
             return findById(categoryId);
     }
@@ -163,51 +202,27 @@ public class ProductService {
 
 //   ★ 상품관리 _ 추가 기능 ★ -----------------------------------------------------------------
     public Integer productAdd(ProductDTO productDTO, MultipartFile imgFile, String sort) throws Exception {
+        String id = "0";
+        if(productRepository.findId() == null) id = "1";
+        else id = productRepository.findId() + 1 + "";
 
         if(imgFile != null && !imgFile.isEmpty()) {
-            String imgPath = saveImg(productDTO.getCategoryDTO().getCategoryId(), productDTO.getName(), productDTO.getProductId(), imgFile);
+            String imgPath = imageService.saveImg(productDTO.getCategoryDTO().getCategoryId(), productDTO.getName(), id, imgFile);
             productDTO.setImage(imgPath);
         }
         saveDTO(productDTO);
+
         if(sort == "a") {
-            return findProductId(productDTO);
+            return productRepository.findId();
         }
 
         return productDTO.getProductId();
     }
-//   ★ 상품관리 _ 상품 날짜로 productId 찾기 ★ -----------------------------------------------------------------
-    public Integer findProductId(ProductDTO productDTO) {
-        return productRepository.findByNameAndDate(productDTO.getName());
-    }
-
-// 사진저장 기능 -> 사진 여러개면 이거 for문으로 돌려서 받아라..
-    public String saveImg (String categoryId, String name, Integer Id, MultipartFile imgFile) throws Exception {
-
-         if(imgFile != null && !imgFile.isEmpty()) {
-             String oriImgName = imgFile.getOriginalFilename(); // 원본파일 이름
-
-             String projectPath = System.getProperty("user.dir") + "/src/main/resources/static/upImg/"+categoryId+"/"+Id+"/"; //경로
-                // UUID 를 이용하여 파일명 새로 생성
-                // UUID - 서로 다른 객체들을 구별하기 위한 클래스
-
-             UUID uuid = UUID.randomUUID(); // 난수 생성
-             String savedFileName = uuid + "_" + name + "_" + oriImgName;  //저장할 이름 완성
-
-             File saveFile = new File(projectPath, savedFileName);
-             if(!saveFile.exists())
-                 saveFile.mkdirs();
-
-             imgFile.transferTo(saveFile);
-
-             String saveName = "/upImg/"+categoryId+"/"+Id+"/"+savedFileName;
-             return saveName;
-         }
-         return "";
-    }
 
 //   ★ 상품관리 _ 삭제 기능 ★ -----------------------------------------------------------------
-
     public void productDel(List<Integer> productIds, Integer productId) {
+
+
         if(productId == 0) {
             for(Integer Id : productIds) {
                 productRepository.deleteById(Id);
@@ -215,5 +230,55 @@ public class ProductService {
         } else {
             productRepository.deleteById(productId);
         }
+    }
+//   ★ 상품관리 _ 상세이미지 저장 ★ -----------------------------------------------------------------
+    public void detailImage(ProductImgDTO productImgDTO, Integer productId, MultipartFile[] files) throws Exception {
+
+        productImgDTO.setProductDTO(findByProductId(productId)); //productDTO 찾아서 넣어주기
+
+        String id = "0";
+
+        if(productImgRepository.findId() == null) id = "1"; //id가 null -> Img 저장 첨인 경우
+        else id = productImgRepository.findId()+1+"";  // 기존 img가 있는                                                경우 최종 + 1 로 설정
+
+        String saveName = "";
+        String str = productImgDTO.getProductDTO().getName(); // imgId가 숫자인데 integer로 설정(고유번호 전달)
+
+        if(files != null) {
+            for(MultipartFile file : files) {
+                if(!file.isEmpty()) {
+                    saveName = imageService.saveImg(productImgDTO.getProductDTO().getCategoryDTO().getCategoryId(), str, id, file);
+                    productImgDTO.setImage(saveName);
+
+                    String name = saveName.split("_")[saveName.split("_").length-1];
+                    productImgDTO.setImageName(name);
+
+                    productImgRepository.save(ProductImgEntity.toProductImgEntity(productImgDTO));
+                }
+                id += 1;  //여러개인 경우 id가 고유번호니까 추가되야함
+            }
+        }
+    }
+
+//   ★ 상품관리 _ 상세이미지 수정 ★ -----------------------------------------------------------------
+//   ★ 상품관리 _ 상세이미지 삭제 ★
+    public void productDImageDel(Integer productId) {
+        List<ProductImgEntity> productImgEntityList = productImgRepository.findByProductEntityProductId(productId);
+        if(productImgEntityList != null) {
+            for(ProductImgEntity productImgEntity : productImgEntityList) {
+                if(productImgEntity != null) {
+                    productImgRepository.deleteById(productImgEntity.getProductimgId());
+                }
+            }
+        }
+    }
+//   ★ 상품관리 _ 상세이미지 삭제 - 저장★
+    public void productDImageC(ProductImgDTO productImgDTO, MultipartFile[] files, Integer productId) throws Exception {
+        productDImageDel(productId);
+        detailImage(productImgDTO, productId, files);
+    }
+
+    public ProductDTO getIDFromName(String name) {
+        return ProductDTO.toProductDTO(productRepository.findByName(name));
     }
 }

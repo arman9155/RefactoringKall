@@ -5,6 +5,31 @@
     <meta charset="UTF-8">
     <title>상품 정보</title>
     <link th:href="@{css/admin/detail.css}" rel="stylesheet">
+    <script>
+        //창 닫고 부모창 reload
+        function windowClose() {
+            window.opener.parent.location.reload();
+            window.close();
+        }
+
+        // Get -> Post 로 전달
+        function submitForm() {
+
+             const form = document.createElement('form');
+             form.method = 'POST';
+             form.action = '/a_product_del';
+
+             const id = document.querySelector('.productId');
+             const input = document.createElement('input');
+             input.type = 'hidden';
+             input.name = 'productId';
+             input.value = id.textContent;
+             form.appendChild(input);
+
+             document.body.appendChild(form);
+            form.submit();
+        }
+    </script>
 </head>
   <body>
         <h3 class="underline">상품 정보</h3>
@@ -13,7 +38,7 @@
           <tbody>
             <tr>
               <th><label>상품번호</label></th>
-              <td th:text="${productDTO.productId}"></td>
+              <td class="productId" th:text="${productDTO.productId}"></td>
             </tr>
             <tr>
               <th><label >카테고리</label></th>
@@ -57,8 +82,8 @@
         </table>
         <div class="buttons">
           <a th:href="@{a_product_change(productId=${productDTO.productId})}" id="change">수정</a>
-          <a th:href="@{a_product_del(productId=${productDTO.productId})}">삭제</a>
-          <a onclick="window.close();">닫기</a>
+          <a onclick="submitForm();">삭제</a>
+          <a onclick="windowClose();">닫기</a>
         </div>
   </body>
 </html>

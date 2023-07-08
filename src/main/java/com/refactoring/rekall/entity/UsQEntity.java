@@ -42,8 +42,13 @@ public class UsQEntity {
     private LocalDateTime date1 = LocalDateTime.now();  // ▷▶ 작성일
     @CreationTimestamp // 답글 - 생성-> 변경
     private LocalDateTime date2 = LocalDateTime.now(); // ▷▶ 답글 작성일
+    @Column(length=100)
+    private String image1;  // ▷▶ 첨부사진1
+    @Column(length=100)
+    private String image2;  // ▷▶ 첨부사진2
 
-// -------------- ▷▶ DTO -> Entity --------------------------------------------------------
+
+    // -------------- ▷▶ DTO -> Entity --------------------------------------------------------
     public static UsQEntity toUsQEntity(UsQDTO usQDTO) {
         if(usQDTO == null) return null;
         UsQEntity usQEntity = new UsQEntity();
@@ -56,6 +61,8 @@ public class UsQEntity {
         usQEntity.setComment(usQDTO.getComment());
         usQEntity.setDate1(usQDTO.getDate1());
         usQEntity.setDate2(LocalDateTime.now());
+        usQEntity.setImage1(usQDTO.getImage1());
+        usQEntity.setImage2(usQDTO.getImage2());
 
         return usQEntity;
     }

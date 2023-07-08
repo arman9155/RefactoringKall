@@ -1,5 +1,6 @@
 package com.refactoring.rekall.service;
 
+import com.refactoring.rekall.Auth;
 import com.refactoring.rekall.dto.UserDTO;
 import com.refactoring.rekall.dto.UserDelDTO;
 import com.refactoring.rekall.entity.UserDelEntity;
@@ -25,6 +26,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.refactoring.rekall.Auth.Role.ADMIN;
+import static com.refactoring.rekall.Auth.Role.USER;
+
 @Service
 @Transactional
 @AllArgsConstructor
@@ -38,15 +42,13 @@ public class UserService {
     //  ---------------------------- ★ 회원정보 저장 ★ -------------------------------------------------------------------------
     public String signUp(UserDTO userDTO) {
         if (userDTO.getPassword().contains("admin123")) {
-            userDTO.setRole("admin");
-        }
+            userDTO.setRole(ADMIN);
+        } else userDTO.setRole(USER);
         if (userDTO.getBirthday() == null || userDTO.getBirthday().equals("")) {
             userDTO.setBirthday(null);
-            System.out.println("여기null처리");
         } else {
             try {
                 userDTO.setBirthday((userDTO.getBirthday()));
-                System.out.println("date 저장하는거");
             } catch (DateTimeParseException e) {
                 // 유효한 날짜 형식이 아닌 경우 처리할 내용
                 System.out.println("exception");
@@ -57,20 +59,23 @@ public class UserService {
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));*/
 
         // password를 암호화 한 뒤 table에 저장
+
+//        System.out.println(userDTO.getRole());
         return userRepository.save(UserEntity.toUserEntity(userDTO)).getUserId();
     }
 
     //  ---------------------------- ★ id/pw 기반 회원 정보 찾기 ★ -------------------------------------------------------------------------
     public UserDTO findID(String userId, String password) {
+        System.out.println("findId 들어옴");
         UserEntity userEntity = userRepository.findByUserIdAndPassword(userId, password);
         if (userEntity == null) {
             return null;
-        }
-        return UserDTO.toUserDTO(userEntity);
+        } else return UserDTO.toUserDTO(userEntity);
     }
 
     //  ---------------------------- ★ id 기반 회원 정보 찾기 ★ -------------------------------------------------------------------------
     public UserDTO findByUserID(String userId) {
+        System.out.println("여기?");
         Optional<UserEntity> optionaluserEntity = userRepository.findByUserId(userId);
         if (optionaluserEntity.isPresent()) {
             UserEntity userEntity = optionaluserEntity.get();
@@ -120,5 +125,11 @@ public class UserService {
             userDelDTO.setText("관리자가 탈퇴처리함");
             deleteUser(userDelDTO , user);
         }
+    }
+
+    public String idDupC(String id) {
+        Optional<UserEntity> userEntity = userRepository.findByUserId(id);
+        if(userEntity.isEmpty()) return "T";
+        else return "F";
     }
 }

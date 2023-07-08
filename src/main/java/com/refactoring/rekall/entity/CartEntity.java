@@ -47,7 +47,7 @@ public class CartEntity {
 
 // ------------ ▷▶ 예비컬럼----------------------------------------------------------------------------
     @Column(length = 50)
-    private String tmp_1;
+    private String request;
     @Column(length = 50)
     private String tmp_2;
 
@@ -68,6 +68,7 @@ public class CartEntity {
         cartEntity.setOption_image(cartDTO.getOption_image());
         cartEntity.setAmount(cartDTO.getAmount());
         cartEntity.setPrice(cartDTO.getPrice());
+        cartEntity.setRequest(cartDTO.getRequest());
 
         return cartEntity;
     }

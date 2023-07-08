@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
@@ -23,8 +24,8 @@ public class UsQController {
     @Autowired
     CategoryService categoryService;
 
-//  ---------------------------- ★ 1:1 문의 정렬 ★ ---------------------------------------------------------------
-    @GetMapping("question") // 1:1 문의
+//  ---------------------------- ★ 1:1 문의 페이지 ★ ---------------------------------------------------------------
+    @GetMapping("community/question") // 1:1 문의 페이지
     public ModelAndView questionF(@SessionAttribute(name ="loginId", required = false) String loginId,
                                   @SessionAttribute(name ="userRole", required = false) String userRole) {
 
@@ -42,12 +43,14 @@ public class UsQController {
 
 //  ★ 1:1 문의 완료  ★ ---------------------------------------------------------------
     @PostMapping("question") // 1:1 문의
-    public ModelAndView question(@ModelAttribute("usQ") UsQDTO usQDTO) {
+    public ModelAndView question(@ModelAttribute("usQ") UsQDTO usQDTO, MultipartFile[] files) throws Exception {
+
+        usQDTO = usQService.file(usQDTO, files);
         usQService.saveQuestion(usQDTO);
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("data",new Message("완료되었습니다.", "question"));
-        modelAndView.setViewName("common/fragments/message.html");
+        modelAndView.setViewName("common/message.html");
 
         return modelAndView;
     }
@@ -66,7 +69,7 @@ public class UsQController {
 
             modelAndView.addObject("loginId", loginId);
             modelAndView.addObject("userRole", userRole);
-            modelAndView.setViewName("pages/mypage/questionList.html");
+            modelAndView.setViewName("pages/mypage/board/questionList.html");
         } else {
             if(categoryId.equals("all"))
                 usQList = usQService. usqAllList();
@@ -106,7 +109,7 @@ public class UsQController {
         else
             modelAndView.addObject("data",new Message("삭제되었습니다.", "questionList?page=admin"));
 
-        modelAndView.setViewName("common/fragments/message.html");
+        modelAndView.setViewName("common/message.html");
 
         return modelAndView;
     }
@@ -135,7 +138,7 @@ public class UsQController {
         usQService.saveQuestion(question);
 
         modelAndView.addObject("data",new Message("답변이 등록되었습니다.","question_Detail?questionId="+question.getUsqId()));
-        modelAndView.setViewName("common/fragments/message.html");
+        modelAndView.setViewName("common/message.html");
 
         return modelAndView;
     }

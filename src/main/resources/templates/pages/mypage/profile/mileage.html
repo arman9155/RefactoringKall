@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/mypageLayout}"
+      layout:fragment="Content">
+<head>
+  <link th:href="@{css/mypage/list.css}" rel="stylesheet">
+  <script type="text/javascript" th:src="@{myLib/jquery-3.2.1.min.js}"></script>
+  <meta charset="UTF-8">
+  <title>마일리지 내역</title>
+</head>
+<body>
+<section class="content">
+  <h3 class="underline">마일리지 내역</h3>
+  <h3> 현재 마일리지 : [[${user.mileage}]]</h3>
+
+
+  <div class="sort">
+    <a th:href="@{mileage}" th:text="전체" th:class="${status == 'all'} ? 'active' : '' "></a>
+    <a th:href="@{mileage(sort='사용')}" th:text="'사용'" th:class="${status == '사용'} ? 'active' : '' "></a>
+    <a th:href="@{mileage(sort='적립')}" th:text="'적립'" th:class="${status == '적립'} ? 'active' : '' "></a>
+  </div>
+
+  <table class="list">
+    <tbody id="mileageList">
+    <th:block th:if="${status.equals('사용')}" th:each="m : ${orderList}">
+      <tr>
+        <th>사용</th>
+        <td>[[${m.mileage}]]</td>
+        <td>[[${m.date}]]</td>
+      </tr>
+    </th:block>
+    <th:block th:if="${status.equals('적립')}">
+      <tr th:each="m : ${orderList}">
+        <th>적립</th>
+        <td>[[${m.mileage2}]]</td>
+        <td>[[${m.date}]]</td>
+      </tr>
+      <tr>
+        <th>적립</th>
+        <td>3000</td>
+        <td>[[${user.date}]]</td>
+      </tr>
+    </th:block>
+    <th:block th:if="${status.equals('all')}">
+      <th:block th:each="m : ${orderList}">
+        <tr th:if="${m.mileage1 != 0}">
+          <th>사용</th>
+          <td>[[${m.mileage}]]</td>
+          <td>[[${m.date}]]</td>
+        </tr>
+        <tr th:if="${m.mileage2 != 0}">
+          <th>적립</th>
+          <td>[[${m.mileage2}]]</td>
+          <td>[[${m.date}]]</td>
+        </tr>
+      </th:block>
+      <tr>
+        <th>적립</th>
+        <td>3000</td>
+        <td>[[${user.date}]]</td>
+      </tr>
+    </th:block>
+    </tbody>
+  </table>
+</section>
+
+</body>
+</html>

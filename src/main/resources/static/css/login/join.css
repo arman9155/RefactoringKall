@@ -20,11 +20,11 @@ main {
 
 /* -------- 메인으로 ----------------------------------------------------------*/
 h1.logo a{
-    background: url("/img/home/kall.png") no-repeat center/100% ;
+    background: url("/img/home/bambi.png") no-repeat center/100% ;
     text-indent: -9999em;
     display: inline-block;
     width: 100px;
-    height: 100px;
+    height: 110px;
 }
 
 /*--------- 필수 ------------------------------------------------------------*/
@@ -49,25 +49,21 @@ fieldset {
 form a {
     text-decoration: none;
 }
+form input {
+    box-sizing: border-box;
+    display:inline-block;
+    padding: 5px 20px;
+    width: 100%;
+    border-radius: 20px;
+    border: 1px solid RGB(255, 200, 200);
+    outline: none;
+    line-height: 1.2rem;
 
-form input,
-#back,
-#idCheck,
-#join {
-   box-sizing: border-box;
-   display:inline-block;
-   padding: 5px 20px;
-   width: 100%;
-   border-radius: 20px;
-   border: 1px solid RGB(255, 227, 227);
-   outline: none;
-   line-height: 1.2rem;
-
-   margin: 3px 0;
-}
+    margin: 3px 0;
+ }
 
 form input:focus {
-      border: 3px solid #FB9DA7;
+    border: 3px solid #FB9DA7;
 }
 
 #required,
@@ -81,10 +77,11 @@ table {
     margin: 10px 0;
     line-height : 1.5rem;
     border-top: 3px solid #FB9DA7;
+     table-layout: fixed;
 }
 
 table th {
-    width: 20%;
+    width: 30%;
     text-align: left;
     box-sizing: border-box;
     padding: 3px 10px;
@@ -128,21 +125,46 @@ table td {
 #join,
 #back,
 #change,
-#idCheck {
+#idCheck,
+.btn {
+     display : inline-block;
+      box-sizing: border-box;
       background-color: RGB(255, 200, 200);
+      border-radius : 20px;
+      padding: 5px 20px;
       cursor: pointer;
       font-weight: bold;
       color: white;
+      width : 100%;
+      font-size : 1rem;
+      margin: 3px 0;
+      border: none;
 }
 
 #join:hover,
 #back:hover,
 #idCheck:hover,
-#change:hover {
+#change:hover,
+.btn:hover {
   background-color: #FB9DA7;
 }
 
 #idCheck {
     border : none;
-    float: right;
+}
+
+.eMessage {
+    color : red;
+    font-weight: bold;
+    font-size : 0.8rem;
+}
+// ** etc
+.confirm {
+    display : flex;
+}
+
+// ** 아이디 중복 확인
+#wrap {
+    margin-left: 0;
+	text-align: center;
 }

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ProductQDTO {
 
-    private Integer productQId; // ▷▶ id _ 자동 count _ 상품문의번호
+    private Integer productqId; // ▷▶ id _ 자동 count _ 상품문의번호
 
     // -------- ▷▶ productq 가 외래키로 가져오는 DTO ----------------------------------------------
     private UserDTO userDTO; // ▷▶ 유저Id
@@ -29,7 +29,7 @@ public class ProductQDTO {
         if(productQEntity == null) return null;
         ProductQDTO productQDTO = new ProductQDTO();
 
-        productQDTO.setProductQId(productQEntity.getProductQId());
+        productQDTO.setProductqId(productQEntity.getProductqId());
         productQDTO.setUserDTO(UserDTO.toUserDTO(productQEntity.getUserEntity()));
         productQDTO.setProductDTO(ProductDTO.toProductDTO(productQEntity.getProductEntity()));
         productQDTO.setTitle(productQEntity.getTitle());

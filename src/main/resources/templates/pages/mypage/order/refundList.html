@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/mypageLayout}"
+      layout:fragment="Content">
+<head>
+  <link th:href="@{css/mypage/list.css}" rel="stylesheet">
+  <script type="text/javascript" th:src="@{myLib/jquery-3.2.1.min.js}"></script>
+  <meta charset="UTF-8">
+  <title>반품 내역</title>
+</head>
+<body>
+<section class="content">
+  <h3 class="underline">반품 내역</h3>
+
+  <div class="sort">
+    <a th:href="@{u_refund}" th:text="전체" th:class="${status == 'all'} ? 'active' : '' "></a>
+    <a th:href="@{u_refund(sort='반품 요청')}" th:text="'반품 요청'" th:class="${status == '반품 요청'} ? 'active' : '' "></a>
+    <a th:href="@{u_refund(sort='반품 처리중')}" th:text="'반품 처리중'" th:class="${status == '반품 처리중'} ? 'active' : '' "></a>
+    <a th:href="@{u_refund(sort='반품 확정')}" th:text="'반품 확정'" th:class="${status == '반품 확정'} ? 'active' : '' "></a>
+    <a th:href="@{u_refund(sort='반품 완료')}" th:text="'반품 완료'" th:class="${status == '반품 완료'} ? 'active' : '' "></a>
+  </div>
+
+  <table class="list">
+    <tbody id="refundList">
+    <th:block th:each="refund : ${refundList}">
+      <tr>
+        <th>[[${refund.status}]]</th>
+        <td>[[${refund.date}]]. <span th:if="${refund.status != '반품 완료'}">요청</span><span th:if="${refund.status == '반품 완료'}">완료</span> </td>
+      </tr>
+      <tr>
+        <th>[[${refund.orderDTO.odetailDTO.productDTO.image}]]</th>
+        <th>[[${refund.orderDTO.odetailDTO.productDTO.name}]]</th>
+        <td><a th:href="#"> 반품 내용 > </a></td>
+        <td><a th:href="@{question}"> 문의> </td>
+      </tr>
+    </th:block>
+    </tbody>
+  </table>
+</section>
+
+</body>
+</html>

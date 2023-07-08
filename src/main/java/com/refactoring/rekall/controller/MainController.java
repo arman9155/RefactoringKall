@@ -1,6 +1,10 @@
 package com.refactoring.rekall.controller;
 
+import com.refactoring.rekall.Auth;
 import com.refactoring.rekall.dto.ProductDTO;
+import com.refactoring.rekall.dto.ProductImgDTO;
+import com.refactoring.rekall.entity.ProductImgEntity;
+import com.refactoring.rekall.repository.ProductImgRepository;
 import com.refactoring.rekall.service.ProductService;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -23,15 +27,29 @@ public class MainController {
 
     @Autowired
     ProductService productService;
+    @Autowired
+    ProductImgRepository productImgRepository;
 
 //  ------------------------------------- ★ Product List ★ ------------------------------------------------------------
     @GetMapping(value = {"", "main"})
     public ModelAndView main(@SessionAttribute(name ="loginId", required = false) String loginId,
                              @SessionAttribute(name ="userRole", required = false) String userRole) {
         ModelAndView modelAndView = new ModelAndView();
-        List<ProductDTO> productDTOS = productService.findAll();
-        List<ProductDTO> productDTOList = new ArrayList<>(productDTOS.subList(0, 6));
 
+        List<ProductDTO> productDTOS = productService.findAll();
+        List<ProductDTO> productDTOList = new ArrayList<>();
+        if(productDTOS.size() >=6)
+            productDTOList = new ArrayList<>(productDTOS.subList(0, 6));
+        else
+            productDTOList = productDTOS;
+
+        List<ProductImgEntity> imgList = productImgRepository.findimg(1);
+
+/*        if("".equals(session.getAttribute("userId"))){
+
+        }*/
+
+        modelAndView.addObject("imgList", imgList);
         modelAndView.addObject("loginId", loginId);
         modelAndView.addObject("userRole", userRole);
         modelAndView.addObject("recommendProduct", productDTOList);
@@ -42,7 +60,7 @@ public class MainController {
 
 //  ------------------------------------- ★ Community ★ ---------------------------------------------------------------
 
-    @GetMapping("road") // 찾아오시는 길
+    @GetMapping("community/road") // 찾아오시는 길
     public ModelAndView road(@SessionAttribute(name ="loginId", required = false) String loginId,
                              @SessionAttribute(name ="userRole", required = false) String userRole) {
         ModelAndView modelAndView = new ModelAndView();
@@ -54,6 +72,8 @@ public class MainController {
     }
 
 //  ------------------------------------- ★ admin 페이지 ★ ---------------------------------------------------------------
+
+    @Auth(role= Auth.Role.ADMIN)
     @GetMapping("admin")
     public ModelAndView admin() {
         ModelAndView modelAndView = new ModelAndView();

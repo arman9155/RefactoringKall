@@ -70,7 +70,7 @@
     text-indent: -9999em;
 }
 
-.icons span.heart active {
+.icons span.heart.active {
     background: url("/img/product/full_heart.svg") no-repeat center/100% ;
 }
 
@@ -118,8 +118,9 @@ i {
 }
 
 .order_info td .flex {
-    display:flex;
+    display: flex;
     gap: 30px;
+    line-height: 30px;
 }
 
 .order_info td .flex label,
@@ -131,8 +132,9 @@ i {
     text-align: center;
     font-weight : bold;
     cursor : pointer;
-    line-height : 1.2rem;
+    line-height : 30px;
 }
+
 input[type="radio"]:checked+label,
 .file_upload label:hover {
      background-color: #FB9DA7;
@@ -145,7 +147,7 @@ input[type="radio"]:checked+label,
    border-radius: 20px;
    border: 1px solid RGB(255, 200, 200);
    outline: none;
-   line-height: 1.2rem;
+   line-height: 30px;
 }
 
 .order_info tr input:focus {
@@ -155,15 +157,61 @@ input[type="radio"]:checked+label,
 
 /*file*/
 .file_upload {
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+.file_upload .upload_name {
+    box-sizing: border-box;
+    line-height: 30px;
+    vertical-align: middle;
+    border-radius: 20px 0 0 20px;
+    border: 1px solid RGB(255, 227, 227);
+    width:70%;
+}
+
+.file_upload label {
+    box-sizing: border-box;
+    line-height: 30px;
+    height : 30px;
+    vertical-align: middle;
+    background-color: #FB9DA7;
+    border: 1px solid  #FB9DA7;
+    border-radius: 0 20px 20px 0;
+    width: 30%;
+    color: white;
+}
+
+.file_upload input[type="file"] {
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+}
+
+.file_image {
     display : flex;
+    gap: 5px;
+}
+
+.img {
+    width : 300px;
+    height : 300px;
 }
 
 /* 선택 */
 
-
+.complete,
+.buttons {
+    margin : 10px auto ;
+}
 /*button*/
 .complete button,
-.buttons button{
+.buttons button,
+.buttons a {
     all : unset;
     width: 45%;
     box-sizing : border-box;
@@ -179,7 +227,8 @@ input[type="radio"]:checked+label,
 }
 
 .complete button:hover,
-.buttons button:hover{
+.buttons button:hover
+.buttons a:hover {
     background : #FB9DA7;
 }
 
@@ -292,4 +341,67 @@ input[type="radio"]:checked+label,
 [aria-selected="true"] {
     background-color: #FB9DA7;
     border: 1px solid #FB9DA7;
+}
+
+
+
+
+/* detail page */
+.item {
+    border : 3px solid #FB9DA7;
+    margin : 10px 0;
+}
+
+.item tr td,
+.item tr th {
+    box-sizing : border-box;
+    width : 50%;
+    padding : 5px;
+}
+
+.item button,
+.item input[type="button"],
+ #QBtn {
+    all : unset;
+    text-align: center;
+    background : RGB(255, 200, 200);
+    cursor : pointer;
+    font-weight : bold;
+    margin : 3px 0;
+    line-height : 1.2rem;
+    color: white;
+}
+.item input[type="button"] {
+    width : 30%;
+    border-radius: 20px;
+}
+.item button,
+.productQ_input button,
+#QBtn {
+    width : 100%;
+    padding : 10px 0;
+    margin : 0px;
+}
+.item button:hover,
+.productQ_input button:hover,
+#QBtn:hover {
+     background-color: #FB9DA7;
+}
+
+.item .countBtn {
+    display : flex;
+    text-align : center;
+}
+
+.productQ_input input,
+.productQ_input textarea{
+    box-sizing : border-box;
+    all: unset;
+    padding: 0 10px;
+    width : 100%;
+    border : 1px solid RGB(255, 200, 200);
+}
+.productQ_input input: focus,
+.productQ_input textarea: focus {
+    border: 3px solid #FB9DA7;
 }

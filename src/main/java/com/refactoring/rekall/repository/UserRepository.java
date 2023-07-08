@@ -21,4 +21,7 @@ public interface UserRepository extends JpaRepository<UserEntity, String> {
     UserEntity findByUserIdAndPassword(@Param("userId")String userId, @Param("password")String password);
 
     List<UserEntity> findByStatus(String status);
+
+    @Query("select u from UserEntity u where u.role = (:id)")
+    List<UserEntity> findAllByRole(@Param("id")String id);
 }

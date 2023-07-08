@@ -28,11 +28,11 @@ main {
 /* -------- 로그인 ------------------------------------------*/
 
 .login_page h1 a{
-    background: url("/img/home/kall.png") no-repeat center/100% ;
+    background: url("/img/home/bambi.png") no-repeat center/100% ;
     text-indent: -9999em;
     display: inline-block;
     width: 100px;
-    height: 100px;
+    height: 110px;
 }
 
 form {
@@ -121,7 +121,14 @@ form button:hover {
     text-align: left;
     font: 1.0rem;
 }
-
+.join_sns a {
+    display : block;
+    width: 100%;
+    height : 35px;
+}
+#kakao {
+    background: url("/img/home/kakao_login.png") no-repeat center/100% ;
+}
 /* -------- error ----------------------------------------*/
 #error {
     color: red;

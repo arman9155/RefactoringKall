@@ -2,16 +2,16 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{common/layouts/listLayout}"
+      layout:decorate="~{/common/layouts/listLayout}"
       layout:fragment="Content">
 <head>
     <meta charset="UTF-8">
-    <link th:href="@{css/product/main.css}" rel="stylesheet">
+    <link th:href="@{/css/product/main.css}" rel="stylesheet">
     <title>Main</title>
 </head>
 <body>
 <body>
-    <form th:action="@{login}">
+    <form th:action="@{/login}">
         <h3>서비스를 이용하시려면 로그인 하세요. </h3>
         <button type="submit">로그인 </button>
     </form>

@@ -5,6 +5,32 @@
     <meta charset="UTF-8">
     <title>상품 추가</title>
     <link th:href="@{css/admin/detail.css}" rel="stylesheet">
+    <script>
+        //창 닫고 부모창 reload
+        function windowClose() {
+            window.opener.parent.location.reload();
+            window.close();
+        }
+
+         // 첨부파일명 / 사진 미리보기
+        function loadFile(input) {
+            var container = document.querySelector('.main_image');
+            container.innerHTML = "";
+
+             if(input.files[0]) {
+                var file = input.files[0]
+                var name = document.querySelector('.upload_name');
+                name.value = file.name;
+
+                var newImage = document.createElement("img");
+                newImage.setAttribute("class","img");
+                newImage.src = URL.createObjectURL(file);
+
+                container.appendChild(newImage);
+             }
+
+        }
+    </script>
 </head>
   <body>
         <h3 class="underline">상품 정보</h3>
@@ -61,9 +87,14 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <th><label for="imgFile">메인이미지</label></th>
+                    <th>메인이미지</th>
                     <td>
-                        <input type="file" id="imgFile" name="imgFile" class="img_file">
+                        <div class="file_upload">
+                            <input class="upload_name" placeholder="첨부파일"  readonly>
+                            <label for="file">파일 첨부</label>
+                            <input type="file" name="files" id="file" accept="image/*"  multiple onchange="loadFile(this)">
+                        </div>
+                        <div class="main_image"></div>
                     </td>
                 </tr>
                 <tr>
@@ -74,6 +105,7 @@
             </table>
             <div class="buttons">
                 <button>완료</button>
+                <a onclick="windowClose();">닫기</a>
             </div>
         </form>
   </body>

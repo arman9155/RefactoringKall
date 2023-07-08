@@ -8,7 +8,18 @@
     <meta charset="UTF-8">
     <title>상품 관리</title>
     <script type="text/javascript" th:src="@{myLib/jquery-3.2.1.min.js}"></script>
-    <link th:href="@{css/admin/userList.css}" rel="stylesheet">
+    <link th:href="@{css/admin/list.css}" rel="stylesheet">
+    <script th:inline="javascript">
+    //전체선택
+        $(document).ready(function() {
+            $('#selectAll').click(function() {
+                if($('#selectAll').is(':checked'))
+                    $("input[name=productIds]").prop("checked", true);
+                else
+                    $("input[name=productIds]").prop("checked", false);
+            });
+        });
+    </script>
 </head>
 <body>
     <section class="content">
@@ -23,14 +34,6 @@
 
         <form id="deleteProduct" th:action="@{a_product_del}" method="post" >
             <table class="list">
-                <colgroup>
-                    <col class="col1">
-                    <col class="col2">
-                    <col class="col3">
-                    <col class="col4">
-                    <col class="col5">
-                    <col class="col6">
-                </colgroup>
                 <thead>
                 <tr>
                     <th>
@@ -42,6 +45,7 @@
                     <th>메인사진</th>
                     <th>상품명</th>
                     <th> 재고 </th>
+                    <th>상세사진</th>
                 </tr>
                 </thead>
 
@@ -61,6 +65,7 @@
                              [[${product.name}]] </a>
                         </td>
                         <td>[[${product.amount}]]</td>
+                        <td><a id="detailImg" th:href="@{a_product_DImage(productId=${product.productId})}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=800, height=800'); return false;">상세이미지</a></td>
                     </tr>
                 </th:block>
                 </tbody>
@@ -74,16 +79,5 @@
             </table>
         </form>
     </section>
-
-    <script th:inline="javascript">
-        $(document).ready(function() {
-            $('#selectAll').click(function() {
-                if($('#selectAll').is(':checked'))
-                    $("input[name=productIds]").prop("checked", true);
-                else
-                    $("input[name=productIds]").prop("checked", false);
-            });
-        });
-    </script>
 </body>
 </html>

@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>공지사항 디테일</title>
-    <script type="text/javascript" th:src="@{myLib/jquery-3.2.1.min.js}"></script>
-    <link th:href="@{css/admin/detail.css}" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/myLib/jquery-3.2.1.min.js}"></script>
+    <link th:href="@{/css/admin/detail.css}" rel="stylesheet">
     <script th:inline="javascript">
         function closeWindow() {
             window.opener.parent.location.reload();
@@ -16,7 +16,7 @@
 
              const form = document.createElement('form');
              form.method = 'POST';
-             form.action = '/notice_Del';
+             form.action = '/notice/del';
 
              const id = document.querySelector('.noticeId');
              const input = document.createElement('input');
@@ -60,7 +60,7 @@
           </tbody>
         </table>
         <div class="buttons">
-          <a th:href="@{notice_change(noticeId=${noticeList.noticeId})}" id="change">수정</a>
+          <a th:href="@{/notice/change(noticeId=${noticeList.noticeId})}" id="change">수정</a>
           <a href="#" onclick="submitForm();">삭제</a>
           <a onclick="closeWindow();">닫기</a>
         </div>

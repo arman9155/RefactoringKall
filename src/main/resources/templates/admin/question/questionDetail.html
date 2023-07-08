@@ -85,6 +85,28 @@
                     <th><label>내용</label></th>
                     <td><textarea rows="10" th:field="*{content}" readonly></textarea></td>
                 </tr>
+                <tr>
+                    <th>첨부사진1</th>
+                    <th:block  th:if="*{image1 != null}">
+                        <td><img class="main_image" th:src="*{image1}">
+                        <input type="hidden" th:field="*{image1}"></td>
+
+                    </th:block>
+                    <th:block th:if="*{image1 == null}">
+                    <td><label>X</label></td>
+                    </th:block>
+                </tr>
+                <tr>
+                    <th>첨부사진2</th>
+                    <th:block th:if="*{image2 != null}" >
+                        <td><img class="main_image" th:src="*{image2}">
+                            <input type="hidden" th:field="*{image2}"></td>
+                    </th:block>
+                    <th:block th:if="*{image2 == null}">
+                        <td><label>X</label></td>
+                    </th:block>
+                </tr>
+
                 <tr class="originalF">
                     <th><label>답변</label></th>
                     <td>

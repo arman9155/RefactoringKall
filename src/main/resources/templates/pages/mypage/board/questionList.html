@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/mypageLayout}"
+      layout:fragment="Content">
+<head>
+  <link th:href="@{css/mypage/list.css}" rel="stylesheet">
+  <script type="text/javascript" th:src="@{myLib/jquery-3.2.1.min.js}"></script>
+  <meta charset="UTF-8">
+  <title>1:1 문의 내역</title>
+</head>
+<body>
+  <section class="content">
+    <h3 class="underline">1:1 문의 내역</h3>
+
+    <form id="deleteusQ" method="post" th:action="@{deleteUsQ(page='mypage')}">
+      <table class="list">
+        <thead>
+        <tr>
+          <th>
+            <input type="checkbox" id="selectAll">
+            <label for="selectAll">전체 선택</label>  <!--자바로 구현 필요-->
+          </th>
+          <th>분류</th>
+          <th>내용</th>
+        </tr>
+        </thead>
+
+        <tbody id="toggle_container">
+        <th:block th:each="usQ, i : ${usQList}">
+          <tr class="toggle_Q" th:id="'#answer_'+${i.index}">
+            <td scope="row"><input type="checkbox" name="usqIds" th:value="${usQ.usqId}"></td>
+            <td th:text="${usQ.categoryDTO?.categoryName}"></td>
+            <td class="notice_content">
+                                <span class="notice_q_title"
+                                      th:text="${usQ.title}">
+                                </span>
+            </td>
+          </tr>
+          <tr class="toggle_A" th:if="${usQ.content != null}" th:id="'#answer_'+${i.index}">
+              <td colspan="3" class="question_a" scope="row">
+                <div class="question_a_content">
+                  <textarea cols="10" readonly>[[${usQ.content}]] </textarea>
+                  <th:block th:if="${usQ.image1 != null}">
+                     <img class="usq_image" th:src="${usQ.getImage1()}"></img>
+                  </th:block>
+                  <th:block th:if="${usQ.image2 != null}">
+                    <img class="usq_image" th:src="${usQ.getImage2()}"></img>
+                  </th:block>
+                </div>
+              </td>
+          </tr>
+          <tr class="toggle_C" th:if="${usQ.comment != null}" th:id="'#answer_'+${i.index}">
+              <td colspan="3" class="question_a" scope="row">
+                <div class="question_a_comment">
+                    <textarea cols="10" readonly> 답변 : &#13;&#10; [[${usQ.comment}]] </textarea>
+                </div>
+              </td>
+          </tr>
+
+        </th:block>
+        </tbody>
+        <div class="buttons">
+          <a th:href="@{question}">문의하기</a>
+          <button>선택 삭제</button>
+          <input type="reset" value="선택 취소">
+        </div>
+      </table>
+    </form>
+  </section>
+  <script th:inline="javascript">
+        $(document).ready(function() {
+           $('tr.toggle_Q').click(function() {
+                $(this).next('tr.toggle_A').toggle('fast');
+                $(this).next('tr.toggle_A').next('tr.toggle_C').toggle('fast');
+            });
+
+            $('#selectAll').click(function() {
+                if($('#selectAll').is(':checked'))
+                    $("input[name=usqIds]").prop("checked", true);
+                else
+                    $("input[name=usqIds]").prop("checked", false);
+            });
+        });
+    </script>
+</body>
+</html>

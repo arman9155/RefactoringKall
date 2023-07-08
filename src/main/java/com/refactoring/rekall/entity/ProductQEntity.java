@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @Table(name = "product_q")
 public class ProductQEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer productQId; // ▷▶ id _ 자동 count _ 상품문의번호
+    private Integer productqId; // ▷▶ id _ 자동 count _ 상품문의번호
 
 // -------- ▷▶ productq 가 외래키로 가져오는 Entity ----------------------------------------------
     @JoinColumn(name = "userId")
@@ -47,7 +47,7 @@ public class ProductQEntity {
 
         ProductQEntity productQEntity = new ProductQEntity();
 
-        productQEntity.setProductQId(productQDTO.getProductQId());
+        productQEntity.setProductqId(productQDTO.getProductqId());
         productQEntity.setUserEntity(UserEntity.toUserEntity(productQDTO.getUserDTO()));
         productQEntity.setProductEntity(ProductEntity.toProductEntity(productQDTO.getProductDTO()));
         productQEntity.setTitle(productQDTO.getTitle());

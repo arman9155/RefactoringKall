@@ -4,66 +4,77 @@
 <head>
     <meta charset="UTF-8">
     <title>ID 중복확인</title>
-<script src="resources/myLib/inCheck.js"></script>
-<script>
+  <link th:href="@{/css/login/join.css}" rel="stylesheet">
+  <script th:src="@{/js/login/inCheck.js}"></script>
+  <script th:inline="javascript">
+  	let iCheck = false;
 
-//** idOK : 사용자가 입력한 id 를 사용가능하도록 해주고, 현재(this)창은 close
-//1) this 창의 id 를 부모창의 id 로
-//2) 부모창의 ID중복확인 버튼은 disable & submit 은 enable
-//3) 부모창의 id 는 수정불가 (readonly) , password 에 focus
-//4) 현재(this)창은 close
+    onload = function () {
+      document.getElementById('id').addEventListener("keydown",
+        (e) => {if(e.which==13) {
+        e.preventDefault();
+        document.getElementById('idCheck').focus();
+        }
+      });
+         // ** ID
+      document.getElementById('id').addEventListener("focusout",
+      () => {iCheck = idCheck();} );
+    }
 
-function idOK() {
-	opener.document.getElementById('id').value='${param.id}';
-	// 2)
-	opener.document.getElementById('idDup').disabled='disabled';
-	opener.document.getElementById('submit').disabled='';
-	opener.document.getElementById('id').readOnly=true; // OK
-	opener.document.getElementById('password').focus();
-	window.close();
-} //idOK
-</script>
-<style>
-	body {
-		background-color: LightYellow;
-		font-family: 맑은고딕;
+    function idOK() {
+        // 2)
+        opener.document.getElementById('idCheck').disabled='disabled';
+        opener.document.getElementById('id').value = document.getElementById('id').value;
+        opener.document.getElementById('id').readOnly=true; // OK
+        opener.document.getElementById('password').focus();
+        window.close();
+    } //idOK
+
+  function idDupCheck() {
+    if(iCheck == false) iCheck = idCheck();
+    else {
+     $.ajax({
+      url: '/join/idDupCheck?id='+document.getElementById('id').value,
+      method: "GET",
+      data : {id : id
+              },
+      }).done(function() {
+            element.classList.remove('active');
+            alert("위시리스트에서 삭제하였습니다.");
+      }).fail(function() {
+            alert("위시리스트 삭제에 실패했습니다.");
+      });
 	}
-	#wrap {
-		margin-left: 0;
-		text-align: center;
-	}
-	h3 { color: navy; }
-</style>
+  }
+  </script>
 </head>
 <body>
 <div id="wrap">
-  <h2>** ID 중복확인 **</h2>
-  <hr>
-  <form action="idDupCheck" method="get">
-    User_ID :
-    <input type="text" name="id" id="id">&nbsp;
-    <input type="submit" value="ID 중복확인" onclick="return idCheck()"><br>
-    <!-- inCheck.js 의  idCheck() 의 결과에 따라 submit 결정 -->
+  <h3>ID 중복확인</h3>
+
+  <form th:action="@{/join/idDupCheck}" method="get">
+    작성하신 아이디:
+    <input type="text" name="id" id="id" th:value="${writeId}">&nbsp;
     <span id="iMessage" class="eMessage"></span>
+    <input type="submit" id="idCheck" class="btn" value="ID 중복확인" onclick="idDupCheck()"><br>
+    <!-- inCheck.js 의  idCheck() 의 결과에 따라 submit 결정 -->
   </form>
   <br><br>
-  <!-- 서버의 처리결과 : idUse 의 값 'T'/'F' 에 따른 화면 -->
+
   <div id="msgBlock">
-    <th:if test="${idUse=='T'}">
-      ${memberVO.id} 는(은) 사용가능 합니다 ~~&nbsp;&nbsp;
-      <input type="button" value="id_OK" onclick="idOK()">
-    </th:if>
-    <th:if test="${idUse=='F'}">
-      ${param.id} 는(은) 사용 불가능합니다 (사용중) ~~~ <br>
-      다시 입력하세요 ~~<br>
-      <!-- 부모창(joinForm, opener)에 남아있는 사용자가 입력한 id는 지워주고,
-           현재(this)창 에서는 id 에 focus 를 주고 재입력 유도 -> script 필요
-      -->
+    <th:block th:if="${idUse == 'T'}">
+      [[${writeId}]] 는(은) 사용가능 합니다.&nbsp;&nbsp;
+      <input type="button" class="btn" value="사용" onclick="idOK()">
+    </th:block>
+    <th:block th:if="${idUse == 'F'}">
+      [[${writeId}]] 는(은) 사용 불가능합니다 (사용중) <br>
+      다시 입력하세요.<br>
+
       <script>
-				document.getElementById('id').focus();
-				opener.document.getElementById('id').value='';
+		document.getElementById('id').focus();
+		opener.document.getElementById('id').value='';
 	  </script>
-    </th:if>
+    </th:block>
   </div>
 </div>
 </body>

@@ -1,23 +1,21 @@
 package com.refactoring.rekall.service;
 
-import com.refactoring.rekall.controller.Review;
-import com.refactoring.rekall.dto.ProductDTO;
 import com.refactoring.rekall.dto.ReviewDTO;
-import com.refactoring.rekall.entity.ProductEntity;
 import com.refactoring.rekall.entity.ReviewEntity;
 import com.refactoring.rekall.repository.ProductRepository;
 import com.refactoring.rekall.repository.ReviewRepository;
+import groovy.transform.ThreadInterrupt;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ReviewService {
 
@@ -49,7 +47,19 @@ public class ReviewService {
         return reviewEntityList;
     }
 
-//  ----------------- ★ community Review ★ ---------------------------------------------------------------
+//  ----------------- ★ mypage Review  ★ ---------------------------------------------------------------
+    public List<ReviewDTO> findReviewById(String loginId) {
+        List<ReviewEntity> reviewEntityList = reviewRepository.findByUserEntityUserIdOrderByReviewIdDesc(loginId);
+        List<ReviewDTO> reviewDTOS = new ArrayList<>();
+        for(ReviewEntity reviewEntity : reviewEntityList) {
+            if (reviewEntity != null) {
+                reviewDTOS.add(ReviewDTO.toReviewDTO(reviewEntity));
+            }
+        }
+        return reviewDTOS;
+    }
+
+//  ----------------- ★ community ReviewController ★ ---------------------------------------------------------------
 
 
 }

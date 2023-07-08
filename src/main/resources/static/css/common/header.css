@@ -75,9 +75,9 @@ header {
 .title_logo a {
     display: inline-block;
     text-indent: -9999em;
-    background: url("/img/home/kall.png") no-repeat center/100% ;
+    background: url("/img/home/bambi.png") no-repeat center/100% ;
     width: 100px;
-    height: 100px;
+    height: 110px;
 }
 
 /* search */
@@ -140,7 +140,7 @@ svg {
 .user_menu #header_login {
     background: url("/img/home/lock.svg") center/100% no-repeat;
 }
-.user_menu #header_logout {
+.user_menu .header_logout {
     background: url("/img/home/lock_open.svg") center/100% no-repeat;
 }
 .user_menu #header_join {
@@ -149,7 +149,7 @@ svg {
 .user_menu #header_mypage {
     background: url("/img/home/join.svg") center/100% no-repeat;
 }
-.user_menu #header_cart {
+.user_menu .header_cart {
     background: url("/img/home/cart.svg") center/100% no-repeat;
 }
 

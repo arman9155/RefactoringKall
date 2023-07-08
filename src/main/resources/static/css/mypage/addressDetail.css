@@ -44,6 +44,11 @@ table input: focus {
     border: 3px solid #FB9DA7;
 }
 
+.zipCode {
+    display: flex;
+    width : 100%;
+}
+
 /*--------- 버튼 ------------------------------------------------------*/
 .buttons {
     all: unset;
@@ -53,7 +58,8 @@ table input: focus {
 }
 
 .buttons a,
-.buttons button {
+.buttons button,
+#findZipCode {
       all:unset;
       background-color: RGB(255, 200, 200);
       cursor: pointer;
@@ -66,6 +72,7 @@ table input: focus {
 }
 
 .buttons a:hover,
-.buttons button:hover {
+.buttons button:hover,
+#findZipCode {
   background-color: #FB9DA7;
 }

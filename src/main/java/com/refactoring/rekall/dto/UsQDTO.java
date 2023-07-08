@@ -28,6 +28,10 @@ public class UsQDTO {
     private LocalDateTime date1 = LocalDateTime.now();  // ▷▶ 작성일
     private LocalDateTime date2 = LocalDateTime.now(); // ▷▶ 답글 작성일
 
+    private String image1;  // ▷▶ 첨부사진1
+    private String image2;  // ▷▶ 첨부사진2
+
+
 // -------------- ▷▶ Entity -> DTO ---------------------------------------------------------
     public static UsQDTO toUsQDTO(UsQEntity usQEntity) {
         if(usQEntity == null) return null;
@@ -41,6 +45,8 @@ public class UsQDTO {
         usQDTO.setComment(usQEntity.getComment());
         usQDTO.setDate1(usQEntity.getDate1());
         usQDTO.setDate2(usQEntity.getDate2());
+        usQDTO.setImage1(usQEntity.getImage1());
+        usQDTO.setImage2(usQEntity.getImage2());
 
         return usQDTO;
     }

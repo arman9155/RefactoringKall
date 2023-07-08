@@ -12,6 +12,7 @@ import org.springframework.web.servlet.View;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +32,7 @@ public class UsAddressController {
         modelAndView.addObject("addressList", usAddressDTOList);
         modelAndView.addObject("loginId", loginId);
         modelAndView.addObject("userRole", userRole);
-        modelAndView.setViewName("pages/mypage/userAddress.html");
+        modelAndView.setViewName("pages/mypage/profile/userAddress.html");
         return modelAndView;
     }
 
@@ -52,7 +53,7 @@ public class UsAddressController {
         UsAddressDTO usAddressDTO = usAddressService.getAddress(addressId);
 
         modelAndView.addObject("usAddressDTO", usAddressDTO);
-        modelAndView.setViewName("pages/mypage/addressDetail.html");
+        modelAndView.setViewName("pages/mypage/profile/addressDetail.html");
         return modelAndView;
     }
 
@@ -64,7 +65,8 @@ public class UsAddressController {
 
         modelAndView.addObject("usAddressDTO", usAddressDTO);
         modelAndView.addObject("addressId", addressId);
-        modelAndView.setViewName("pages/mypage/addressChange.html");
+        modelAndView.setViewName("pages/mypage/profile/addressChange.html");
+
         return modelAndView;
     }
 
@@ -78,14 +80,14 @@ public class UsAddressController {
         usAddressService.saveAddress(usAddressDTO, loginId);
 
         modelAndView.addObject("data", new Message("수정되었습니다.", "u_address_detail?addressId=" + addressId));
-        modelAndView.setViewName("common/fragments/message.html");
+        modelAndView.setViewName("common/message.html");
         return modelAndView;
     }
 
     @GetMapping("close")
-    public ModelAndView close() {
+    public ModelAndView close(HttpSession session) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("close.html");
+        modelAndView.setViewName("common/close.html");
         return modelAndView;
     }
 
@@ -95,7 +97,7 @@ public class UsAddressController {
         ModelAndView modelAndView = new ModelAndView();
 
         modelAndView.addObject("usAddressDTO", new UsAddressDTO());
-        modelAndView.setViewName("pages/mypage/addressAdd.html");
+        modelAndView.setViewName("pages/mypage/profile/addressAdd.html");
         return modelAndView;
     }
 
@@ -107,7 +109,7 @@ public class UsAddressController {
         usAddressService.saveAddress(usAddressDTO, loginId);
 
         modelAndView.addObject("data", new Message("추가되었습니다.", "close"));
-        modelAndView.setViewName("common/fragments/message.html");
+        modelAndView.setViewName("common/message.html");
         return modelAndView;
     }
 
@@ -125,7 +127,7 @@ public class UsAddressController {
             modelAndView.addObject("data", new Message("삭제되었습니다.", "close"));
         }
 
-        modelAndView.setViewName("common/fragments/message.html");
+        modelAndView.setViewName("common/message.html");
 
         return modelAndView;
     }

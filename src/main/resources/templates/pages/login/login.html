@@ -8,7 +8,33 @@
     <meta charset="UTF-8">
     <title>로그인</title>
     <link th:href="@{css/login/login.css}" rel="stylesheet">
+<!--    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.2.0/kakao.min.js" integrity="sha384-x+WG2i7pOR+oWb6O5GV5f1KN2Ko6N7PTGPS7UlasYWNxZMKQA63Cj/B2lbUmUfuC" crossorigin="anonymous"></script>-->
+    <!--    <script>
+        function kakaoLogin() {
+            window.Kakao.init("bd313e97bb678302d17bef66bb482b8b");
+            window.Kakao.API.request({
+                url: '/v2/user/me',
+                data: {
+                       property_keys: ['profile_nickname', 'account_email'],
+                      }
+            })
+                .then(function(response) {
+                    const kakao_account = response;
+                    console.log(kakao_account);
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+        }
 
+        Kakao.Auth.logout()
+          .then(function(response) {
+            console.log(Kakao.Auth.getAccessToken()); // null
+          })
+          .catch(function(error) {
+            console.log('Not logged in.');
+          });
+    </script>-->
 </head>
 <body>
     <main>
@@ -43,14 +69,16 @@
             </form>
 
             <div class="find_info">
-                <a class="find_ID" th:href="@{findID}">아이디 찾기</a>
-                <a class="find_password" th:href="@{findPW}">비밀번호 찾기</a>
+                <a class="find_ID" th:href="@{login/findID}">아이디 찾기</a>
+                <a class="find_password" th:href="@{login/findPW}">비밀번호 찾기</a>
                 <a class="join" th:href="@{join}">회원가입</a>
              </div>
           <!-- ===============SNS 로그인 가능시 ==================================================== -->
             <section class="join_sns">
                 <p>SNS로 간편하게 로그인하세요.</p>
-                <a href="">간편 로그인 구현하기!!</a>
+                <a href="https://kauth.kakao.com/oauth/authorize?client_id=cb0f1cc9efcfef4061a974fee5bd040c&redirect_uri=http://localhost:8080/login/oauth/kakao&response_type=code" id="kakao"></a>
+<!--                <a href="javascript:kakaologin();" id="kakao"></a>-->
+                <!--                <a th:href="naverLogin();" id="naver"></a>-->
             </section>
             <!-- 기능 구현 가능 시-->
         </div>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/mypageLayout}"
+      layout:fragment="Content">
+<head>
+    <link th:href="@{css/mypage/list.css}" rel="stylesheet">
+    <script type="text/javascript" th:src="@{myLib/jquery-3.2.1.min.js}"></script>
+    <meta charset="UTF-8">
+    <title>리뷰</title>
+</head>
+<body>
+<section class="content">
+    <h3 class="underline">리뷰</h3>
+
+
+    <table class="list">
+        <tbody id="reviewList">
+        <th:block th:each="review : ${reviewList}">
+            <tr class="productInfo">
+                <th>[[${review.productDTO.image}]]</th>
+                <th>[[${review.productDTO.name}]]</th>
+            </tr>
+            <tr>
+                <th th:switch="${review.productDTO.star}" th:each ="i : ${#numbers.sequence(1,5)}">
+                        <i th:case="0.0" class="fa-regular fa-star"></i>
+                        <th:block th:case="0.5">
+                            <i  th:if="${i == 1 }" class="fa-solid fa-star-half"></i>
+                            <i th:if="${i > 1 }"  class="fa-regular fa-star"></i>
+                        </th:block>
+                        <th:block th:case="1.0">
+                            <i th:if="${i == 1}" class="fa-solid fa-star"></i>
+                            <i th:if="${i > 1}" class="fa-regular fa-star"></i>
+                        </th:block>
+                        <th:block th:case="1.5">
+                            <i th:if="${i == 1}" class="fa-solid fa-star"></i>
+                            <i th:if="${i == 2}" class="fa-solid fa-star-half"></i>
+                            <i th:if="${i > 2}" class="fa-regular fa-star"></i>
+                        </th:block>
+                        <th:block th:case="2.0">
+                            <i th:if="${i <= 2}" class="fa-solid fa-star"></i>
+                            <i th:if="${i > 2}" class="fa-regular fa-star"></i>
+                        </th:block>
+                        <th:block th:case="2.5">
+                            <i th:if="${i <= 2}" class="fa-solid fa-star"></i>
+                            <i th:if="${i == 3}" class="fa-solid fa-star-half"></i>
+                            <i th:if="${i > 3}" class="fa-regular fa-star"></i>
+                        </th:block>
+                        <th:block th:case="3.0">
+                            <i th:if="${i <= 3}" class="fa-solid fa-star"></i>
+                            <i th:if="${i > 3}" class="fa-regular fa-star"></i>
+                        </th:block>
+                        <th:block th:case="3.5">
+                            <i th:if="${i <= 3}" class="fa-solid fa-star"></i>
+                            <i th:if="${i == 4}" class="fa-solid fa-star-half"></i>
+                            <i th:if="${i == 5}" class="fa-regular fa-star"></i>
+                        </th:block>
+                        <th:block th:case="4.0">
+                            <i th:if="${i <= 4}" class="fa-solid fa-star"></i>
+                            <i th:if="${i == 5}" class="fa-regular fa-star"></i>
+                        </th:block>
+                        <i th:case="5.0" class="fa-solid fa-star"></i>
+                </th>
+                <th>[[${review.star}]]</th>
+            </tr>
+            <tr>
+                <td>[[${review.title}]]</td>
+                <td>[[${review.content}]]</td>
+            </tr>
+            <tr th:if="${review.image1 != null || review.image2 != null}">
+                <td>[[${review.image1}]]</td>
+                <td>[[${review.image2}]]</td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+</section>
+
+</body>
+</html>

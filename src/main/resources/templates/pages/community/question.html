@@ -2,18 +2,65 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{common/layouts/communityLayout}"
+      layout:decorate="~{/common/layouts/communityLayout}"
       layout:fragment="Content">
 <head>
     <meta charset="UTF-8">
     <title>1:1 문의</title>
-    <script type="text/javascript" th:src="@{myLib/jquery-3.2.1.min.js}"></script>
-    <link th:href="@{css/community/question.css}" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/myLib/jquery-3.2.1.min.js}"></script>
+    <link th:href="@{/css/community/question.css}" rel="stylesheet">
+    <script th:inline="javascript">
+
+         // 문의 내용 변경
+        $(document).ready(function() {
+            var description = $('#description');
+            description.val(" 문의 내용 : ");
+            $('#category').change(function() {
+                var category = $(this).val();
+                if(category === "q_02") {
+                    description.val(" 문의 상품 : \n\n 문의 내용 : ");
+                    } else if(category === "q_03") {
+                    description.val(" 주문 번호(주문하신 경우) : \n\n 문의 내용 : ");
+                    } else {
+                    description.val(" 문의 내용 : ");
+                    }
+                });
+            });
+
+    // 아이디 / 이메일 초기값 설정
+
+        $(document).ready(function() {
+            $('input#userid').val(/*[[${loginId}]]*/ '');
+            $('input#email').val(/*[[${email}]]*/ '');
+        });
+
+    // 첨부파일명 / 사진 미리보기
+        function loadFile(input) {
+            var container = document.querySelector('.file_image');
+            container.innerHTML = "";
+
+            if(input.files && input.files[0]) {
+                var names = [];
+                for(let i = 0; i < input.files.length; i ++ ) {
+                    var file = input.files[i];
+                    names.push(file.name);
+
+                    var newImage = document.createElement("img");
+                    newImage.setAttribute("class","img");
+                    newImage.src = URL.createObjectURL(file);
+
+                    container.appendChild(newImage);
+                }
+                var name = document.querySelector('.upload_name');
+                name.value = names.join(`  /  `);
+            }
+        }
+    </script>
 </head>
 <body>
     <section class="content">
         <h3 class="underline">1:1 문의</h3>
-        <form th:action="@{question}" name="question" method="post" th:object="${usq}">
+        <form th:action="@{/question}" name="question" method="post" th:object="${usq}" enctype="multipart/form-data">
             <div>
                 <label for="userid">아이디</label>
                 <input type="text" id="userid" name="userid" th:field="*{userDTO.userId}" readonly>
@@ -40,44 +87,15 @@
                 <label for="description">문의내용</label>
                 <textarea name="description" id="description" rows="10" th:field="*{content}"></textarea>
             </div>
-
-          <script>>
-
-            </script>
-
-            <div class="file-upload">
-                <input class="upload-name" value="" placeholder="첨부파일" readonly>
+            <div class="file_upload">
+                <input class="upload_name" placeholder="2개 첨부 가능"  readonly>
                 <label for="file">파일 첨부</label>
-                <input type="file" id="file">
+                <input type="file" name="files" id="file" accept="image/*"  multiple onchange="loadFile(this)">
             </div>
+            <div class="file_image"></div>
 
             <button>문의하기</button>
         </form>
     </section>
-    <script th:inline="javascript">
-    // 문의 내용 변경
-
-        $(document).ready(function() {
-            var description = $('#description');
-            description.val(" 문의 내용 : ");
-            $('#category').change(function() {
-                var category = $(this).val();
-                if(category === "q_02") {
-                    description.val(" 문의 상품 : \n\n 문의 내용 : ");
-                    } else if(category === "q_03") {
-                    description.val(" 주문 번호(주문하신 경우) : \n\n 문의 내용 : ");
-                    } else {
-                    description.val(" 문의 내용 : ");
-                    }
-                });
-            });
-
-    // 아이디 / 이메일 초기값 설정
-
-        $(document).ready(function() {
-            $('input#userid').val(/*[[${loginId}]]*/ '');
-            $('input#email').val(/*[[${email}]]*/ '');
-        });
-    </script>
 </body>
 </html>

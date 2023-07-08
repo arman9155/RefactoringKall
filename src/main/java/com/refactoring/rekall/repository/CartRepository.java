@@ -11,7 +11,11 @@ import java.util.List;
 @Repository
 public interface CartRepository extends JpaRepository<CartEntity, Integer> {
 
-/*   @Query("select c from CartEntity c join c.userEntity u where u.userId = (:id)")
-    List<CartEntity> findUserId(@Param(id) String userId);
-    ==> id 에 맞는 cart 리스트 뽑기 -> 로그인 구현 시 사용*/
+//   @Query("select c from CartEntity c join c.userEntity u where u.userId = (:id)")
+//    List<CartEntity> findUserId(@Param(id) String userId);
+
+    List<CartEntity> findAllByUserEntityUserId(String loginId);
+
+    @Query("Select MAX(c.cartId) from CartEntity c")
+    Integer findId();
 }

@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Controller
 @AllArgsConstructor
 public class ProductController {
@@ -26,14 +27,16 @@ public class ProductController {
 
 
 //  ------------------------------------- ★ Product List ★ ------------------------------------------------------------
-//  ★ 주문케이크 리스트 ★ ------------------------------------------------------------
-    @GetMapping("custom") // 상품리스트 _ custom
+//  ★ 케이크 리스트 ★ ------------------------------------------------------------
+
+    @GetMapping("product/List/{category}") // 상품리스트 _ custom
     public ModelAndView customList(@SessionAttribute(name ="loginId", required = false) String loginId,
-                                   @SessionAttribute(name ="userRole", required = false) String userRole) {
+                                   @SessionAttribute(name ="userRole", required = false) String userRole,
+                                   @PathVariable("category") String categoryId) {
 
         ModelAndView modelAndView = new ModelAndView();
-        List<ProductDTO> productDTOList = productService.findById("custom");
-        String value = categoryService.findByCategoryId("custom");
+        List<ProductDTO> productDTOList = productService.findById(categoryId);
+        String value = categoryService.findByCategoryId(categoryId);
         List<String> tags = productService.findtaglist(productDTOList);
         List<WishListDTO> wishListDTOList = wishListService.findWishList(loginId);
 
@@ -48,35 +51,17 @@ public class ProductController {
         return modelAndView;
     }
 
-//  ★ 디자인케이크 리스트 ★ ------------------------------------------------------------
-    @GetMapping("design") // 상품리스트 _ design
-    public ModelAndView designList(@SessionAttribute(name ="loginId", required = false) String loginId,
-                                   @SessionAttribute(name ="userRole", required = false) String userRole) {
+//  ------------------------------------- ★ tag검색 ★ ------------------------------------------------------------
+
+    @PostMapping("u_tagList")
+    public ModelAndView findTagList(@SessionAttribute(name ="loginId", required = false) String loginId,
+                                    @SessionAttribute(name ="userRole", required = false) String userRole,
+                                    @RequestParam(value = "tags") String[] tags,
+                                    @RequestParam("category") String value) {
+
         ModelAndView modelAndView = new ModelAndView();
-        List<ProductDTO> productDTOList = productService.findById("design");
-        String value = categoryService.findByCategoryId("design");
-        List<String> tags = productService.findtaglist(productDTOList);
-        List<WishListDTO> wishListDTOList = wishListService.findWishList(loginId);
 
-        modelAndView.addObject("productList", productDTOList);
-        modelAndView.addObject("category", value);
-        modelAndView.addObject("loginId", loginId);
-        modelAndView.addObject("userRole", userRole);
-        modelAndView.addObject("wishList", wishListDTOList);
-        modelAndView.addObject("tags", tags); // 태그들
-        modelAndView.setViewName("pages/product/productList.html");
-
-        return modelAndView;
-    }
-
-//  ★ 기타 리스트 ★ ------------------------------------------------------------
-    @GetMapping("etc") // 상품리스트 _ etc
-    public ModelAndView etcList(@SessionAttribute(name ="loginId", required = false) String loginId,
-                                @SessionAttribute(name ="userRole", required = false) String userRole) {
-        ModelAndView modelAndView = new ModelAndView();
-        List<ProductDTO> productDTOList = productService.findById("etc");
-        String value = categoryService.findByCategoryId("etc");
-        List<String> tags = productService.findtaglist(productDTOList);
+        List<ProductDTO> productDTOList = productService.findProductByTagList(tags);
         List<WishListDTO> wishListDTOList = wishListService.findWishList(loginId);
 
         modelAndView.addObject("productList", productDTOList);
@@ -101,11 +86,13 @@ public class ProductController {
         List<ProductImgDTO> productImgDTO = productService.productImgList(productId); //상세사진
         List<ReviewDTO> reviewDTOList = productService.findReview(productId); // 리뷰리스트
         List<ProductQDTO> productQList = productService.findproductQ(productId); // 문의리스트
+
         /*List< ReviewCmtDTO> reviewCmtDTOList = productService.reviewCmt()*/
-        List<ProductDTO> randomItem = productService.randomProduct(productId); // 랜덤리스트
+        List<ProductDTO> randomItem = productService.randomProduct(productId); // 랜덤리스트 --> 갯수에 따른 처리 필!
         List<WishListDTO> wishListDTOList = wishListService.findWishList(loginId); // loginId의 wishList
 
         boolean flag = false;
+
         if(wishListDTOList != null ) {
             for(WishListDTO wishListDTO : wishListDTOList) {
                 if(wishListDTO.getProductDTO().getProductId() == productId)  {
@@ -114,12 +101,12 @@ public class ProductController {
                 }
             }
         }
-
         String[] tags = productService.findtags(productDTO); // 태그 넣기
         String value = productDTO.getName(); //상품명
 
         if(flag)
             modelAndView.addObject("wish", true);
+
         modelAndView.addObject("loginId", loginId);  //세션
         modelAndView.addObject("userRole", userRole);  //세션
 
@@ -134,9 +121,10 @@ public class ProductController {
         modelAndView.addObject("productQDTO",new ProductQDTO()); // 문의글DTO 보내기
 
         System.out.println("productDTO.getCategoryDTO().getCategoryId()"+productDTO.getCategoryDTO().getCategoryId());
-        if(productDTO.getCategoryDTO().getCategoryId() == "custom")
+
+        if(productDTO.getCategoryDTO().getCategoryId().equals("custom"))
             modelAndView.setViewName("pages/product/customDetail.html");
-        else if(productDTO.getCategoryDTO().getCategoryId() == "design")
+        else if(productDTO.getCategoryDTO().getCategoryId().equals("design"))
             modelAndView.setViewName("pages/product/productDetail.html");
         else
             modelAndView.setViewName("pages/product/customDetail.html");
@@ -144,6 +132,8 @@ public class ProductController {
 
         return modelAndView;
     }
+
+
 
 
 //  ------------------------------------- ★ 관리자페이지 ★ -----------------------------------------------------------------
@@ -188,7 +178,7 @@ public class ProductController {
         Integer productId = productService.productAdd(productDTO, imgFile, sort);
 
         modelAndView.addObject("data", new Message("추가되었습니다.", "/a_product_detail?productId="+productId));
-        modelAndView.setViewName("common/fragments/message.html");
+        modelAndView.setViewName("common/message.html");
         return modelAndView;
     }
 
@@ -208,7 +198,7 @@ public class ProductController {
         ModelAndView modelAndView = new ModelAndView();
 
         String sort = "c";
-
+        System.out.println("id"+productDTO.getProductId());
         if(imgFile != null && !imgFile.isEmpty()) {
             productService.productAdd(productDTO, imgFile, sort);
         } else {
@@ -216,32 +206,80 @@ public class ProductController {
         }
 
         modelAndView.addObject("data", new Message("수정되었습니다.", "/a_product_detail?productId="+productDTO.getProductId()));
-        modelAndView.setViewName("common/fragments/message.html");
+        modelAndView.setViewName("common/message.html");
         return modelAndView;
     }
 
 //  ★ 상품 관리 _ 삭제★ ---------------------------------------------------------------
-    @GetMapping("a_product_del") //오..고민해봐야겠네..?
-    public ModelAndView productDel(@RequestParam(required = false, name="productId") Integer productId) {
+    @PostMapping("a_product_del")
+    public ModelAndView addressDel(@RequestParam(required = false, name="productId") Integer productId,
+                                   @RequestParam(required = false, name="productIds") List<Integer> productIds) {
         ModelAndView modelAndView = new ModelAndView();
+        if(productId == null) productId = 0;
+        else if(productIds == null) productIds = new ArrayList<>();
 
-        List<Integer> productIds = new ArrayList<>();
         productService.productDel(productIds, productId);
 
-        modelAndView.addObject("data", new Message("삭제되었습니다.", "close"));
-        modelAndView.setViewName("common/fragments/message.html");
+        if(productId == 0) {
+            modelAndView.addObject("data", new Message("삭제되었습니다.", "a_product"));
+            modelAndView.setViewName("common/message.html");
+        } else {
+            modelAndView.addObject("data", new Message("삭제되었습니다.", "close"));
+            modelAndView.setViewName("common/message.html");
+        }
+        return modelAndView;
+    }
+    
+//  ★ 상품 관리 _ 상세사진등록★ ---------------------------------------------------------------
+    @GetMapping("a_product_DImage")
+    public ModelAndView imageF(@RequestParam("productId") Integer productId) {
+        ModelAndView modelAndView = new ModelAndView();
+
+        List<ProductImgDTO> productImgDTOList = productService.productImgList(productId);
+
+        modelAndView.addObject("productImgList", productImgDTOList);
+        modelAndView.addObject("productImg", new ProductImgDTO());
+        modelAndView.addObject("productId", productId);
+        modelAndView.setViewName("admin/product/productDImage.html");
 
         return modelAndView;
     }
-    @PostMapping("a_product_del")
-    public ModelAndView addressDel(@RequestParam(required = false, name="productIds") List<Integer> productIds) {
+
+    @PostMapping("a_product_DImage")
+    public ModelAndView imageSave(@ModelAttribute("productImg") ProductImgDTO productImgDTO,
+                                  @RequestParam("productId") Integer productId,
+                                  MultipartFile[] files) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
 
-        Integer productId = 0;
-        productService.productDel(productIds, productId);
+        productService.detailImage(productImgDTO, productId, files);
+        modelAndView.addObject("data", new Message("등록되었습니다.", "a_product_DImage?productId="+productImgDTO.getProductDTO().getProductId()));
+        modelAndView.setViewName("common/message.html");
 
-        modelAndView.addObject("data", new Message("삭제되었습니다.", "a_product"));
-        modelAndView.setViewName("common/fragments/message.html");
+
+        return modelAndView;
+    }
+//  ★ 상품 관리 _ 상세사진수정★ ---------------------------------------------------------------
+    @GetMapping("a_product_DImageC")
+    public ModelAndView productDImageCF(@RequestParam("productId") Integer productId) {
+        ModelAndView modelAndView = new ModelAndView();
+
+        modelAndView.addObject("productId", productId);
+        modelAndView.setViewName("admin/product/productDImageC.html");
+
+        return modelAndView;
+    }
+    @PostMapping("a_product_DImageC")
+    public ModelAndView productDImageC(@ModelAttribute ProductImgDTO productImgDTO,
+                                       @RequestParam("productId") Integer productId,
+                                         MultipartFile[] files) throws Exception {
+        ModelAndView modelAndView = new ModelAndView();
+
+        productService.productDImageC(productImgDTO, files, productId); // 기존 사진들 삭제, 새로 저장
+
+        modelAndView.addObject("productId", productId);
+
+        modelAndView.addObject("data", new Message("수정되었습니다.", "a_product_DImage?productId="+productId));
+        modelAndView.setViewName("common/message.html");
 
         return modelAndView;
     }

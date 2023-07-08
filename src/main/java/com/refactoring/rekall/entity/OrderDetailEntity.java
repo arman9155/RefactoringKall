@@ -25,15 +25,15 @@ public class OrderDetailEntity {
 // -------- ▷▶  odetailId 를 사용하는 Entity ----------------------------------------------
     @OneToMany(mappedBy = "orderDetailEntity", cascade = CascadeType.ALL)
     @JsonIgnore
+    private List<OrderEntity> orderEntities = new ArrayList<>();
+    @OneToMany(mappedBy = "orderDetailEntity", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<RefundEntity> refundEntities = new ArrayList<>();
     @OneToMany(mappedBy = "orderDetailEntity", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<ReviewEntity> reviewEntities = new ArrayList<>();
 
 // -------- ▷▶   odetailId 가 외래키로 가져오는 Entity ----------------------------------------------
-    @JoinColumn(name = "orderId")
-    @ManyToOne
-    private OrderEntity orderEntity; // ▷▶ 주문번호
     @ManyToOne
     @JoinColumn(name = "productId")
     private ProductEntity productEntity; // ▷▶ 상품번호
@@ -60,7 +60,7 @@ public class OrderDetailEntity {
 
 // ------------ ▷▶ 예비컬럼----------------------------------------------------------------------------
     @Column(length = 50)
-    private String tmp_2;
+    private String request;
 
 // -------------- ▷▶ DTO -> Entity --------------------------------------------------------
     public static OrderDetailEntity toOrderDetailEntity(OrderDetailDTO orderdetailDTO) {
@@ -69,7 +69,6 @@ public class OrderDetailEntity {
         OrderDetailEntity orderDetailEntity = new OrderDetailEntity();
 
         orderDetailEntity.setOdetailId(orderdetailDTO.getOdetailId());
-        orderDetailEntity.setOrderEntity(OrderEntity.toOrderEntity(orderdetailDTO.getOrderDTO()));
         orderDetailEntity.setProductEntity(ProductEntity.toProductEntity(orderdetailDTO.getProductDTO()));
         orderDetailEntity.setOption_sheet(orderdetailDTO.getOption_sheet());
         orderDetailEntity.setOption_shape(orderdetailDTO.getOption_shape());
@@ -80,6 +79,7 @@ public class OrderDetailEntity {
         orderDetailEntity.setAmount(orderdetailDTO.getAmount());
         orderDetailEntity.setPrice(orderdetailDTO.getPrice());
         orderDetailEntity.setStatus(orderdetailDTO.getStatus());
+        orderDetailEntity.setRequest(orderDetailEntity.getRequest());
 
         return orderDetailEntity;
     }

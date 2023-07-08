@@ -9,6 +9,30 @@
     <title>자주 묻는 질문</title>
     <link th:href="@{css/community/notice.css}" rel="stylesheet">
     <script type="text/javascript" th:src="@{myLib/jquery-3.2.1.min.js}"></script>
+    <script th:inline="javascript">
+
+    /* 토글 선택시 열리고 닫고 */
+        $(document).ready(function() {
+           $('tr.toggle_Q').click(function() {
+                $(this).next('tr.toggle_A').toggle('fast');
+            });
+        });
+
+    /* QnA 정렬 -> 버튼 색상 변경하는거가 안되냐,,*/
+             $(document).ready(function() {
+                 $('a.category').click(function() {
+                    if( $(this).hasClass("bkcolor")) {
+                        $(this).removeClass("bkcolor");
+                    } else {
+                        $(this).addClass("bkcolor");
+                    }
+                    var sortOption = $(this).data('sort-option');
+                    var urlParams = new URLSearchParams(window.location.search);
+                    urlParams.set('sort', sortOption);
+                    window.location.search = urlParams.toString();
+                 });
+             });
+    </script>
 </head>
 <body>
     <section class="content">
@@ -58,29 +82,6 @@
             });
         });
     </script>-->
-    <script th:inline="javascript">
 
-    /* 토글 선택시 열리고 닫고 */
-        $(document).ready(function() {
-           $('tr.toggle_Q').click(function() {
-                $(this).next('tr.toggle_A').toggle('fast');
-            });
-        });
-
-    /* QnA 정렬 -> 버튼 색상 변경하는거가 안되냐,,*/
-             $(document).ready(function() {
-                 $('a.category').click(function() {
-                    if( $(this).hasClass("bkcolor")) {
-                        $(this).removeClass("bkcolor");
-                    } else {
-                        $(this).addClass("bkcolor");
-                    }
-                    var sortOption = $(this).data('sort-option');
-                    var urlParams = new URLSearchParams(window.location.search);
-                    urlParams.set('sort', sortOption);
-                    window.location.search = urlParams.toString();
-                 });
-             });
-    </script>
 </body>
 </html>

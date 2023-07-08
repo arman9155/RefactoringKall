@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/mypageLayout}"
+      layout:fragment="Content">
+<head>
+  <link th:href="@{css/mypage/list.css}" rel="stylesheet">
+  <script type="text/javascript" th:src="@{myLib/jquery-3.2.1.min.js}"></script>
+  <meta charset="UTF-8">
+  <title>주문•배송 내역</title>
+</head>
+<body>
+<section class="content">
+  <h3 class="underline">주문•배송 내역</h3>
+
+  <div class="sort">
+    <a th:href="@{u_order}" th:text="전체" th:class="${status == 'all'} ? 'active' : '' "></a>
+    <a th:href="@{u_order(sort='결제 완료')}" th:text="'결제 완료'" th:class="${status == '결제 완료'} ? 'active' : '' "></a>
+    <a th:href="@{u_order(sort='배송 준비')}" th:text="'배송 준비'" th:class="${status == '배송 준비'} ? 'active' : '' "></a>
+    <a th:href="@{u_order(sort='배송 중')}" th:text="'배송 중'" th:class="${status == '배송 중'} ? 'active' : '' "></a>
+    <a th:href="@{u_order(sort='배송 완료')}" th:text="'배송 완료'" th:class="${status == '배송 완료'} ? 'active' : '' "></a>
+    <a th:href="@{u_order(sort='구매 확정')}" th:text="'구매 확정'" th:class="${status == '구매 확정'} ? 'active' : '' "></a>
+  </div>
+
+  <table class="list">
+    <tbody id="orderList">
+    <th:block th:each="order : ${orderList}">
+      <tr>
+        <th>[[${order.status}]]</th>
+        <td>[[${order.date}]]. 결제</td>
+      </tr>
+      <tr>
+        <th>[[${order.odetailDTO.productDTO.image}]]</th>
+        <th>[[${order.odetailDTO.productDTO.name}]]</th>
+        <td><a href="${orderDetail(odetailId=${order.odetailDTO.odetailId})}">주문상세 ></a></td>
+        <td><a href="${question}"> 문의> </td>
+      </tr>
+      <tr th:if="${order.status == '결제 완료'}">
+        <th><a>취소요청</a></th>
+      </tr>
+      <tr th:if="${order.status == '구매 확정'}">
+        <th><a>리뷰 작성</a></th>
+        <th><a>재구매</a></th>
+      </tr>
+      <tr th:if="${order.status == '배송 중' || '배송 준비' }">
+        <th><a>구매 확정</a></th>
+      </tr>
+    </th:block>
+    </tbody>
+  </table>
+</section>
+
+</body>
+</html>

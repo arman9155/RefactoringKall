@@ -6,29 +6,24 @@
       layout:fragment="Content">
 <head>
     <meta charset="UTF-8">
-    <link th:href="@{css/product/main.css}" rel="stylesheet">
+    <link th:href="@{css/main.css}" rel="stylesheet">
     <title>Main</title>
 </head>
 <body>
 <div >
     <div class="main_wrapper">
         <div class="main_picture">
-            <input type="radio" name="main_pic" id="main_1" class="main_pic" checked>
-            <label for="main_1"></label>
-            <!--            <img src="../img/main_picture/1.jpg" alt="메인사진1" id="main 1">-->
-
-            <input type="radio" name="main_pic" id="main_2" class="main_pic">
-            <label for="main_2"></label>
-            <!--            <img src="../img/main_picture/2.jpg" alt="메인사진2" id="main 2">-->
-
-            <input type="radio" name="main_pic" id="main_3" class="main_pic">
-            <label for="main_3"></label>
-            <!--            <img src=" ../img/main_picture/3.jpg" alt="메인사진3" id="main 3">-->
+            <div th:each ="img, i : ${imgList}">
+                <input th:if="${i.index==0}" type="radio" name="main_pic" th:id="main_+${i.index+1}" class="main_pic" checked>
+                <input th:if="${i.index > 0}" type="radio" name="main_pic" th:id="main_+${i.index+1}" class="main_pic">
+                <label th:for="main_+${i.index+1}"></label>
+                <img name="main_img" th:src="${img.image}">
+            </div>
         </div>
     </div>
 
     <h2 class="animate__animated element">신상품</h2>
-    <form action="" method="get" th:object="${recommendProduct}">
+    <form method="get" th:object="${recommendProduct}">
         <div class="recommendContainer">
             <th:block th:each="item,i : ${recommendProduct}">
                 <div class="recommend item" th:classappend="${i.index+1}">

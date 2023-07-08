@@ -29,17 +29,20 @@ public class ProductImgEntity {
     private ProductEntity productEntity;  //  ▷▶ 상품번호
 // -------------------------------------------------------------------------------------------
 
-    @Column(nullable = false, length = 100)
-    private String imgName; // ▷▶ 파일경로
+    @Column(length = 100)
+    private String image = "example"; // ▷▶ 파일경로
+    @Column(length = 100)
+    private String imageName = "example";
 
 // -------------- ▷▶ DTO -> Entity --------------------------------------------------------
-    public static ProductImgEntity toSetProductImgEntity(ProductImgDTO productImgDTO) {
+    public static ProductImgEntity toProductImgEntity(ProductImgDTO productImgDTO) {
         if(productImgDTO == null) return  null;
         ProductImgEntity productImgEntity = new ProductImgEntity();
 
         productImgEntity.setProductimgId(productImgDTO.getProductimgId());
         productImgEntity.setProductEntity(ProductEntity.toProductEntity(productImgDTO.getProductDTO()));
-        productImgEntity.setImgName(productImgDTO.getImgName());
+        productImgEntity.setImage(productImgDTO.getImage());
+        productImgEntity.setImageName(productImgDTO.getImageName());
 
         return productImgEntity;
     }

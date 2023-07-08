@@ -1,5 +1,4 @@
-.mypage,
-.mypage_menu {
+.mypage {
     text-align:center;
      border: 3px solid #FB9DA7;
 }
@@ -8,5 +7,7 @@
     display: grid;
     grid-template: repeat(2, 1fr) / repeat(4, 1fr);
     justify-contents: center;
-   align-items: center;
-}
+    align-items: center;
+    border-top: 3px solid #FB9DA7;
+ }
+

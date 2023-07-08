@@ -28,6 +28,7 @@ public class CartDTO {
     private String option_image; // ▷▶ 이미지 옵션
     private Integer amount; // ▷▶ 개수
     private Integer price; // ▷▶ 가격
+    private String request; // ▷▶ 요청사항
 
 // -------------- ▷▶ Entity -> DTO ---------------------------------------------------------
     public static CartDTO toCartDTO(CartEntity cartEntity) {
@@ -45,6 +46,7 @@ public class CartDTO {
         cartDTO.setOption_image(cartEntity.getOption_image());
         cartDTO.setAmount(cartEntity.getAmount());
         cartDTO.setPrice(cartEntity.getPrice());
+        cartDTO.setRequest(cartEntity.getRequest());
 
         return cartDTO;
     }

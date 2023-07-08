@@ -8,5 +8,8 @@ import java.util.List;
 
 @Repository
 public interface ProductQRepository extends JpaRepository<ProductQEntity, Integer> {
-    List<ProductQEntity> findByProductEntityProductIdOrderByProductQIdDesc(Integer productId);
+
+    List<ProductQEntity> findByProductEntityProductIdOrderByProductqIdDesc(Integer productId);
+
+    List<ProductQEntity> findByUserEntityUserIdOrderByProductqIdDesc(String loginId);
 }

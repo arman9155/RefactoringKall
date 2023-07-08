@@ -38,12 +38,13 @@ form textarea {
     appearance: auto;
     line-height: 1.2rem;
 }
-.file-upload {
+.file_upload {
     display: flex;
     align-items: center;
     text-align: center;
 }
-.file-upload .upload-name {
+
+.file_upload .upload_name {
     box-sizing: border-box;
     height: 40px;
     padding: 10 20px;
@@ -53,7 +54,7 @@ form textarea {
     width:70%;
 }
 
-.file-upload label {
+.file_upload label {
     box-sizing: border-box;
     height: 40px;
     padding: 10px 20px;
@@ -65,13 +66,23 @@ form textarea {
     color: white;
 }
 
-.file-upload input[type="file"] {
+.file_upload input[type="file"] {
     position: absolute;
     width: 0;
     height: 0;
     padding: 0;
     overflow: hidden;
     border: 0;
+}
+
+.file_image {
+    display : flex;
+    gap: 5px;
+}
+
+.img {
+    width : 300px;
+    height : 300px;
 }
 
 form button {
