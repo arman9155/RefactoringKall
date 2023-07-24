@@ -2,12 +2,12 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{common/layouts/mypageLayout}"
+      layout:decorate="~{/common/layouts/mypageLayout}"
       layout:fragment="Content">
 <head>
     <meta charset="UTF-8">
-    <script type="text/javascript" th:src="@{myLib/jquery-3.2.1.min.js}"></script>
-    <link th:href="@{css/product/product.css}" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/myLib/jquery-3.2.1.min.js}"></script>
+    <link th:href="@{/css/product/product.css}" rel="stylesheet">
     <title>wishList</title>
 </head>
 <body>
@@ -19,13 +19,13 @@
                 <div class="custom" th:classappend="${i.index+1}">
                     <div class="product_imgs">
                         <span th:class="active" th:onclick="'javascript:toggleActive(this)'"
-                              th:attr="data-product=${item.productDTO.productId},data-url=@{u_wishList}">하트</span>
+                              th:attr="data-product=${item.productDTO.productId},data-url=@{/mypage/wish/list}">하트</span>
 
-                        <a th:href="@{product/{id}(id=${item.productDTO.productId})}">
+                        <a th:href="@{/product/{id}(id=${item.productDTO.productId})}">
                             <img th:src="${item.productDTO.image}">
                         </a>
                     </div>
-                    <a th:href="@{product/{id}(id=${item.productDTO.productId})}">
+                    <a th:href="@{/product/{id}(id=${item.productDTO.productId})}">
                         <h3 th:text="${item.productDTO.name}"></h3><br>
                     </a>
                 </div>
@@ -42,10 +42,8 @@
             var userRole = /*[[${userRole}]]*/ null;
             var productId = parseInt(element.getAttribute('data-product'));
 
-            alert("script에 들어옴"+loginId);
-
             $.ajax({
-                url: "/u_wishListDel/"+productId,
+                url: "/mypage/wish/del/"+productId,
                 method: "GET",
                 data : {loginId: loginId,
                         userRole: userRole,

@@ -15,6 +15,7 @@
     border-top: 1px solid #3c3c3c;
     border-collapse: collapse;
     line-height: 40px;
+    margin : 30px 0;
 }
 
 .list a {
@@ -35,6 +36,24 @@
     text-indent: -9999em;
     display : inline-block;
 }
+
+#address input[type='radio'] {
+    all : revert;
+    -webkit-appearance : none;
+    height : 20px;
+    width : 20px;
+    border-radius : 50%;
+    cursor : pointer;
+    padding : 0 10px;
+    outline : 1px solid RGB(255, 200, 200);
+    margin-top : calc((40px - 20px)/2);
+}
+
+#address input[type='radio']:checked {
+    border-color :  #FB9DA7;
+    background :   #FB9DA7;
+}
+
 
 /* ----- ★ 테이블 넓이 ★ ------------------------------------------------------------*/
 

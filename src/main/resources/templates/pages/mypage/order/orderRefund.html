@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <link th:href="@{/css/mypage/list.css}" rel="stylesheet">
+  <script type="text/javascript" th:src="@{/myLib/jquery-3.2.1.min.js}"></script>
+  <meta charset="UTF-8">
+  <script th:inline="javascript">
+    function closeWindow() {
+      window.opener.parent.location.reload();
+      window.close();
+    }
+
+      // 첨부파일명 / 사진 미리보기
+        function loadFile(input) {
+            var container = document.querySelector('.detail_image');
+            container.innerHTML = "";
+
+             if(input.files && input.files[0]) {
+                var names = [];
+                for(let i = 0; i < input.files.length; i ++ ) {
+                    var file = input.files[i];
+                    names.push(file.name);
+
+                    var newImage = document.createElement("img");
+                    newImage.setAttribute("class","img");
+                    newImage.src = URL.createObjectURL(file);
+
+                    container.appendChild(newImage);
+                }
+                var name = document.querySelector('.upload_name');
+                name.value = names.join(`  /  `);
+            }
+        }
+    </script>
+  <title>반품 요청</title>
+</head>
+<body>
+<section class="content">
+  <h3 class="underline">반품 요청</h3>
+  <table class="list" th:object="${refundDTO}">
+    <tbody id="orderCancel">
+    <tr>
+      <th>주문상세번호</th>
+      <td>
+        <input type="text" id="odetailId" name="odetailId" th:field="*{orderDetailDTO.odetailId}" readonly>
+      </td>
+    </tr>
+    <tr>
+      <th>아이디</th>
+      <td>
+        <input type="text" id="userId" name="userId" th:field="*{userDTO.userId}" readonly>
+        </td>
+    </tr>
+    <tr>
+      <th><label for="title">제목</label></th>
+      <td>
+        <input type="text" id="title" name="title" th:field="*{title}">
+      </td>
+    </tr>
+    <tr>
+      <th><label for="description">내용</label></th>
+      <td>
+        <textarea name="description" id="description" rows="10" th:field="*{content}">반품 사유 : </textarea>
+      </td>
+    </tr>
+    <tr>
+      <th>사진 첨부</th>
+      <td class="file_upload">
+        <input class="upload_name" placeholder="2개 첨부 가능"  readonly>
+        <label for="file">파일 첨부</label>
+        <input type="file" name="files" id="file" accept="image/*"  multiple onchange="loadFile(this)">
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2" class="detail_image">
+
+      </td>
+    </tr>
+    </tbody>
+    <tfoot>
+      <div class="buttons">
+        <button>반품 요청</button>
+        <a onclick="closeWindow();">닫기</a>
+      </div>
+    </tfoot>
+  </table>
+  </form>
+</section>
+</body>
+</html>

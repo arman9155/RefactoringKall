@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/common/layouts/orderLayout}">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/order/order.css}" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/myLib/jquery-3.2.1.min.js}"></script>
+    <title>주문 / 결제</title>
+    <script th:src="@{/js/login/inCheck.js}"></script>
+    <script>
+
+		let ph2Check = false;
+		let ph3Check = false;
+
+        onload = function () {
+            // ** phone
+            document.getElementById('pbC').addEventListener("focusout", () => {
+                ph2Check = phm2Check();
+            });
+            // ** phone2
+            document.getElementById('pb2').addEventListener("focusout", () => {
+                ph3Check = phm3Check();
+                 if(ph3Check == false)
+                    $('#ph2Message').html('필수입력, 전화번호 (을)를 확인하세요.');
+            });
+        }
+
+        function selectPayment(element) {
+            var payment = element.value;
+                var container = document.getElementById('explain');
+                if(payment == 'acount') {
+                    container.innerText = "계좌번호 등 정보~~";
+                } else if (payment == 'phone') {
+                    container.innerText = "핸드폰 결제 방법 등등 ~~";
+                } else if (payment == 'credit') {
+                    container.innerText = "무이자 할부 정도 등등~~~~";
+                } else {
+                    container.innerText = "카카오페이정보~~~~~~";
+                }
+        }
+
+
+        function pbChange() {
+            var button = document.getElementById('change');
+            var chInput = document.getElementById('pbChange'); // 수정 div틀
+            var readOnly = document.getElementById('pb');
+
+            document.getElementById('phMessage').innerText = "";
+            chInput.style.display = 'block';
+            readOnly.style.display = 'none';
+            button.style.display = 'none';
+        }
+
+        function chComplete() {
+            if(ph2Check == false) {
+                $('#phMessage').html('필수입력, 전화번호 (을)를 확인하세요.');
+            }else {
+                var button = document.getElementById('change');
+                var chBox = document.getElementById('pbChange'); // 수정 div틀
+                var chInput = document.getElementById('pbC'); // 수정 input
+                console.log(chInput.value);
+                var origin = document.getElementById('pb');  // 기존 input
+                origin.style.display='block';
+                origin.value = chInput.value;
+                origin.readOnly = true;
+                chBox.style.display = 'none'; // 수정 div틀 숨김
+                button.style.display = 'block'; // button 보여줌
+            }
+        }
+
+        function chCancel() {
+            var button = document.getElementById('change');
+            var chInput = document.getElementById('pbChange'); // 수정 div틀 숨김
+            var origin = document.getElementById('pb');  // 기존 input
+
+            chInput.style.display = 'none'; // 수정 div 숨김
+            button.style.display = 'block'; // button 보여줌
+            origin.style.display='block';
+            origin.readOnly = true;
+        }
+
+        function sameInfo() {
+            var checkBox = document.getElementById('same');
+            var userName = document.getElementById('userName');
+            var userPb = document.getElementById('pb');
+            var orderName = document.getElementById('orderName');
+            var orderPb = document.getElementById('pb2');
+
+            if(same.checked) { // user쪽 값 가져와서 넣고 readOnly
+                orderName.value = userName.value;
+                orderPb.value = userPb.value;
+                orderName.readonly = true;
+                orderPb.readonly = true;
+            } else { // 아니면 빈칸
+                orderName.value = "";
+                orderPb.value = "";
+            }
+        }
+
+        function cartToOrder() {
+            var orderName = document.getElementById('orderName').value;
+            var zipCode = document.getElementById('orderName').value;
+            var address1 = document.getElementById('address1').value;
+            var address2 = document.getElementById('address2').value;
+            var orderNb = document.getElementById('pb2').value;
+            var request = document.getElementById('request').value;
+            if(request == "") request = "null";
+            var mileage = document.getElementById('mileage').value;
+            if(mileage < 1000) mileage = 0;
+            var totalP = document.getElementById('totalP').innerText;
+            totalP = totalP.replace("원","").trim();
+            var payment = document.querySelector('input[name=payment]:checked').value;
+            var mileage2 = (parseInt(totalP)-3000)*0.1;
+            var buyerNb = document.getElementById('pb').value;
+            const header = document.getElementById('header_name');
+            const loginId = header.querySelector('span').textContent;
+			const order = {
+                name : orderName,
+                zipCode : zipCode,
+                address_1 : address1,
+                address_2 : address2,
+                phoneNb : orderNb,
+                request : request,
+                mileage : mileage,
+                price : totalP,
+                payment : payment,
+                mileage2 : mileage2,
+                buyerNb : buyerNb
+            }
+            console.log(JSON.stringify(order));
+            console.log(typeof order);
+			$.ajax ({
+			    url : "/order/order/save",
+				method : "POST",
+				data : {order : JSON.stringify(order),
+				        userId : loginId}
+			}).done(function(data){
+
+                var cartBox = document.querySelectorAll('.cartList'); // cartList 를 담은 틀
+
+                for(let i=0; i < cartBox.length; i++) {
+                    var cartId = cartBox[i].getAttribute('data-cartId');
+                    var sheet = cartBox[i].querySelector('#option_sheet'+cartId).innerText;
+                    var shape = cartBox[i].querySelector('#option_shape'+cartId).innerText;
+                    var cream = cartBox[i].querySelector('#option_cream'+cartId).innerText;
+                    var lettering = cartBox[i].querySelector('#option_lettering'+cartId);
+                    if(lettering != null) lettering = lettering.innerText;
+                    else lettering = "null";
+                    var img = cartBox[i].querySelector('#option_image'+cartId);
+                    if(img == null) img ="null";
+                    else img = img.getAttribute("data-imgName");
+                    var request = cartBox[i].querySelector('#request'+cartId);
+                    if(request == null) request = "null";
+                    else request = request.innerTest;
+
+                    var col3 = cartBox[i].querySelector('.col3');
+                    var amount = col3.querySelector('#amount'+cartId).innerText;
+                    var col4 = cartBox[i].querySelector('.col4');
+                    var price = col4.querySelector('#price'+cartId).innerText;
+
+                    const odetailDTO = {
+                        option_sheet : sheet,
+                        option_shape : shape,
+                        option_cream : cream,
+                        option_lettering : lettering,
+                        option_image : img,
+                        amount : parseInt(amount),
+                        price : parseInt(price),
+                        request : request,
+                    }
+                    console.log(JSON.stringify(odetailDTO));
+					$.ajax ({
+			            url : "/order/odetail/save",
+					    method : "POST",
+					    data : {odetailDTO : JSON.stringify(odetailDTO),
+                                orderId : data,
+					            cartId : cartId
+					            }
+					}).done(function(){
+					    alert("odetail저장 완료");
+					}).fail(function() {
+					    alert("실패");
+					});
+                } //for문
+                kakao(data);
+			}).fail(function(data) {
+			    $.ajax ({
+			    url : "/order/order/del",
+				method : "POST",
+				data : { orderId : data}
+			    }).done(function(){
+					    alert("order 삭제 완료");
+				}).fail(function() {
+					    alert("삭제 실패");
+				});
+			});
+
+        }
+//// 저장 controller 다 만들어야됨
+//// kakao Complete  확인하기
+
+        function kakao(data) {
+            var totalP = document.getElementById('totalP').innerText;
+            const header = document.getElementById('header_name');
+            const loginId = header.querySelector('span').textContent;
+            var cartBox = document.querySelectorAll('.cartList'); // cartList 를 담은 틀
+			var product = cartBox[0].querySelector('.col1').innerText;
+            var quantity = cartBox.length;
+            if(cartBox.length > 1) {
+                product +=" 외 ";
+                product += cartBox.length-1 ;
+                product += " 건";
+            }
+            var productId = [];
+            for(let i = 0; i < cartBox.length; i++) {
+                productId.push(cartBox[i].getAttribute('data-productId'));
+            }
+
+            var url = "/kakao/ready";
+            var target = "kakaoPop";
+            var features = "scrollbars = yes, width = 500, height=600, location=no, resizable=yes";
+
+            var popup = window.open("", target, features);
+
+                $.ajax ({
+                    	url : url,
+                    	method : "POST",
+                    	data : {
+                            loginId : loginId,
+                            product : product,
+                            quantity : quantity,
+                            totalP : totalP,
+                            orderId : data,
+                            productId : JSON.stringify(productId)
+                        }
+		 	    }).done(function(data){
+		 	        console.log(JSON.stringify(data));
+		 	        popup.location.href=data.next_redirect_pc_url;
+		 	    }).fail(function(request,status,error){
+                console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            });
+        } // kakao
+
+        function confirmMileage() {
+             var mileage = document.getElementById('mileage');
+             var max = mileage.max;
+             var alert = document.getElementById('mMessage');
+             var discount = document.getElementById('discount');
+             var totalP = document.getElementById('totalP');
+             var cartP = document.getElementById('cartP');
+             cartP = cartP.innerText.replace("원","").trim();
+             calcP = parseInt(cartP) + 3000; // 총 결제금액 세팅
+
+             if(parseInt(mileage.value) < 1000 ) {
+                alert.style.display="block";
+                alert.innerText = "1000 포인트 이상 사용 가능";
+                mileage.value = "";
+                discount.innerText = "0 원";
+                totalP.innerText = parseInt(calcP) + " 원"; // 값 계산
+             } else if (parseInt(mileage.value) > parseInt(max)) {
+                alert.style.display='block';
+                alert.innerText = "가용 포인트 이상 사용 불가능";
+                mileage.value = "";
+                discount.innerText = "0 원";
+                totalP.innerText = parseInt(calcP) + " 원"; // 값 계산
+             } else {
+                alert.innerText = "";
+                discount.innerText = parseInt(mileage.value)+" 원";  //할인 금액
+
+                totalP.innerText = parseInt(calcP) - mileage.value + " 원"; // 값 계산
+                console.log(totalP.innerText);
+             }
+        }
+
+        function orderCancel() {
+            if(session.getAttribute("from") != null) {
+                if(confirm("취소하겠습니까?")) {
+                    var cartBox = document.querySelectorAll('.cartList'); // cartList 를 담은 틀
+                    var cartIds = [];
+
+                    for(let i = 0; i < cartBox; i++) {
+                        var cartId = cartBox[i].getAttribute('data-cartId');
+                        cartIds.add(cartId);
+                    } // for문
+
+                    $.ajax({
+                        url : 'cart/del',
+                        method : 'POST',
+                        data : { cartIds : cartIds}
+                    }).done (function(){
+                        alert("cart 삭제 완료");
+                        location.href="/cart";
+				    }).fail(function() {
+					    alert("삭제 실패");
+				    });
+                } // if절
+            } else(confirm("취소하겠습니까?"))
+                location.href="/cart";
+        } //orderCancel
+
+    </script>
+</head>
+<body layout:fragment="Content">
+        <h3 class="underline">구매자 정보</h3>
+        <table class="buyerInfo">
+            <tr>
+                <th>이름</th>
+                <td><input type="text" id="userName" th:value="${userInfo.name}" readonly></td>
+            </tr>
+            <tr>
+                <th>이메일</th>
+                <td><input type="email" th:value="${userInfo.email}" readonly></td>
+            </tr>
+            <tr>
+                <th>휴대폰 번호</th>
+                <td class="userPb">
+                    <input type="text" id="pb" th:value="${userInfo.phoneNb}" readonly>
+                    <a id="change" onclick="pbChange()">수정</a>
+                    <div id="pbChange">
+                        <input id="pbC" type="text" name="phoneNb" value="010" maxlength="11" placeholder="숫자만">
+                        <span id="phMessage" class="eMessage"></span>
+                        <div class="buttons">
+                            <input type="button" value="수정 완료" onclick="chComplete()">
+                            <input type="button" value="취소" onclick="chCancel()">
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <h3 class="underline">받는 사람 정보</h3>
+        <table class="orderInfo">
+            <tr>
+                 <th colspan="2" id="checkBox">
+                     <input type="checkbox" id="same" onclick="sameInfo()">
+                     <label for="same">구매자와 동일</label>
+                 </th>
+             </tr>
+            <tr>
+                <th>이름</th>
+                <td><input type="text" id="orderName"></td>
+            </tr>
+            <tr>
+                <th>휴대폰 번호</th>
+                <td>
+                    <input type="text" id="pb2">
+                    <span id="ph2Message" class="eMessage"></span>
+                </td>
+            </tr>
+            <tr>
+                <th>우편번호</th>
+                <td id="zipBox">
+                    <input type="text" id="zipCode" readonly>
+                    <a id="searchAddress" th:href="@{/order/address(page='order')}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=850,height=500'); return false;">검색</a>
+                </td>
+            </tr>
+            <tr>
+                <th>배송주소</th>
+                <td id="addressBox">
+                    <input type="text" id="address1" readonly>
+                    <input type="text" id="address2" placeholder="상세주소">
+                </td>
+            </tr>
+            <tr>
+                <th>배송 시 요청사항 </th>
+                <td><input type="text" id="request" ></td>
+            </tr>
+        </table>
+
+        <h3 class="underline">결제 상품 목록</h3>
+        <table class="productList" >
+            <thead>
+                <tr>
+                    <th class="col1">상품명</th>
+                    <th class="col2">옵션 정보</th>
+                    <th class="col3">수량</th>
+                    <th class="col4">가격</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr class="cartList" th:id="cart+${i.index}" th:attr="data-cartId=${cart.cartId}, data-productId=${cart.productDTO.productId}"
+                    th:each="cart, i : ${cartList}">
+                    <td class="col1">[[${cart.productDTO.name}]]</td>
+                    <td class="col2">
+                        <img class="imageP" th:src="${cart.productDTO.image}">
+                        <table class="cartOption">
+                            <tr th:if="${cart.option_sheet != null}">
+                                <th> 시트 : </th>
+                                <td th:id="option_sheet+${cart.cartId}">[[${cart.option_sheet}]]</td>
+                            </tr>
+                            <tr th:if="${cart.option_shape != null}">
+                                <th> 모양 : </th>
+                                <td th:id="option_shape+${cart.cartId}">[[${cart.option_shape}]]</td>
+                            </tr>
+                            <tr th:if="${cart.option_cream != null}">
+                                <th> 크림 : </th>
+                                <td th:id="option_cream+${cart.cartId}">[[${cart.option_cream}]]</td>
+                            </tr>
+                            <tr th:if="${cart.option_lettering != null}">
+                                <th> 레터링 : </th>
+                                <td th:id="option_lettering+${cart.cartId}">[[${cart.option_lettering}]]</td>
+                            </tr>
+                            <tr th:if="${cart.option_size != null}">
+                                <th> 사이즈 : </th>
+                                <td th:id="option_size+${cart.cartId}">[[${cart.option_size}]]</td>
+                            </tr>
+                            <tr th:if="${cart.option_image != null}">
+                                <th> 이미지 : </th>
+                                <td th:id="option_image+${cart.cartId}" th:attr="data-imgName = ${cart.option_image}">⭕</td>
+                            </tr>
+                            <tr th:if="${cart.request != null}">
+                                <th> 요청 사항 : </th>
+                                <td th:id="request+${cart.cartId}">[[${cart.request}]]</td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td class="col3">
+                       <p th:id="amount+${cart.cartId}" th:text="${cart.amount}"></p>
+                    </td>
+                    <td class="col4">
+                        <p th:id="price+${cart.cartId}" th:utext="${cart.price}*${cart.amount}"></p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3 class="underline">할인 적용</h3>
+        <ul class="discount">
+            <li><label for="mileage">마일리지</label></li>
+            <li>
+                <div id="mileageBox">
+                    <input type="number" max="" id="mileage" min="1000" th:max="${userInfo.mileage}" onchange="confirmMileage()" placeholder="1000포인트 이상 사용 가능">
+                    <input type="text" th:value="'가용 마일리지 : ' +${userInfo.mileage}" readonly>
+                </div>
+                <span id="mMessage" class="eMessage"></span>
+            </li>
+        </ul>
+
+        <h3 class="underline">결제 수단 선택</h3>
+        <div class="pay">
+            <div id="payment">
+                <ul>
+                    <li>
+                        <input type="radio" name="payment" value="acount" id="count" onclick="selectPayment(this)">
+                        <label for="count">계좌이체</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="credit-card" name="payment" value="credit" onclick="selectPayment(this)">
+                        <label for="credit-card">신용/체크카드</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="phone" name="payment" value="phone" onclick="selectPayment(this)">
+                        <label for="phone">휴대폰</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="kakaoPay" name="payment" value="kakao" onclick="selectPayment(this)">
+                        <label for="kakaoPay">카카오페이</label>
+                    </li>
+                </ul>
+            </div>
+            <div id="explain">
+
+            </div>
+        </div>
+
+        <h3 class="underline">최종결제금액</h3>
+        <table class="total">
+            <tr>
+                <th>총상품가격</th>
+                <th>총 할인 금액</th>
+                <th>배송비</th>
+                <th>총결제금액</th>
+            </tr>
+            <tr>
+                <td id="cartP">[[${cartP}]]</td>
+                <td id="discount"> 0 원</td>
+                <td> 3000 원</td>
+                <td id="totalP"> [[${totalP}]]</td>
+            </tr>
+        </table>
+        <div class="buttons">
+            <a id="pay" onclick="cartToOrder()">결제</a>
+            <a id="cancel" onclick="orderCancel()">취소</a>
+        </div>
+</body>
+</html>

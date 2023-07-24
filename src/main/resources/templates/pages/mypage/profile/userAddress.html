@@ -2,18 +2,18 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{common/layouts/mypageLayout}"
+      layout:decorate="~{/common/layouts/mypageLayout}"
       layout:fragment="Content">
 <head>
-  <link th:href="@{css/mypage/address.css}" rel="stylesheet">
-  <script type="text/javascript" th:src="@{myLib/jquery-3.2.1.min.js}"></script>
+  <link th:href="@{/css/mypage/address.css}" rel="stylesheet">
+  <script type="text/javascript" th:src="@{/myLib/jquery-3.2.1.min.js}"></script>
   <meta charset="UTF-8">
   <title>배송지 관리</title>
 </head>
 <body>
   <section class="content">
     <h3 class="underline">배송지 관리</h3>
-    <form id="default_address" method="post" th:action="@{u_default_address}">
+    <form id="default_address" method="post" th:action="@{/mypage/address/default}">
       <table class="address list">
         <thead>
           <tr>
@@ -37,9 +37,9 @@
 
               </td>
               <td>
-                <a th:href="@{u_address_detail(addressId=${address.addressId})}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=500,height=500'); return false;">
-                  <th:block th:if="${address.addressName == null}">
-                    [[${address.userDTO.userId}]]
+                <a th:href="@{/mypage/address/detail(addressId=${address.addressId})}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=650,height=300'); return false;">
+                  <th:block th:if="${address.addressName == null || address.addressName == ''}">
+                    [[${address.name}]]
                   </th:block>
                   <th:block th:if="${address.addressName != null}">
                     [[${address.addressName}]]
@@ -57,14 +57,14 @@
             <div class="buttons">
               <th:block th:if="${i.last}">
                 <button>기본 배송지로 설정</button>
-                <a th:href="@{u_address_add}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=500,height=500'); return false;">배송지 추가</a>
-                <a th:href="@{u_address_del(addressId=${address.addressId})}">삭제</a>
+                <a th:href="@{/mypage/address/add}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=650,height=300'); return false;">배송지 추가</a>
+                <a th:href="@{/mypage/address/del(addressId=${address.addressId})}">삭제</a>
               </th:block>
             </div>
           </th:block>
           <th:block th:if="${addressList == null || addressList.size() == 0}">
             <div class="buttons">
-              <a th:href="@{u_address_add}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=500,height=500'); return false;">배송지 추가</a>
+              <a th:attr="data-page='mypage'" class="add" th:href="@{/mypage/address/add}"  th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=650,height=300'); return false;">배송지 추가</a>
             </div>
           </th:block>
         </tbody>

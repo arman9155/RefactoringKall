@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -19,40 +20,34 @@ public class WishListController {
     WishListService wishListService;
 
 //  ------------------------------------- ★ 로그인 id 별 wishList 뽑기★ ------------------------------------------------------------
-    @GetMapping("u_wishList")
-    public ModelAndView wishList(@SessionAttribute(name ="loginId", required = false) String loginId,
-                                 @SessionAttribute(name ="userRole", required = false) String userRole) {
+    @GetMapping("mypage/wish/list")
+    public ModelAndView wishList(HttpSession session) {
         ModelAndView modelAndView = new ModelAndView();
 
-        List<WishListDTO> wishList = wishListService.findWishList(loginId);
+        List<WishListDTO> wishList = wishListService.findWishList(session.getAttribute("loginId").toString());
 
-        modelAndView.addObject("loginId", loginId);
-        modelAndView.addObject("userRole", userRole);
         modelAndView.addObject("wishList", wishList);
-
         modelAndView.setViewName("pages/mypage/wishList.html");
 
         return modelAndView;
     }
 
 //  ------------------------------------- ★ wishList 저장★ ------------------------------------------------------------
-    @GetMapping("u_wishList/{wish}")
+    @GetMapping("wish/{id}")
     @ResponseBody
-    public void getWishList(@PathVariable("wish") Integer productId,
-                              @RequestParam(name ="loginId", required = false) String loginId,
+    public void getWishList(@PathVariable("id") Integer productId, HttpSession session,
                               @RequestParam(name ="url", required = false) String url,
                               @RequestParam(name ="userRole", required = false) String userRole) {
 
-        wishListService.getWishList(productId, loginId);
+        wishListService.getWishList(productId, session.getAttribute("loginId").toString());
     }
 
-    @GetMapping("u_wishListDel/{wish}")
+    @GetMapping("wish/del/{id}")
     @ResponseBody
-    public void delWishList(@PathVariable("wish") Integer productId,
-                              @RequestParam(name ="loginId", required = false) String loginId,
+    public void delWishList(@PathVariable("id") Integer productId,   HttpSession session,
                               @RequestParam(name ="url", required = false) String url,
                               @RequestParam(name ="userRole", required = false) String userRole) {
 
-        wishListService.delWishList(productId, loginId);
+        wishListService.delWishList(productId, session.getAttribute("loginId").toString());
     }
 }

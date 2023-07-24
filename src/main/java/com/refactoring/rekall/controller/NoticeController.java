@@ -24,7 +24,7 @@ public class NoticeController {
     CategoryService categoryService;
 
 //  ------------------------------------- ★ Notice / FAQ ★ ---------------------------------------------------------------
-    @GetMapping(value = {"community/notice", "notice"})
+    @GetMapping(value = {"community/notice", "admin/notice"})
     public ModelAndView noticeList(@RequestParam("sort") String categoryId,
                                    @RequestParam(name="page", defaultValue = "user", required = false) String page) {
 
@@ -50,7 +50,7 @@ public class NoticeController {
 
 //  ------------------------------------- ★ 관리자페이지 ★ ---------------------------------------------------------------
 //  ★ 공지사항_ detail 팝업창 ★ ---------------------------------------------------------------
-    @GetMapping("notice/Detail")
+    @GetMapping("admin/notice/detail")
     public ModelAndView noticeDetail(@RequestParam("noticeId") Integer noticeId) {
         ModelAndView modelAndView = new ModelAndView();
         NoticeDTO noticeDTO = noticeService.noticeList(noticeId);
@@ -61,7 +61,7 @@ public class NoticeController {
         return modelAndView;
     }
 //  ★ 공지사항 _ 수정★ ---------------------------------------------------------------
-    @GetMapping("notice/change")
+    @GetMapping("admin/notice/change")
     public ModelAndView noticeChangeF(@RequestParam("noticeId") Integer noticeId) {
         ModelAndView modelAndView = new ModelAndView();
         NoticeDTO noticeDTO = noticeService.noticeList(noticeId);
@@ -76,7 +76,7 @@ public class NoticeController {
 
 //  ★ 공지사항 _ 수정 완료★ ---------------------------------------------------------------
 
-    @PostMapping("notice/change")
+    @PostMapping("admin/notice/change")
     public ModelAndView noticeChange(@ModelAttribute NoticeDTO noticeDTO) {
         ModelAndView modelAndView = new ModelAndView();
         Integer noticeId = noticeService.noticeSave(noticeDTO);
@@ -84,14 +84,14 @@ public class NoticeController {
 
         modelAndView.addObject("category", category);
 
-        modelAndView.addObject("data", new Message("수정되었습니다.", "/notice_Detail?noticeId="+noticeId));
+        modelAndView.addObject("data", new Message("수정되었습니다.", "/admin/notice/detail?noticeId="+noticeId));
         modelAndView.setViewName("common/message.html");
 
         return modelAndView;
     }
 //  ★ 공지사항 _ 추가★ ---------------------------------------------------------------
 
-    @GetMapping("notice/add")
+    @GetMapping("admin/notice/add")
     public ModelAndView noticeAddF() {
         ModelAndView modelAndView = new ModelAndView();
 
@@ -102,17 +102,17 @@ public class NoticeController {
 
         return modelAndView;
     }
-    @PostMapping("notice/add")
+    @PostMapping("admin/notice/add")
     public ModelAndView noticeAdd(@ModelAttribute NoticeDTO noticeDTO) {
         ModelAndView modelAndView = new ModelAndView();
         Integer noticeId = noticeService.noticeSave(noticeDTO);
-        modelAndView.addObject("data", new Message("추가되었습니다.", "notice_Detail?noticeId="+noticeId));
+        modelAndView.addObject("data", new Message("추가되었습니다.", "/admin/notice/detail?noticeId="+noticeId));
         modelAndView.setViewName("common/message.html");
 
         return modelAndView;
     }
 //  ★ 공지사항 _ 삭제★ ---------------------------------------------------------------\
-    @PostMapping("notice/del")
+    @PostMapping("admin/notice/del")
     public ModelAndView noticeDel(@RequestParam(required = false, name = "noticeId", defaultValue = "0") Integer noticeId,
                                   @RequestParam(required = false, name="noticeIds", defaultValue = "") List<Integer> noticeIds,
                                   @RequestParam(defaultValue = "list", name = "page") String page) {
@@ -124,7 +124,7 @@ public class NoticeController {
         if(page.equals("detail"))
             modelAndView.addObject("data", new Message("삭제되었습니다.", "close"));
         else
-            modelAndView.addObject("data", new Message("삭제되었습니다.","notice?sort=notice&page=admin"));
+            modelAndView.addObject("data", new Message("삭제되었습니다.","admin/notice?sort=notice&page=admin"));
 
         modelAndView.setViewName("common/message.html");
         return modelAndView;

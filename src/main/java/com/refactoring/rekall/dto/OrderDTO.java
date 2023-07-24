@@ -22,14 +22,13 @@ public class OrderDTO {
 
 // -------- ▷▶  orderId 가 외래키로 가져오는 DTO ----------------------------------------------
     private UserDTO userDTO; // ▷▶ 유저Id
-    private OrderDetailDTO orderDetailDTO; // ▷▶ 주문상세번호
-// -------------------------------------------------------------------------------------------
 
+// -------------------------------------------------------------------------------------------
     private String name; //  ▷▶ 수령자 이름
-    private String zip_code; //  ▷▶ 우편번호
+    private String zipCode; //  ▷▶ 우편번호
     private String address_1; //  ▷▶ 주소1
     private String address_2; //  ▷▶ 주소2
-    private String phone_nb; //  ▷▶ 연락처
+    private String phoneNb; //  ▷▶ 연락처
     private String request; //  ▷▶ 요청사항
     private LocalDateTime date= LocalDateTime.now(); //  ▷▶ 날짜
     private Integer mileage=0; //  ▷▶ 사용 마일리지
@@ -37,6 +36,7 @@ public class OrderDTO {
     private String payment; //  ▷▶ 결제방식
     private String status = "결제 완료"; //  ▷▶ 주문 처리 현황
     private Integer mileage2=0; //  ▷▶ 적립 마일리지
+    private String buyerNb; // ▷▶ 구매자 번호
 
 // -------------- ▷▶ Entity -> DTO ---------------------------------------------------------
     public static OrderDTO toOrderDTO(OrderEntity orderEntity) {
@@ -45,12 +45,11 @@ public class OrderDTO {
 
         orderDTO.setOrderId(orderEntity.getOrderId());
         orderDTO.setUserDTO(UserDTO.toUserDTO(orderEntity.getUserEntity()));
-        orderDTO.setOrderDetailDTO(OrderDetailDTO.toOrderDeatilDTO(orderEntity.getOrderDetailEntity()));
         orderDTO.setName(orderEntity.getName());
-        orderDTO.setZip_code(orderEntity.getZip_code());
+        orderDTO.setZipCode(orderEntity.getZipCode());
         orderDTO.setAddress_1(orderEntity.getAddress_1());
         orderDTO.setAddress_2(orderEntity.getAddress_2());
-        orderDTO.setPhone_nb(orderEntity.getPhone_nb());
+        orderDTO.setPhoneNb(orderEntity.getPhoneNb());
         orderDTO.setRequest(orderEntity.getRequest());
         orderDTO.setDate(orderEntity.getDate());
         orderDTO.setMileage(orderEntity.getMileage());
@@ -58,6 +57,7 @@ public class OrderDTO {
         orderDTO.setPayment(orderEntity.getPayment());
         orderDTO.setStatus(orderEntity.getStatus());
         orderDTO.setMileage2(orderEntity.getMileage2());
+        orderDTO.setBuyerNb(orderEntity.getBuyerNb());
 
         return orderDTO;
     }

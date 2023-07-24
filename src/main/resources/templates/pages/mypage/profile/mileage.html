@@ -5,8 +5,8 @@
       layout:decorate="~{common/layouts/mypageLayout}"
       layout:fragment="Content">
 <head>
-  <link th:href="@{css/mypage/list.css}" rel="stylesheet">
-  <script type="text/javascript" th:src="@{myLib/jquery-3.2.1.min.js}"></script>
+  <link th:href="@{/css/mypage/list.css}" rel="stylesheet">
+  <script type="text/javascript" th:src="@{/myLib/jquery-3.2.1.min.js}"></script>
   <meta charset="UTF-8">
   <title>마일리지 내역</title>
 </head>
@@ -17,9 +17,9 @@
 
 
   <div class="sort">
-    <a th:href="@{mileage}" th:text="전체" th:class="${status == 'all'} ? 'active' : '' "></a>
-    <a th:href="@{mileage(sort='사용')}" th:text="'사용'" th:class="${status == '사용'} ? 'active' : '' "></a>
-    <a th:href="@{mileage(sort='적립')}" th:text="'적립'" th:class="${status == '적립'} ? 'active' : '' "></a>
+    <a th:href="@{/mypage/mileage}" th:text="전체" th:class="${status == 'all'} ? 'active' : '' "></a>
+    <a th:href="@{/mypage/mileage(sort='사용')}" th:text="'사용'" th:class="${status == '사용'} ? 'active' : '' "></a>
+    <a th:href="@{/mypage/mileage(sort='적립')}" th:text="'적립'" th:class="${status == '적립'} ? 'active' : '' "></a>
   </div>
 
   <table class="list">

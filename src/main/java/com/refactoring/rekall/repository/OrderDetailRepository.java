@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface OrderDetailRepository extends JpaRepository<OrderDetailEntity, Integer> {
@@ -15,4 +16,6 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetailEntity, 
 
     @Query("select max(od.odetailId) from OrderDetailEntity od")
     Integer findId();
+
+    List<OrderDetailEntity> findByOrderEntityOrderIdOrderByOdetailIdDesc(Integer orderId);
 }

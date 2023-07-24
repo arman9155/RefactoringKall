@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,33 +28,29 @@ public class ProductQController {
 
 //  ------------------------------------- ★ 상품 문의 저장 ★ ------------------------------------------------------------
     @PostMapping("productQ/{id}")
-    public ModelAndView productQSave(@SessionAttribute(name ="loginId", required = false) String loginId,
-                                     @SessionAttribute(name ="userRole", required = false) String userRole,
+    public ModelAndView productQSave(HttpSession session,
                                      @ModelAttribute("productQDTO") ProductQDTO productQDTO,
                                      @PathVariable("id") Integer productId) {
-        productQService.saveProductQ(productQDTO, productId, loginId);
+        productQService.saveProductQ(productQDTO, productId, session.getAttribute("loginId").toString());
 
         ModelAndView modelAndView = new ModelAndView();
 
-        modelAndView.addObject("loginId", loginId);  //세션
-        modelAndView.addObject("userRole", userRole);  //세션
         modelAndView.addObject("data", new Message("완료되었습니다.", "/product/"+productId));
         modelAndView.setViewName("common/message.html");
-/*        modelAndView.setViewName(String.format("product/%d", productId));*/
 
         return modelAndView;
     }
 
 //  ------------------------------------- ★ 상품 문의 리스트 ★ ------------------------------------------------------------
-    @GetMapping("productQList")
-    public ModelAndView productQList(@SessionAttribute(name ="loginId", required = false) String loginId,
+    @GetMapping(value = {"mypage/productQ/list", "admin/productQ/list"})
+    public ModelAndView productQList(HttpSession session,
                                      @RequestParam("page") String page ) {
 
         ModelAndView modelAndView = new ModelAndView();
         List<ProductQDTO> productQList = new ArrayList<>();
 
         if(page.equals("mypage")) {
-            productQList = productQService.findList(loginId);
+            productQList = productQService.findList(session.getAttribute("loginId").toString());
             modelAndView.setViewName("pages/mypage/board/productQList.html");
         } else {
             productQList = productQService.findAll();
@@ -66,11 +63,10 @@ public class ProductQController {
 
 
 //  ---------------------------- ★  상품 문의 삭제 ★ ---------------------------------------------------------------
-    @PostMapping("productQ_Del")
-    public ModelAndView deleteUsQ(@SessionAttribute(name ="loginId", required = false) String loginId,
-                          @RequestParam(name="productqIds", required = false, defaultValue = "") List<Integer> ids,
-                          @RequestParam(name="productqId", required = false, defaultValue = "") Integer id,
-                          @RequestParam(name="page", defaultValue = "mypage") String page) {
+    @PostMapping(value = {"mypage/productQ/del","admin/productQ/del"})
+    public ModelAndView deleteUsQ(@RequestParam(name="productqIds", required = false, defaultValue = "") List<Integer> ids,
+                                  @RequestParam(name="productqId", required = false, defaultValue = "") Integer id,
+                                  @RequestParam(name="page", defaultValue = "mypage") String page) {
 
         ModelAndView modelAndView = new ModelAndView();
         if(page.equals("detail")) {
@@ -78,7 +74,7 @@ public class ProductQController {
             modelAndView.addObject("data", new Message("삭제되었습니다.", "close"));
         } else {
             productQService.productQDel(ids);
-            modelAndView.addObject("data", new Message("삭제되었습니다.", "/productQList?page="+page));
+            modelAndView.addObject("data", new Message("삭제되었습니다.", "/mypage/productQ/list?page="+page));
         }
         modelAndView.setViewName("common/message.html");
         return modelAndView;
@@ -88,7 +84,7 @@ public class ProductQController {
 //  ---------------------------- ★  관리자 ★ ---------------------------------------------------------------
 
 //  ---------------------------- ★  상품 문의 상세 ★ ---------------------------------------------------------------
-    @GetMapping("productQ_Detail")
+    @GetMapping("admin/productQ/detail")
     public ModelAndView productQDetail(@RequestParam("productqId") Integer qId) {
 
         ModelAndView modelAndView = new ModelAndView();
@@ -102,13 +98,13 @@ public class ProductQController {
         return modelAndView;
     }
 
-   @PostMapping("productQ_comment")
+   @PostMapping("admin/productQ/comment")
    public ModelAndView productQDetail(@ModelAttribute("productQ") ProductQDTO productQDTO) {
         ModelAndView modelAndView = new ModelAndView();
 
         productQService.saveDTO(productQDTO);
 
-        modelAndView.addObject("data",new Message("답변이 등록되었습니다.","productQ_Detail?productqId="+productQDTO.getProductqId()));
+        modelAndView.addObject("data",new Message("답변이 등록되었습니다.","/admin/productQ/detail?productqId="+productQDTO.getProductqId()));
          modelAndView.setViewName("common/message.html");
 
          return modelAndView;

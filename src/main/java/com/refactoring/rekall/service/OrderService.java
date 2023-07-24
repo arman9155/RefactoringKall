@@ -1,17 +1,22 @@
 package com.refactoring.rekall.service;
 
-import com.refactoring.rekall.dto.OrderDTO;
-import com.refactoring.rekall.dto.OrderDetailDTO;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.refactoring.rekall.dto.*;
+import com.refactoring.rekall.entity.CartEntity;
 import com.refactoring.rekall.entity.OrderDetailEntity;
 import com.refactoring.rekall.entity.OrderEntity;
+import com.refactoring.rekall.repository.CartRepository;
 import com.refactoring.rekall.repository.OrderDetailRepository;
 import com.refactoring.rekall.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,15 +32,59 @@ public class OrderService {
     OrderDetailRepository orderDetailRepository;
     @Autowired
     ImageService imageService;
+    @Autowired
+    UserService userService;
+    @Autowired
+    CartService cartService;
+    @Autowired
+    ProductService productService;
+
 
 //  ------------------------------------- odetailDTO --------------------------------------------------------------------
 //  ------------------------------------- ★ orderDTO 개별★ --------------------------------------------------
 //  ------------------------------------- ★ loginId별 / sort 별 List ★ --------------------------------------------------
-    public List<OrderDTO> getOrderList(String loginId, String status) {
-        List<OrderEntity> orderEntities = orderRepository.findByUserEntityUserIdOrderByOrderIdDesc(loginId);
-        List<OrderDTO> orderDTOList = getSotrList(orderEntities, status);
+    public List<OrderDetailDTO> getOrderList(String loginId, String status) {
 
-        return orderDTOList;
+        List<OrderEntity> orderEntities = orderRepository.findByUserEntityUserIdOrderByOrderIdDesc(loginId);
+        List<OrderDetailDTO> orderDetailDTOS = new ArrayList<>();
+
+        if(orderEntities != null)  {
+            List<OrderDTO> orderDTOList = getSotrList(orderEntities, status);
+
+            for(OrderDTO orderDTO : orderDTOList) {
+
+                if(orderDTO != null) {
+                   List<OrderDetailEntity> orderDetailEntities = orderDetailRepository.findByOrderEntityOrderIdOrderByOdetailIdDesc(orderDTO.getOrderId());
+                   for(OrderDetailEntity orderDetail : orderDetailEntities) orderDetailDTOS.add(OrderDetailDTO.toOrderDetailDTO(orderDetail));
+                }
+
+            }
+        }
+        return orderDetailDTOS;
+    }
+//  ------------------------------- ★ orderDTO loginId로 최근 주문건★ --------------------------------------------------
+    public OrderDTO getOrderList(String loginId) {
+       Optional<OrderEntity> opOrderEntity = orderRepository.findRecentOrderDTO(loginId);
+       OrderDTO orderDTO = new OrderDTO();
+        if(opOrderEntity.isPresent()) orderDTO = OrderDTO.toOrderDTO(opOrderEntity.get());
+
+        return orderDTO;
+    }
+//  ------------------------------- ★ odetailDTO orderId로 주문 찾기★ --------------------------------------------------
+    public List<OrderDetailDTO> getOdetailList(Integer orderId) {
+
+        List<OrderDetailEntity> orderDetailEntities = orderDetailRepository.findByOrderEntityOrderIdOrderByOdetailIdDesc(orderId);
+        List<OrderDetailDTO> orderDetailDTO = new ArrayList<>();
+
+        if(orderDetailEntities != null)  {
+            for(OrderDetailEntity orderDetailEntity : orderDetailEntities) {
+                if(orderDetailEntity != null) {
+                    orderDetailDTO.add(OrderDetailDTO.toOrderDetailDTO(orderDetailEntity));
+                }
+
+            }
+        }
+        return orderDetailDTO;
     }
 
     // ★ sort 별 List ★ --------------------------------------------------
@@ -61,23 +110,65 @@ public class OrderService {
         return orderDTOList;
     }
 
-//  ------------------------------------- ★ 전체 / sort List ★ --------------------------------------------------
-    public List<OrderDTO> getAllOrderList(String status) {
+//  ------------------------------------- ★ 전체 / sort order List ★ --------------------------------------------------
+    public List<OrderDTO>  getAllOrderList(String status) {
         List<OrderEntity> orderEntities = orderRepository.findAll();
         List<OrderDTO> orderDTOList = getSotrList(orderEntities, status);
 
         return orderDTOList;
     }
-    
+    //  ------------------------------------- ★ 전체  odetail List ★ --------------------------------------------------
+    public List<OrderDetailDTO> getAllOrderDetailList() {
+        List<OrderDetailEntity> orderDetailEntities = orderDetailRepository.findAll();
+        List<OrderDetailDTO> orderDTOList = new ArrayList<>();
+        for(OrderDetailEntity orderDetail : orderDetailEntities) {
+            if(orderDetail != null) orderDTOList.add(OrderDetailDTO.toOrderDetailDTO(orderDetail));
+        }
+
+        return orderDTOList;
+    }
+
+    // ★ odetail sort 별 List ★ --------------------------------------------------
+
+    public List<OrderDetailDTO> getSotrOdetailList(List<OrderDetailDTO> orderDetailList, String status) {
+
+        List<OrderDetailDTO> orderDetailDTOList = new ArrayList<>();
+
+        if(status.equals("all")) {
+            for(OrderDetailDTO orderDetailDTO : orderDetailList) {
+                if(orderDetailDTO != null) {
+                    orderDetailDTOList.add(orderDetailDTO);
+                }
+            }
+        } else {
+            for (OrderDetailDTO orderDetailDTO : orderDetailList) {
+                if (orderDetailDTO != null && orderDetailDTO.getOrderDTO().getStatus().equals(status)) {
+                    orderDetailDTOList.add(orderDetailDTO);
+                }
+            }
+        }
+
+        return orderDetailDTOList;
+    }
 //  ------------------------------------- ★ 주문 상세 정보 전달★ --------------------------------------------------
 
     public OrderDetailDTO getOrderDetail(Integer odetailId) {
-        Optional<OrderDetailEntity> optionalOrderDetailEntity = orderDetailRepository.findById(odetailId);
-        OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
-        if(optionalOrderDetailEntity.isPresent()) {
-            orderDetailDTO = OrderDetailDTO.toOrderDeatilDTO(optionalOrderDetailEntity.get());
-        }
-        return orderDetailDTO;
+        OrderDetailDTO orderDetail = new OrderDetailDTO();
+
+//        if(odetailId == 0) {
+//            List<OrderDetailEntity> orderDetailEntity = orderDetailRepository.findByOrderEntityOrderIdOrderByOdetailIdDesc(orderId);
+//            if (orderDetailEntity != null) {
+//                for (OrderDetailEntity orderDetail : orderDetailEntity) {
+//                    if (orderDetail != null) {
+//                        orderDetailList.add(OrderDetailDTO.toOrderDetailDTO(orderDetail));
+//                    }
+//                }
+//            }
+//        } else {}
+            Optional<OrderDetailEntity> orderDetailEntity = orderDetailRepository.findById(odetailId);
+            if(orderDetailEntity != null) orderDetail = OrderDetailDTO.toOrderDetailDTO(orderDetailEntity.get());
+
+        return orderDetail;
     }
 
     
@@ -98,12 +189,10 @@ public class OrderService {
                 orderDetailDTO.setOption_image(saveName);
             }
             OrderDetailEntity orderDetailEntity = orderDetailRepository.save(OrderDetailEntity.toOrderDetailEntity(orderDetailDTO));
-            orderDetailDTOS.add(OrderDetailDTO.toOrderDeatilDTO(orderDetailEntity));
+            orderDetailDTOS.add(OrderDetailDTO.toOrderDetailDTO(orderDetailEntity));
         }
         return orderDetailDTOS;
     }
-
-
 
     //  ------------------------------------- ★ orderDTO List  유저 ★ --------------------------------------------------
     public List<OrderDTO> getMileageList(String loginId) {
@@ -115,15 +204,113 @@ public class OrderService {
         return orderDTOList;
     }
 
-    //  ------------------------------------- ★ odetailId로 orderDTO 찾기 ★ --------------------------------------------------
-    public OrderDTO getOrderDTO(Integer odetailId) {
-        Optional<OrderEntity> orderEntity = orderRepository.findByOrderDetailEntityOdetailId(odetailId);
+    //  ------------------------------------- ★ orderDTO 저장 ★ --------------------------------------------------
+    public OrderDTO saveOrder(String[] order, String userId ) {
+        OrderDTO orderDTO = convertOrderDTO(order);
+        UserDTO userDTO = userService.findByUserID(userId);
+        orderDTO.setUserDTO(userDTO);
+        orderRepository.save(OrderEntity.toOrderEntity(orderDTO));
+        System.out.println(orderDTO.getUserDTO());
+        return findOrderId(userId);
+    }
+    //  ------------------------------------- ★ loginId로 orderDTO 저장 ★ --------------------------------------------------
+    public OrderDTO findOrderId(String loginId) {
+        Optional<OrderEntity> opOrderEntity = orderRepository.findRecentOrderDTO(loginId);
         OrderDTO orderDTO = new OrderDTO();
-
-        if(orderEntity.isPresent()) orderDTO = OrderDTO.toOrderDTO(orderEntity.get());
-
+        if(opOrderEntity.isPresent()) orderDTO = OrderDTO.toOrderDTO(opOrderEntity.get());
         return orderDTO;
     }
+    //  ------------------------------------- ★ Json -> orderDTO convert ★ --------------------------------------------------
+    public OrderDTO convertOrderDTO(String[] strings) {
+
+        JsonObject jsonObject;
+        String json = "";
+        for(int i = 0 ; i < strings.length; i++) {
+            if(i == 0 ) {
+                strings[i] = strings[i].replace("[", "{");
+                json += strings[i];
+            } else if(i == strings.length-1) {
+                strings[i] = strings[i].replace("]", "}");
+                json += "," + strings[i];
+            }else json +=  ","+strings[i];
+        }
+
+        Gson gson = new Gson();
+        OrderDTO orderDTO = gson.fromJson(json, OrderDTO.class);
+        System.out.println(orderDTO);
+        return orderDTO;
+    }
+
+    //  ------------------------------------- ★ odetailDTO 저장 ★ --------------------------------------------------
+    public void saveOdetail(String[] odetail, Integer orderId, Integer cartId) {
+        OrderDetailDTO odetailDTO = convertOdetailDTO(odetail);
+
+        CartDTO cartDTO = cartService.getCartDTO(cartId);
+        ProductDTO productDTO = productService.findByProductId(cartDTO.getProductDTO().getProductId());
+        OrderDTO orderDTO = OrderDTO.toOrderDTO(orderRepository.findById(orderId).get());
+
+        odetailDTO.setOrderDTO(orderDTO);
+        odetailDTO.setProductDTO(productDTO);
+
+        orderDetailRepository.save(OrderDetailEntity.toOrderDetailEntity(odetailDTO));
+    }
+
+    //  ------------------------------------- ★ Json -> odetailDTO convert ★ --------------------------------------------------
+    public OrderDetailDTO convertOdetailDTO(String[] strings) {
+
+        JsonObject jsonObject;
+        String json = "";
+        for(int i = 0 ; i < strings.length; i++) {
+            if(i == 0 ) {
+                strings[i] = strings[i].replace("[", "{");
+                json += strings[i];
+            } else if(i == strings.length-1) {
+                strings[i] = strings[i].replace("]", "}");
+                json += "," + strings[i];
+            }else json +=  ","+strings[i];
+        }
+
+        Gson gson = new Gson();
+        OrderDetailDTO odetailDTO = gson.fromJson(json, OrderDetailDTO.class);
+        System.out.println(odetailDTO);
+        return odetailDTO;
+    }
+
+    //  ------------------------------------- ★ odetailDTO 삭제 ★ --------------------------------------------------
+    public void delOrderId(Integer orderId) {
+        orderRepository.deleteById(orderId);
+    }
+
+    //  ------------------------------------- ★ odetailDTO 취소 요청 ★ --------------------------------------------------
+
+    public void cancelOdetail(Integer odetailId, String page) {
+        Optional<OrderDetailEntity> orderDetailEntity = orderDetailRepository.findById(odetailId);
+        OrderDetailEntity orderDetail = new OrderDetailEntity();
+        if(orderDetailEntity.isPresent()) orderDetail = orderDetailEntity.get();
+
+        orderDetail.setStatus("환불 요청");
+        orderDetailRepository.save(orderDetail);
+
+        // order 수정하기
+        cancelOrder(orderDetail.getOrderEntity().getOrderId());
+    }
+    //  ------------------------------------- ★ order 취소 요청 ★ --------------------------------------------------
+    public void cancelOrder(Integer orderId) {
+        List<OrderDetailEntity> orderDetailList = orderDetailRepository.findByOrderEntityOrderIdOrderByOdetailIdDesc(orderId);
+        Optional<OrderEntity> optionalOrderEntity = orderRepository.findById(orderId);
+        OrderEntity orderEntity = new OrderEntity();
+        if(optionalOrderEntity.isPresent()) orderEntity = optionalOrderEntity.get();
+        int i = 0 ;
+        for(OrderDetailEntity orderDetail : orderDetailList) {
+            if("반품 요청".equals(orderDetail.getStatus())) i++;
+        }
+       if(i == orderDetailList.size()) orderEntity.setStatus("반품 요청");
+       else if (i > 0) orderEntity.setStatus("부분 반품 요청");
+       orderRepository.save(orderEntity);
+    }
+
+
+
 }
 
 

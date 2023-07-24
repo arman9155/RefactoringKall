@@ -1,6 +1,7 @@
 package com.refactoring.rekall.service;
 
 import com.refactoring.rekall.Auth;
+import com.refactoring.rekall.dto.OrderDTO;
 import com.refactoring.rekall.dto.UserDTO;
 import com.refactoring.rekall.dto.UserDelDTO;
 import com.refactoring.rekall.entity.UserDelEntity;
@@ -41,19 +42,24 @@ public class UserService {
 
     //  ---------------------------- ★ 회원정보 저장 ★ -------------------------------------------------------------------------
     public String signUp(UserDTO userDTO) {
-        if (userDTO.getPassword().contains("admin123")) {
-            userDTO.setRole(ADMIN);
-        } else userDTO.setRole(USER);
-        if (userDTO.getBirthday() == null || userDTO.getBirthday().equals("")) {
-            userDTO.setBirthday(null);
-        } else {
-            try {
-                userDTO.setBirthday((userDTO.getBirthday()));
-            } catch (DateTimeParseException e) {
-                // 유효한 날짜 형식이 아닌 경우 처리할 내용
-                System.out.println("exception");
+        if(userRepository.findByUserId(userDTO.getUserId()).isEmpty()) {
+            if (userDTO.getPassword().contains("admin123")) {
+                userDTO.setRole(ADMIN);
+            } else userDTO.setRole(USER);
+            if (userDTO.getBirthday() == null || userDTO.getBirthday().equals("")) {
+                userDTO.setBirthday(null);
+            } else {
+                try {
+                    userDTO.setBirthday((userDTO.getBirthday()));
+                } catch (DateTimeParseException e) {
+                    // 유효한 날짜 형식이 아닌 경우 처리할 내용
+                    System.out.println("exception");
+                }
             }
-        }
+            userRepository.save(UserEntity.toUserEntity(userDTO));
+            return "T";
+        } else return "F";
+
 /*        System.out.println("비밀번호 암호화");
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));*/
@@ -61,7 +67,8 @@ public class UserService {
         // password를 암호화 한 뒤 table에 저장
 
 //        System.out.println(userDTO.getRole());
-        return userRepository.save(UserEntity.toUserEntity(userDTO)).getUserId();
+//        return userRepository.save(UserEntity.toUserEntity(userDTO)).getUserId();
+
     }
 
     //  ---------------------------- ★ id/pw 기반 회원 정보 찾기 ★ -------------------------------------------------------------------------
@@ -75,7 +82,7 @@ public class UserService {
 
     //  ---------------------------- ★ id 기반 회원 정보 찾기 ★ -------------------------------------------------------------------------
     public UserDTO findByUserID(String userId) {
-        System.out.println("여기?");
+        System.out.println("여기?"+userId);
         Optional<UserEntity> optionaluserEntity = userRepository.findByUserId(userId);
         if (optionaluserEntity.isPresent()) {
             UserEntity userEntity = optionaluserEntity.get();
@@ -83,7 +90,6 @@ public class UserService {
         }
         return null;
     }
-
 
 //  ---------------------------- ★ 전체 유저 리스트 ★ -------------------------------------------------------------------------
     public List<UserDTO> getList(String status) {
@@ -117,6 +123,19 @@ public class UserService {
 
         userDelRepository.save(UserDelEntity.toUserDelEntity(userDelDTO));
     }
+
+    //  ------------------------------------- ★ 주분완료 후 마일리지 ★ --------------------------------------------------
+    public void calcMileage(OrderDTO orderDTO) {
+        UserDTO userDTO = findByUserID(orderDTO.getUserDTO().getUserId());
+        Integer mileage = userDTO.getMileage();
+        Integer saveMileage = orderDTO.getMileage2();
+        Integer useMilleage = orderDTO.getMileage();
+
+        mileage = mileage+saveMileage-useMilleage;
+        userDTO.setMileage(mileage);
+        userRepository.save(UserEntity.toUserEntity(userDTO));
+    }
+
 
 //  ---------------------------- ★ 관리자 탈퇴처리 ★ -------------------------------------------------------------------------
     public void a_deleteUser(List<String> userIds) {

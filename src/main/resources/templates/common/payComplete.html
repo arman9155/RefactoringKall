@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+        alert("페이지 넘어옴");
+    <th:block th:if="${#strings.length(data.message) != 0}">
+      <script>
+          top.alert("[[${data.message}]]");
+      </script>
+     </th:block>
+     <th:block th:if="${#strings.length(data.href) != 0}">
+        <script>
+         var href = "";
+          if("[[${data.href}]]".includes("&amp;")) {
+            href = "[[${data.href}]]".replace(/&amp;/g, '&');
+            alert(href);
+            }
+          else
+            href = "[[${data.href}]]";
+            window.close();
+           window.opener.parent.location.replace(href);
+      </script>
+    </th:block>
+  </script>
+</body>
+</html>

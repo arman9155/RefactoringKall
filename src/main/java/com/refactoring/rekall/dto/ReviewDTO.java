@@ -34,7 +34,7 @@ public class ReviewDTO {
         reviewDTO.setReviewId(reviewEntity.getReviewId());
         reviewDTO.setUserDTO(UserDTO.toUserDTO(reviewEntity.getUserEntity()));
         reviewDTO.setProductDTO(ProductDTO.toProductDTO(reviewEntity.getProductEntity()));
-        reviewDTO.setOrderDetailDTO(OrderDetailDTO.toOrderDeatilDTO(reviewEntity.getOrderDetailEntity()));
+        reviewDTO.setOrderDetailDTO(OrderDetailDTO.toOrderDetailDTO(reviewEntity.getOrderDetailEntity()));
         reviewDTO.setTitle(reviewEntity.getTitle());
         reviewDTO.setContent(reviewEntity.getContent());
         reviewDTO.setStar(reviewEntity.getStar());

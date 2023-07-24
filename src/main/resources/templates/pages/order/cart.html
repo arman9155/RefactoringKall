@@ -2,58 +2,217 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{common/layouts/orderLayout}"
-      layout:fragment="Content(cart)">
+      layout:decorate="~{/common/layouts/orderLayout}">
 <head>
   <meta charset="UTF-8">
-  <link th:href="@{css/order/cart.css}" rel="stylesheet">
+  <link th:href="@{/css/order/cart.css}" rel="stylesheet">
+  <script type="text/javascript" th:src="@{/myLib/jquery-3.2.1.min.js}"></script>
   <title>장바구니</title>
+  <script th:inline="javascript">
+
+// ---- count button ---------------------------------------------------------------------------------------------------
+     function count(type, element)  {
+          var index = element.getAttribute('data-index'); //cartId
+          var price = document.getElementById('price'+index);
+          var resultElement = document.getElementById('amount'+index); // 구매 갯수
+          var productP = document.getElementById('amount'+index).getAttribute('data-price'); // 가격가져요기
+          var count = document.getElementById('amount'+index).getAttribute('data-amount'); // 상품 총 갯수
+          console.log(productP);
+          var number = resultElement.innerText; // 구매 갯수
+
+          // 더하기/빼기 -> ok
+          if(type === "plus") {
+            if(number == count)
+              alert("추가할 수 없습니다.");
+            else
+              number = parseInt(number) + 1;
+          } else if(type === "minus")  {
+            if(number == 1)
+              alert("최소값은 1개 입니다.");
+            else
+              number = parseInt(number) - 1;
+          }
+
+              // 결과 출력
+          resultElement.innerText = number;
+          var calc= parseInt(productP)*number;
+          price.innerText = calc;
+          calcPrice();
+
+          $.ajax({
+            url: "cart/change/"+index,
+            method: "POST",
+            data : {amount : number}
+          }).done(function() {
+          }).fail(function() {
+             alert("다시시도해주세요");
+          });
+     }
+
+// ---- cart 삭제 -------------------------------------------------------------------------------------------------------
+
+     function deleteCart()  {
+      var inputList = document.getElementsByName("cartIds");
+      var delCart = [];
+
+      for(let i = 0; i < inputList.length; i++) {
+        if(inputList[i].checked == true) delCart.push(inputList[i].value);
+        }
+
+      $.ajax({
+        url: "cart/del",
+        method: "POST",
+        data : {cartIds : JSON.stringify(delCart)}
+      }).done(function() {
+          alert("삭제 성공했습니다.");
+          location.reload();
+      }).fail(function() {
+         alert("다시시도해주세요");
+      });
+
+    }
+
+// ---- cart --> order 로 이동 ------------------------------------------------------------------------------------------
+
+     function toOrder(element)  {
+      var status = element.getAttribute('data-element');
+      var inputList = document.getElementsByName('cartIds');
+      var cartP = document.getElementById('cartP').innerText.trim();    // 계산 값
+      var totalP = document.getElementById('totalP').innerText.trim();  // 배송비 포함 값
+      var cartIds = [];
+
+      if(status == 'all') { //전체 주문
+        for(let i = 0; i< inputList.length; i++) {
+        cartIds.push(inputList[i].value);
+        } //for문
+      } else if(status == 'select') { //일부 주문
+        for(let i = 0; i< inputList.length; i++) {
+          if(inputList[i].checked == true) cartIds.push(inputList[i].value);
+        } //for문
+      } //else문
+
+      console.log(JSON.stringify(cartIds));
+      $.ajax({
+        url: "cart/toOrder",
+        method: "GET",
+        data : {cartIds : JSON.stringify(cartIds),
+                cartP : cartP,
+                totalP : totalP},
+      }).done(function() {
+         window.location.href="/order";
+         session.removeAttribute('cartP');
+         session.removeAttribute('totalP');
+         session.removeAttribute('cartIds');
+      }).fail(function() {
+         alert("다시시도해주세요");
+      });
+
+    } //function
+
+
+    // 전체 선택
+      $(document).ready(function() {
+        $('#selectAll').click(function() {
+          if($('#selectAll').is(':checked'))
+            $("input[name=cartIds]").prop("checked", true);
+          else
+            $("input[name=cartIds]").prop("checked", false);
+          calcPrice();
+          });
+
+      });
+
+    // 계산
+
+    $(document).ready(function() {
+      $('input[name=cartIds]').click(function() {
+        calcPrice();
+      });
+    });
+
+    //가격 계산
+    function calcPrice() {
+       var checkList = document.getElementsByName("cartIds");
+        var cartP = document.getElementById("cartP");
+        var totalP = document.getElementById("totalP");
+        var sum = 0;
+
+        for(let i = 0; i< checkList.length; i++) {
+          if(checkList[i].checked == true) {
+            var value = checkList[i].value;
+            console.log(value);
+            var price = document.getElementById("price"+value).innerText;
+            sum += parseInt(price);
+          }
+        }
+        cartP.innerText = sum+" 원";
+        totalP.innerText = 3000+sum+" 원";
+    }
+
+  </script>
 
 </head>
-<body>
-    <form th:action="@{order}" method="post">
+<body layout:fragment="Content">
       <h3 class="underline">선택한 상품</h3>
       <table class="cart">
-        <thead>
-          <th class="select">
-            <input type="checkbox" id="selectAll">
-            <label for="selectAll">전체선택</label>
-          </th>
-          <th colspan="2" class="info">상품 / 옵션 정보</th>
-          <th class="count">수량</th>
-          <th class="price">가격</th>
-        </thead>
         <tbody>
+          <tr>
+            <th class="col1 select">
+              <input type="checkbox" id="selectAll">
+              <label for="selectAll">전체선택</label>
+            </th>
+            <th class="col2 info">상품 | 옵션 정보</th>
+            <th class="col3 count">수량</th>
+            <th class="col4 price">가격</th>
+          </tr>
+          <th:block th:if="${cartList == null || cartList.size() <1}">
+            <tr>
+               <td colspan="4">
+                 <h3>장바구니가 비었습니다.</h3>
+               </td>
+            </tr>
+          </th:block>
           <th:block th:each="cart, i : ${cartList}">
             <tr>
-              <td><input type="checkbox" name="products" th:id="${i.index+1}" value="${cart.productDTO.productId}"></td>
-              <td>[[${cart.productDTO.productName}]]</td>
-              <td>
-                <p th:if="${cart.option_sheet} != null">
-                [[${cart.option_sheet}]]
-                </p>
-                <p th:if="${cart.option_shape} != null">
-                  [[${cart.option_shape}]]
-                </p>
-                <p th:if="${cart.option_cream} != null">
-                  [[${cart.option_cream}]]
-                </p>
-                <p th:if="${cart.option_lettering} != null">
-                  [[${cart.option_lettering}]]
-                </p>
-                <p th:if="${cart.option_size} != null">
-                  [[${cart.option_size}]]
-                </p>
-                <p th:if="${cart.option_image} != null">
-                  [[${cart.option_image}]]
-                </p>
+              <td class="col1">
+                <input type="checkbox" th:name="cartIds" th:id="${i.index+1}" th:value="${cart.cartId}">
+                <label th:for="${i.index+1}"></label>
               </td>
-              <td class="countBtn">
-                <button class="decrease" value="-1">-</button>
-                <div> [[${cart.amount}]]</div>
-                <button class="increase" value="+1">+</button>
+              <td class="col2">
+                <div id="pInfo">
+                  <img class="imageP" th:src="${cart.productDTO.image}">
+                  <div class="cartOption">
+                    <p>[[${cart.productDTO.name}]]</p>
+                    <p th:if="${cart.option_sheet != null}">
+                      | 시트 : [[${cart.option_sheet}]]
+                    </p>
+                    <p th:if="${cart.option_shape != null}">
+                      | 모양 : [[${cart.option_shape}]]
+                    </p>
+                    <p th:if="${cart.option_cream != null}">
+                      | 크림 : [[${cart.option_cream}]]
+                    </p>
+                    <p th:if="${cart.option_lettering != null}">
+                      | 레터링 : [[${cart.option_lettering}]]
+                    </p>
+                    <p th:if="${cart.option_size != null}">
+                      | 사이즈 : [[${cart.option_size}]]
+                    </p>
+                    <p th:if="${cart.option_image != null}">
+                      | 이미지 : ⭕
+                    </p>
+                    <p th:if="${cart.request != null}">
+                      | 요청 사항 : [[${cart.request}]]
+                    </p>
+                  </div>
+                </div>
               </td>
-              <td  th:text="[[${cart.price}]]*[[${cart.amount}]]">값</td>
+              <td class="countBtn col3">
+                <input type="button" th:attr="data-index=${cart.cartId}" onclick="count('minus', this)" value="-" />
+                <span th:id="'amount'+${cart.cartId}" th:attr="data-price=${cart.productDTO.price}, data-amount=${cart.productDTO.amount}">[[${cart.amount}]]</span>
+                <input type="button" th:attr="data-index=${cart.cartId}" onclick="count('plus', this)" value="+"/>
+              </td>
+              <td th:id="price+${cart.cartId}" th:utext="${cart.price*cart.amount}" class="col4" >값</td>
             </tr>
           </th:block>
         </tbody>
@@ -63,26 +222,24 @@
         <tbody>
           <tr>
             <th>상품 총 금액</th>
-            <td>
-<!--              <p th:text="${@CustomUtil.calcPrice(cartList)}"></p>-->
-            </td>
+            <td id="cartP">원</td>
             <th>배송비</th>
-            <td>3000</td>
+            <td>3000 원</td>
           </tr>
 
           <tr>
             <th colspan="2">합계</th>
+            <th colspan="2" id="totalP"> 원</th>
 <!--            <td colspan="2" th:text="3000 + ${@CustomUtil.calcPrice(cartList)}">result</td>-->
           </tr>
         </tbody>
       </table>
 
-      <div class="buttons">
-        <input type="submit" value="선택 항목 삭제">
-        <input type="submit" value="선택 항목 주문">
-        <input type="submit" value="모든 항목 주문">
+      <div id="buttons">
+        <input type="button" onclick="deleteCart();" value="선택 항목 삭제">
+        <input type="button" onclick="toOrder(this);" th:attr="data-element='select'" value="선택 항목 주문">
+        <input type="button" onclick="toOrder(this)" th:attr="data-element='all'" value="모든 항목 주문">
       </div>
-    </form>
 
 </body>
 </html>

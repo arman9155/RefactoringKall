@@ -13,22 +13,23 @@
     <script th:inline="javascript">
 
         // 로그인 없이  wishList 클릭 -> OK
-         function toggleNoActive() {
-             alert("로그인 후 이용해주세요");
-         }
+        function toggleNoActive() {
+            alert("로그인 후 이용해주세요");
+            window.location.href="/login";
+        }
 
         // wishList -> OK
         function toggleActive(element) {
 
             var url = element.getAttribute('data-url');
-            var loginId = /*[[${loginId}]]*/ null;
-            var userRole = /*[[${userRole}]]*/ null;
+            var loginId = /*[[${session.loginId}]]*/ null;
+            var userRole = /*[[${session.userRole}]]*/ null;
             alert(loginId);
             var productId = parseInt(element.getAttribute('data-product'));
 
             if(element.classList.contains('active')) {
                 $.ajax({
-                    url: "/u_wishListDel/"+productId,
+                    url: "/wish/del/"+productId,
                     method: "GET",
                     data : {loginId: loginId,
                             url : url,
@@ -42,7 +43,7 @@
                 });
             } else {
                 $.ajax({
-                    url: "/u_wishList/"+productId,
+                    url: "/wish/"+productId,
                     method: "GET",
                     data : {loginId: loginId,
                             url : url,
@@ -57,10 +58,12 @@
             }
         }
     </script>
+
     <script th:inline="javascript">
     // 선택완료 시 값
         const itemList = [];
         var formData = new FormData();
+        let i = 1;
 
         let index = 0;
 //-----선택완료 ---------------------------------------------------------------------------------------------------------
@@ -72,23 +75,21 @@
             let img = document.querySelector('.upload_name').value;
             let lettering = document.getElementById('lettering').value;
             let request = document.getElementById('request').value;
-            let count = /*[[${productDTO.amount}]]*/ null;
+            let count = "1";
 
             if(lettering == "") lettering = "";
             if(request == "") request = "";
             if(img == "") img = "";
 
-            alert("가져오기");
-
             const item = {
-                price : price,
+                price : parseInt(price),
                 option_sheet : sheet,
                 option_shape : shape,
                 option_cream : cream,
                 option_lettering : lettering,
                 request : request,
                 option_image : img,
-                amount : count
+                amount : parseInt(count)
             };
 
             itemList.push(item);
@@ -142,25 +143,24 @@
                 <tr>
                     <th>수량</th>
                     <td class='countBtn'>
-                        <input type='button' onclick='count("minus")' value='-'/>
-                        <span id='amount'>1</span>
-                        <input type='button' onclick='count("plus")' value='+'/>
+                        <input type='button' onclick='count("minus", ${i})' value='-'/>
+                        <span id='amount${i}'>1</span>
+                        <input type='button' onclick='count("plus", ${i})' value='+'/>
                     </td>
                 </tr>
             </table>
             <button type="button" onclick="deleteItem(event)">삭제</button>
             `;
+            i++;
 
             const itemsContainer = document.querySelector('.items');
             itemsContainer.appendChild(list);
 
-            alert(img);
-
                // 사진 관련 처리
               if(img != "") {
-                saveImg();
+                saveImg(index);
                 $('.file_image').empty();
-                img.value = '';
+                document.querySelector('.upload_name').value="";
               }
 
             index++;
@@ -184,17 +184,22 @@
         }
 
 //------사진 저장  ------------------------------------------------------------------------------------------------------
-        function saveImg() {
+        function saveImg(index) {
             var imgFile = document.querySelector('#file');
-            var files = imgFile.files;
-            formData.append('photos[]', files[index]);
+            var files = imgFile.files[0];
+
+            formData.append('img'+index, files);
+
+            console.log(imgFile);
+            console.log(formData.get('img'+index));
+            console.log(files);
         }
 
 
 //------값 +/- count 하는   ---------------------------------------------------------------------------------------------
-        function count(type)  {
-          const resultElement = document.getElementById('amount');
-
+        function count(type, i)  {
+          const resultElement = document.querySelector(`#amount${i}`);
+          alert(resultElement);
           var number = resultElement.innerText;
           var count = /*[[${productDTO.amount}]]*/ null;
 
@@ -211,6 +216,7 @@
                 number = parseInt(number) - 1;
           }
 
+          itemList[i-1].amount = number;
 
           // 결과 출력
           resultElement.innerText = number;
@@ -223,19 +229,14 @@
             container.innerHTML = "";
 
             if(input.files && input.files[0]) {
-                var names = [];
-                for(let i = 0; i < input.files.length; i ++ ) {
-                    var file = input.files[i];
-                    names.push(file.name);
-
-                    var newImage = document.createElement("img");
-                    newImage.setAttribute("class","img");
-                    newImage.src = URL.createObjectURL(file);
-
-                    container.appendChild(newImage);
-                }
+                var file = input.files[0];
                 var name = document.querySelector('.upload_name');
-                name.value = names.join(`  /  `);
+                name.value = file.name;
+
+                var newImage = document.createElement("img");
+                newImage.setAttribute("class","img");
+                newImage.src = URL.createObjectURL(file);
+                container.appendChild(newImage);
             }
         }
 
@@ -243,13 +244,16 @@
         function deleteItem(event) {
             const item = event.target.parentNode;
             const i = item.getAttribute('data-index');
+            alert(item);
+            alert(i);
 
             item.remove();
-            itemList.splice(index, i);
+            itemList.splice(i,1);
             //itemList에서도 remove해야함.
 
             //저장 사진 삭제
-            formData.delete('photos[]', files[index]);
+            formData.delete('img'+i);
+            console.log(formData.get('img'+i));
 
             //선택된 상품 수정
             countItem();
@@ -258,50 +262,70 @@
 
 //------장바구니 / 구매 --------------------------------------------------------------------------------------------------
         function intoOrder(element) {
-            var loginId = /*[[${loginId}]]*/ null;
-            var userRole = /*[[${userRole}]]*/ null;
-            var sort = element.getAttribute('data-element');
-            var productId = element.getAttribute('data-product');
-            const dto = [];
-            alert(loginId);
-            alert(userRole);
-            alert(sort);
+            var loginId = /*[[${session.loginId}]]*/ null;
+            var userRole = /*[[${session.userRole}]]*/ null;
+            var productId = /*[[${productDTO.productId}]]*/ null;
+            var page = element.getAttribute('data-element');
 
-            for(let i = 0 ; i < itemList.length; i++) {
-                const {price, sheet, shape, cream, lettering, request, img, count} = itemList[i];
-                const item = {
-                        price : price,
-                        option_sheet : sheet,
-                        option_shape : shape,
-                        option_cream : cream,
-                        option_lettering : lettering,
-                        request : request,
-                        option_image : img,
-                        amount : count
-                };
-                dto.push(item);
-            }
+            if(loginId == null) {
+                toggleNoActive();
+            } else if(itemList.length==0){  // 선택완료 없이 버튼을
+                alert("선택을 완료해주세요.");
+                location.reload();
+            }else {
+                for(let i = 0 ; i < itemList.length; i++) {
+                   if(itemList[i].option_lettering == "") itemList[i].option_lettering = null;
+                   if(itemList[i].request == "") itemList[i].request = null;
+                   if(itemList[i].option_image == "") itemList[i].option_image = null;
 
-            // 사진 처리
-
-            $.ajax({
-                    url: sort === "cart"? "/cart/"+loginId : "/order/"+loginId,
-                    method: "POST",
-                    data : {loginId: loginId,
-                            userRole: userRole,
-                            DTO : dto,
-                            files : formData,
-                            productId : productId
-                            },
-                    contentType:false,
-                    processData:false,
-                }).done(function() {
-                        if(element.equals("cart")) alert("장바구니에 추가되었습니다.");
-                        else alert("주문페이지로 이동합니다.");
-                }).fail(function() {
-                        alert("다시시도해주세요");
-            });
-        }
+                   $.ajax({
+                        url: page === "cart"? "/cart/"+loginId : "/order/"+loginId,
+                        method: "POST",
+                        data : {dto : JSON.stringify(itemList[i]),
+                                productId : productId
+                                }
+                   }).done(function() {
+                        if(formData.get('img'+i) != null) {
+                            var fileData = new FormData();
+                            fileData.append('fileData', formData.get('img'+i));
+                            if(fileData != null) {
+                                 $.ajax({
+                                    url: page === "cart"? "/cart/image/"+loginId : "/order/image/"+loginId,
+                                    method: "POST",
+                                    data : fileData,
+                                    processData: false,
+                                    contentType: false,
+                                    timeout: 5000
+                                }).done(function() {
+                                    if(i == itemList.length-1){
+                                        if(page == "cart") {
+                                            if(confirm("장바구니로 가겠습니까?")) {
+                                                location.href="/cart";
+                                            } else location.reload();
+                                        }
+                                    }
+                                }).fail(function() {
+                                    alert("다시시도해주세요");
+                                });
+                            }
+                        } else {
+                            if(i == itemList.length-1){
+                                if(page == "cart") {
+                                    if(confirm("장바구니로 가겠습니까?")) {
+                                        location.href="/cart";
+                                    } else location.reload();
+                                }else {
+                                    location.href="/order";
+                                    session.setAttribute("from","direct");
+                                }
+                             }
+                        }
+                    }).fail(function() {
+                            alert("다시시도해주세요");
+                    }); // ajax 번째 완
+                } // for문
+            } //else절
+        } //intoOrder
 </script>
 
     <title>[[${productName}]]</title>
@@ -330,11 +354,11 @@
                         <div class="block">
                             <h2>[[${productDTO.name}]]</h2>
                             <div class="icons">
-                                <th:block th:if="${loginId != null}">
+                                <th:block th:if="${session.loginId != null}">
                                     <span th:class="${wish} ? 'heart active' : 'heart'" th:onclick="'javascript:toggleActive(this)'"
                                           th:attr="data-product=${productDTO.productId},data-url=@{/product/{productId}}">하트</span>
                                 </th:block>
-                                <th:block th:if="${loginId == null}">
+                                <th:block th:if="${session.loginId == null}">
                                     <span class="heart" th:onclick="'javascript:toggleNoActive()'">하트</span>
                                 </th:block>
                                 <span class="share"> 공유하기</span>
@@ -742,7 +766,7 @@
                             </div>
                         </table>
 
-                        <form th:if="${loginId != null}" th:action="@{/productQ/{id}(id=${productDTO.productId})}" method="post">
+                        <form th:if="${session.loginId != null}" th:action="@{/productQ/{id}(id=${productDTO.productId})}" method="post">
                             <th:block th:object="${productQDTO}">
                                 <div class="productQ_input">
                                     <input class="productQ" type="text" th:field="*{title}" placeholder="제목">

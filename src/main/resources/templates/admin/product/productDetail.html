@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>상품 정보</title>
-    <link th:href="@{css/admin/detail.css}" rel="stylesheet">
+    <link th:href="@{/css/admin/detail.css}" rel="stylesheet">
     <script>
         //창 닫고 부모창 reload
         function windowClose() {
@@ -17,7 +17,7 @@
 
              const form = document.createElement('form');
              form.method = 'POST';
-             form.action = '/a_product_del';
+             form.action = '/admin/product/del';
 
              const id = document.querySelector('.productId');
              const input = document.createElement('input');
@@ -81,7 +81,7 @@
           </tbody>
         </table>
         <div class="buttons">
-          <a th:href="@{a_product_change(productId=${productDTO.productId})}" id="change">수정</a>
+          <a th:href="@{/admin/product/change(productId=${productDTO.productId})}" id="change">수정</a>
           <a onclick="submitForm();">삭제</a>
           <a onclick="windowClose();">닫기</a>
         </div>

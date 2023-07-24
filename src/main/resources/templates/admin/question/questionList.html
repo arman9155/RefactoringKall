@@ -2,13 +2,13 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{admin/adminLayout}"
+      layout:decorate="~{/admin/adminLayout}"
       layout:fragment="Content">
 <head>
     <meta charset="UTF-8">
     <title>1:1 문의 내역</title>
-    <script type="text/javascript" th:src="@{myLib/jquery-3.2.1.min.js}"></script>
-    <link th:href="@{css/admin/list.css}" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/myLib/jquery-3.2.1.min.js}"></script>
+    <link th:href="@{/css/admin/list.css}" rel="stylesheet">
     <script th:inline="javascript">
         $(document).ready(function() {
             $('#selectAll').click(function() {
@@ -25,14 +25,14 @@
         <h3 class="underline">1:1 문의 관리</h3>
 
         <div class="sort">
-            <a th:href="@{questionList(page='admin')}" th:text="전체" th:class="${categoryId =='all'} ? 'active' : ''"></a>
+            <a th:href="@{/admin/question/list(page='admin')}" th:text="전체" th:class="${categoryId =='all'} ? 'active' : ''"></a>
             <th:block th:each="category,i : ${category}">
-                <a th:href="@{questionList(sort=${category.categoryId}, page='admin')}" th:value="${category.categoryId}" th:class="${category.categoryId == categoryId} ? 'active' : ''">
+                <a th:href="@{/admin/question/list(sort=${category.categoryId}, page='admin')}" th:value="${category.categoryId}" th:class="${category.categoryId == categoryId} ? 'active' : ''">
                     [[${category.categoryName}]]</a>
             </th:block>
         </div>
 
-        <form id="deleteUsQ" method="post" th:action="@{deleteUsQ(page='admin')}">
+        <form id="deleteUsQ" method="post" th:action="@{/admin/question/del(page='admin')}">
             <table class="list">
                 <thead>
                 <tr>
@@ -56,7 +56,7 @@
                         <td th:text="${i.index+1}"></td>
                         <td th:text="${question.userDTO.userId}"></td>
                         <td th:text="${question.categoryDTO?.categoryName}"></td>
-                        <td><a th:href="@{question_Detail(questionId=${question.usqId})}" th:text="${question.title}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=500,height=800'); return false;"></a></td>
+                        <td><a th:href="@{/admin/question/detail(questionId=${question.usqId})}" th:text="${question.title}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=500,height=800'); return false;"></a></td>
                         <td th:text="${question.date1}"></td>
                         <td>
                             <th:block th:if="${question.comment != null}">

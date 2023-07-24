@@ -36,6 +36,7 @@ table a {
 
 table input {
     all: unset;
+    box-sizing : border-box;
     padding: 0 10px;
     width: 100%;
 }
@@ -73,6 +74,11 @@ table input: focus {
 
 .buttons a:hover,
 .buttons button:hover,
-#findZipCode {
+#findZipCode:hover {
   background-color: #FB9DA7;
+}
+
+/* eMessage */
+.eMessage {
+    color : red;
 }

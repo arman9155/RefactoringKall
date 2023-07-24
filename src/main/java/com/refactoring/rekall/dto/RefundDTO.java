@@ -35,7 +35,7 @@ public class RefundDTO {
         RefundDTO refundDTO = new RefundDTO();
 
         refundDTO.setRefundId(refundEntity.getRefundId());
-        refundDTO.setOrderDetailDTO(OrderDetailDTO.toOrderDeatilDTO(refundEntity.getOrderDetailEntity()));
+        refundDTO.setOrderDetailDTO(OrderDetailDTO.toOrderDetailDTO(refundEntity.getOrderDetailEntity()));
         refundDTO.setUserDTO(UserDTO.toUserDTO(refundEntity.getUserEntity()));
         refundDTO.setTitle(refundEntity.getTitle());
         refundDTO.setContent(refundEntity.getContent());

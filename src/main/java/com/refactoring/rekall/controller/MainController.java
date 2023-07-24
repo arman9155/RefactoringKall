@@ -32,8 +32,7 @@ public class MainController {
 
 //  ------------------------------------- ★ Product List ★ ------------------------------------------------------------
     @GetMapping(value = {"", "main"})
-    public ModelAndView main(@SessionAttribute(name ="loginId", required = false) String loginId,
-                             @SessionAttribute(name ="userRole", required = false) String userRole) {
+    public ModelAndView main() {
         ModelAndView modelAndView = new ModelAndView();
 
         List<ProductDTO> productDTOS = productService.findAll();
@@ -50,8 +49,6 @@ public class MainController {
         }*/
 
         modelAndView.addObject("imgList", imgList);
-        modelAndView.addObject("loginId", loginId);
-        modelAndView.addObject("userRole", userRole);
         modelAndView.addObject("recommendProduct", productDTOList);
         modelAndView.setViewName("pages/main.html");
 
@@ -61,12 +58,9 @@ public class MainController {
 //  ------------------------------------- ★ Community ★ ---------------------------------------------------------------
 
     @GetMapping("community/road") // 찾아오시는 길
-    public ModelAndView road(@SessionAttribute(name ="loginId", required = false) String loginId,
-                             @SessionAttribute(name ="userRole", required = false) String userRole) {
+    public ModelAndView road() {
         ModelAndView modelAndView = new ModelAndView();
 
-        modelAndView.addObject("loginId", loginId);
-        modelAndView.addObject("userRole", userRole);
         modelAndView.setViewName("pages/community/road.html");
         return modelAndView;
     }
@@ -81,7 +75,16 @@ public class MainController {
 
         return modelAndView;
     }
+    
+    
+//  ------------------------------------- ★ 창닫기 ★ ---------------------------------------------------------------
 
+    @GetMapping("close")
+    public ModelAndView close(HttpSession session) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("/common/close.html");
+        return modelAndView;
+    }
 }
 
 

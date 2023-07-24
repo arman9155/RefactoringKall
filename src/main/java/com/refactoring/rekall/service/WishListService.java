@@ -29,15 +29,17 @@ public class WishListService {
 
 //  ------------------------------------- ★ 로그인 id 별 wishList 뽑기★ ------------------------------------------------------------
     public List<WishListDTO> findWishList(String userId) {
-        List<WishListEntity> wishList = wishListRepository.findByUserEntityUserIdOrderByDateDesc(userId);
-        List<WishListDTO> wishListDTOList = new ArrayList<>();
-        for(WishListEntity wishListEntity : wishList) {
-            if(wishListEntity != null) {
-                wishListDTOList.add(WishListDTO.toWishListDTO(wishListEntity));
+        if(userId != null) {
+            List<WishListEntity> wishList = wishListRepository.findByUserEntityUserIdOrderByDateDesc(userId);
+            List<WishListDTO> wishListDTOList = new ArrayList<>();
+            for (WishListEntity wishListEntity : wishList) {
+                if (wishListEntity != null) {
+                    wishListDTOList.add(WishListDTO.toWishListDTO(wishListEntity));
+                }
             }
+            return wishListDTOList;
         }
-
-        return wishListDTOList;
+        return new ArrayList<>(0);
     }
 
 //  ------------------------------------- ★ wishList 저장★ ------------------------------------------------------------

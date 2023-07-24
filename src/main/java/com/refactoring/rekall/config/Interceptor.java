@@ -19,8 +19,9 @@ public class Interceptor implements WebMvcConfigurer {
         
         registry.addInterceptor(new AuthLoginInterceptor())
                 .addPathPatterns("/**")
-                .excludePathPatterns("/login/**","/join/**","/community/**","/product/**", "/main",
-                                    "/resources/**","/img/**","/js/**","/upImg/**", "/myLib/**", "/css/**", "/");
+                .excludePathPatterns("/login/**","/join/**","/community/**","/product/**", "/main","/close","/favicon.ico",
+                                    "/resources/**","/img/**","/js/**","/upImg/**", "/myLib/**", "/css/**", "/",
+                                    "https://kapi.kakao.com/**","/kakao/**");
 
         //전체 페이지에 대하여 session이 있을 경우에 들어갈 수 있는 페이지 설정
     }

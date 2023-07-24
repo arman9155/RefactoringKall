@@ -2,84 +2,140 @@
 .cart,
 .order {
     width: 100%;
-    table-layout: fixed;
+    height: 100%;
     text-align: center;
-    border: 1px solid RGB(255, 200, 200);
-    margin-bottom: 20px;
-}
-
-.cart *,
-.order * {
+    border: 3px solid #FB9DA7;
     box-sizing: border-box;
     padding: 10px 5px;
 }
-
-.cart input[type="checkbox"] {
-    width: 15px;
-    height: 15px;
+.cart {
+    table-layout: fixed;
+    border-bottom: none;
+}
+.cart tr:not(:last-child) {
+     border-bottom : 1px solid #FB9DA7;
+}
+.cart tr:not(:first-child){
+    height : 300px;
 }
 
-.select {
-    width: 15%;
+.cart tr:first-child {
+    text-align : center;
+    height : 80px;
 }
-.select input {
-    display: none;
-}
-
-.info {
-    width: 55%;
-}
-
-.count {
-    width: 15%;
-}
-.countBtn {
-    display: flex;
-}
-.countBtn > * {
-    margin: 0 auto;
-    text-align: center;
-}
-.countBtn button {
-    width: 20%;
-    height: 20%;
-    color: white;
-    border: none;
-    background-color: RGB(255, 200, 200);
-}
-.countBtn button:hover {
-    background-color: #FB9DA7;
-}
-.countBtn div {
-    width: 30%;
-}
-
-.price {
-    width: 15% ;
-}
-
-
 .order tr {
     display: flex;
+    align-items : center;
+    text-align : center;
+    height : 80px;
 }
 
+.col1,
+.col4 {
+    width : 15%;
+}
+.col2 {width : 50%;}
+.col3 {width : 20%;}
 
-.buttons {
-    display: flex;
-    justify-content: flex-end;
-    margin: 10px auto;
+.cart tr:nth-child(1),
+.order tr:nth-child(1) {
+    border-bottom: 3px solid #FB9DA7;
 }
 
-.buttons input {
-    margin: 0 5px;
+#selectAll {
+    display : none;
+}
+
+td.col1 input[type="checkbox"]{
+    display: none;
+}
+td.col1 input[type="checkbox"] + label{
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border:3px solid RGB(255, 200, 200);
+    position: relative;
+}
+td.col1 input[type="checkbox"]:checked + label::after{
+    content:'✔';
+    font-size: 25px;
     color: white;
-    border: none;
+    background : #FB9DA7;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    position: absolute;
+    left : -2.8px;
+    top : -2.8px;
+}
+
+
+/* 카운트 버튼 */
+.countBtn {
+    text-align : center;
+}
+
+.countBtn input {
+    all : unset;
     background-color: RGB(255, 200, 200);
-    width: 20%;
-    line-height: 2rem;
-    font-weight: bold;
-}
-.buttons input:hover {
+    cursor : pointer;
+    font-weight : bold;
+    margin : 3px 0;
+    line-height : 1.2rem;
     color: white;
+    border-radius : 20px;
+    width: 20%;
+    height : 30px;
+}
+.countBtn span {
+    width : 20%;
+}
+.countBtn input:hover {
     background-color: #FB9DA7;
 }
+
+
+/* 밑 전송 버튼들 */
+
+#buttons {
+    display: flex;
+    justify-content: flex-end;
+    text-align: center;
+    gap : 20px;
+    cursor: pointer;
+    margin-top : 20px;
+}
+
+#buttons input {
+      all: unset;
+      width: 20%;
+      font-weight: bold;
+      margin: 3px 0;
+      color: white;
+      border-radius: 20px;
+      background-color: RGB(255, 227, 227);
+      box-sizing: border-box;
+      padding: 5px 20px;
+      color: white;
+}
+#buttons input:hover {
+    background-color: #FB9DA7;
+}
+
+.cartOption {
+    display : flex;
+    flex-direction : column;
+    justify-content : center;
+    gap : 10px;
+}
+
+#pInfo {
+    display : flex;
+    width : 100%;
+}
+
+.imageP {
+    height: 250px;
+    margin-top : 25px;
+}
+

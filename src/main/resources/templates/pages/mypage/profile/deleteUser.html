@@ -2,17 +2,23 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link th:href="@{css/mypage/userInfo.css}" rel="stylesheet">
+    <link th:href="@{/css/mypage/userInfo.css}" rel="stylesheet">
     <meta charset="UTF-8">
     <title>회원탈퇴</title>
+    <script>
+    function windowClose(){
+        window.close();
+        window.opener.parent.location.reload();
+    }
+  </script>
 </head>
 <body>
-    <form th:action="@{u_deleteUser}" method="post"  th:object="${userDelDTO}">
+    <form th:action="@{/mypage/user/delete}" method="post"  th:object="${userDelDTO}">
         <table>
             <tbody>
             <tr>
                 <th><label for="id">아이디</label></th>
-                <td> <input id="id" type="text" th:value="${loginId}" readonly></td>
+                <td> <input id="id" type="text" th:value="${session.loginId}" readonly></td>
             </tr>
             <tr>
                 <th><label for="description">탈퇴사유</label></th>
@@ -23,8 +29,8 @@
             </tbody>
         </table>
         <div class="buttons">
-            <button>탈퇴완료</button>
-            <a onclick="window.close();">닫기</a>
+            <button id="complete">탈퇴완료</button>
+            <a onclick="windowClose();" id="close">닫기</a>
         </div>
     </form>
 </body>

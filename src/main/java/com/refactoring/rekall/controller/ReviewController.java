@@ -20,7 +20,7 @@ public class ReviewController {
 
     //  ------------------------------------- ★ mypage review ★ ---------------------------------------------------------------
 
-    @GetMapping("u_review") // 후기
+    @GetMapping("mypage/review") // 후기
     public ModelAndView review(@SessionAttribute(name ="loginId", required = false) String loginId,
                                @SessionAttribute(name ="userRole", required = false) String userRole) {
         ModelAndView modelAndView = new ModelAndView();

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,16 +27,13 @@ public class UsQController {
 
 //  ---------------------------- ★ 1:1 문의 페이지 ★ ---------------------------------------------------------------
     @GetMapping("community/question") // 1:1 문의 페이지
-    public ModelAndView questionF(@SessionAttribute(name ="loginId", required = false) String loginId,
-                                  @SessionAttribute(name ="userRole", required = false) String userRole) {
+    public ModelAndView questionF(HttpSession session) {
 
         ModelAndView modelAndView = new ModelAndView();
-        String email = usQService.findEmail(loginId);
+        String email = usQService.findEmail(session.getAttribute("loginId").toString());
 
         modelAndView.addObject("usq", new UsQDTO());
         modelAndView.addObject("email", email);
-        modelAndView.addObject("loginId", loginId);
-        modelAndView.addObject("userRole", userRole);
         modelAndView.setViewName("pages/community/question.html");
 
         return modelAndView;
@@ -49,26 +47,23 @@ public class UsQController {
         usQService.saveQuestion(usQDTO);
 
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("data",new Message("완료되었습니다.", "question"));
+        modelAndView.addObject("data",new Message("완료되었습니다.", "/mypage/question/list"));
         modelAndView.setViewName("common/message.html");
 
         return modelAndView;
     }
 
 //  ---------------------------- ★ userID_질문 리스트 --관리자포함 ★ ---------------------------------------------------------------
-    @GetMapping("questionList") // 1:1 문의
-    public ModelAndView u_questionList(@SessionAttribute(name ="loginId", required = false) String loginId,
-                                        @SessionAttribute(name ="userRole", required = false) String userRole,
+    @GetMapping(value={"admin/question/list", "mypage/question/list"}) // 1:1 문의
+    public ModelAndView u_questionList(HttpSession session,
                                        @RequestParam("page") String page,
                                        @RequestParam(name="sort", defaultValue = "all", required = false) String categoryId) {
         ModelAndView modelAndView = new ModelAndView();
         List<UsQDTO> usQList = new ArrayList<>();
 
         if(page.equals("mypage")) {
-            usQList = usQService.usqList(loginId);
+            usQList = usQService.usqList(session.getAttribute("loginId").toString());
 
-            modelAndView.addObject("loginId", loginId);
-            modelAndView.addObject("userRole", userRole);
             modelAndView.setViewName("pages/mypage/board/questionList.html");
         } else {
             if(categoryId.equals("all"))
@@ -93,7 +88,7 @@ public class UsQController {
     }
 
 //  ---------------------------- ★ userID_질문 삭제  -- 관리자포함★ ---------------------------------------------------------------
-    @PostMapping("deleteUsQ")
+    @PostMapping(value={"admin/question/del","mypage/question/del"})
     public ModelAndView deleteUsQ(@RequestParam(name="usqIds", required = false, defaultValue = "") List<Integer> usQIds,
                                   @RequestParam(name= "questionId", required = false, defaultValue = "0") Integer usqId,
                                   @RequestParam("page") String page) {
@@ -116,7 +111,7 @@ public class UsQController {
 
 //  ★ Detail ★ ---------------------------------------------------------------
 
-    @GetMapping("question_Detail") // 1:1 문의
+    @GetMapping("admin/question/detail") // 1:1 문의
     public ModelAndView questionDetail(@RequestParam("questionId") Integer qId) {
 
         ModelAndView modelAndView = new ModelAndView();
@@ -130,7 +125,7 @@ public class UsQController {
 
 //  ★ 저장 ★ ---------------------------------------------------------------
 
-    @PostMapping("question_comment") // 1:1 문의
+    @PostMapping("admin/question/comment") // 1:1 문의 답변
     public ModelAndView questionSave(@ModelAttribute UsQDTO question) {
 
         ModelAndView modelAndView = new ModelAndView();

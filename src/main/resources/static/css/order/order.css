@@ -1,27 +1,33 @@
 
+/* 페이지 설정 */
+
 .buyerInfo,
 .orderInfo,
 .productList,
 .total {
-    width: 100%;
     table-layout: fixed;
+    width: 100%;
     text-align: center;
     border-collapse: collapse;
     border: 1px solid RGB(255, 200, 200);
-    margin-bottom: 20px;
+    margin-bottom: 40px;
 }
 
 .buyerInfo *,
 .orderInfo *,
 .productList *,
-.total * {
+.total *,
+.discount * {
     box-sizing: border-box;
     padding: 10px 5px;
 }
 
+
+/* table 설정 */
+
 .buyerInfo th,
 .orderInfo th {
-    width: 45%;
+    width : 50%;
     color: white;
     background-color: RGB(255, 200, 200);
 }
@@ -35,35 +41,111 @@
 
 .buyerInfo input,
 .orderInfo input,
-.discount input,
-form button {
+.discount input{
     all: unset;
+    box-sizing: border-box;
+    padding: 5px 20px;
+    width: 100%;
+    border-radius: 20px;
+    border: 1px solid RGB(255, 200, 200);
+    outline: none;
+    line-height: 1.2rem;
+
+    margin: 3px 0;
 }
 
-.buyerInfo button,
-.orderInfo button {
+.buyerInfo input:focus,
+.orderInfo input:focus,
+.discount input:focus {
+    border: 3px solid #FB9DA7;
+}
+
+
+
+/* button */
+
+
+.buyerInfo input[type="button"],
+#searchAddress,
+#change,
+.buttons a {
+    all: unset;
     padding: 0;
     width : 50px;
     border: none;
     background-color: RGB(255, 200, 200);
+    cursor : pointer;
+    font-weight: bold;
+    border-radius : 20px;
     color:white;
     float: right;
     top:0;
 }
 
- form button {
-    width : 20%;
-    border: none;
-    background-color: RGB(255, 200, 200);
-    color: white;
-    text-align: center;
-    float: right;
+.buyerInfo input[type="button"]:hover,
+#searchAddress:hover,
+#change:hover,
+.buttons a:hover {
+    background-color:  #FB9DA7;
 }
 
-.buyerInfo button:hover,
-.orderInfo button:hover,
-form button:hover {
-    background-color:  #FB9DA7;
+#change,
+#searchAddress {
+    position : absolute;
+    right : 5px ;
+    text-align : center;
+    top : calc((100% - 31px)/2);
+    height : 25px;
+    padding : 3px 0px;
+}
+
+.buttons {
+    display : flex;
+    justify-content : flex-end;
+    gap : 20px;
+}
+.buttons input[type="button"] {
+    width : 100px;
+    padding : 3px 0px;
+}
+
+.buttons a {
+    width : 25%;
+    padding : 3px 20px;
+    text-align : center;
+}
+
+/* buyerInfo */
+.buyerInfo td {
+    display : flex;
+}
+#pbChange{
+    display : none;
+}
+
+/* orderInfo */
+
+#checkBox {
+    display : flex;
+}
+
+#checkBox input[type='checkbox'],
+#payment input[type="radio"] {
+    all : revert;
+    -webkit-appearance : none;
+    height : 20px;
+    width : 20px;
+    border-radius : 50%;
+    cursor : pointer;
+    padding : 0 10px;
+    outline : 1px solid RGB(255, 200, 200);
+    margin-top : calc((40px - 20px)/2);
+}
+
+#checkBox input[type='checkbox']:checked,
+#payment input[type="radio"]:checked {
+    border-color :  #FB9DA7;
+    background :   #FB9DA7;
 }
 
 .orderInfo tr:nth-child(1) th {
@@ -71,26 +153,77 @@ form button:hover {
     text-align: left;
     color: black;
 }
+.eMessage {
+    color: red;
+}
+#zipBox,
+.userPb {
+    position : relative;
+}
 
+
+/* productList */
+.col1 {
+    width : 20%;
+}
+.col2 {
+    width : 100%;
+    border-left : 1px dotted RGB(255, 200, 200);
+    display : flex;
+    gap : 10px;
+    align-items : center;
+    padding : 10px 20px;
+}
+.col3,
+.col4 {
+    width : 10%;
+    border-left : 1px dotted RGB(255, 200, 200);
+}
+th.col2 {
+    display : block;
+}
+.imageP {
+    height : 200px;
+}
 .productList tr {
     box-sizing: border-box;
     padding: 10px 0;
     border-bottom: 3px solid RGB(255, 200, 200);
 }
+.productList thead tr {
+    color: white;
+    background-color: RGB(255, 200, 200);
+}
+.productList .cartOption *{
+    padding : 0;
+}
+.productList .cartOption tr {
+    border-bottom : none;
+    display : flex;
+    gap : 20px;
+    align-items : center;
+    padding : 5px 0;
+}
+.productList .cartOption th {
+    width : 30%;
+    text-align : right;
+}
+.productList .cartOption td {
+    text-align : left;
+}
+/* discount */
 
 .discount {
     display: flex;
-    border: 1px solid RGB(255, 200, 200);
+    margin-bottom: 40px;
 }
 .discount li {
-    box-sizing: border-box;
-    padding: 10px 0;
+    border: 1px solid RGB(255, 200, 200);
 }
-.discount li input {
-    padding: 0 20px;
+.discount li label {
+    display : block;
 }
 .discount li:nth-child(1) {
-    width: 40%;
     background-color: RGB(255, 200, 200);
     color: white;
     font-weight: bold;
@@ -101,18 +234,47 @@ form button:hover {
     -webkit-appearance: none;
     margin: 0;
 }
-
-.payment  {
-    display: flex;
-    test-align: center;
+#mileageBox {
+    display : flex;
+    gap : 5px;
+    text-align : center;
+    padding : 0;
 }
-.payment input {
+#mMessage {display : none;}
+
+
+/* 결제수단 */
+
+.pay  {
+    display: flex;
+    text-align: left;
+    margin-bottom: 30px;
+    align-items : center;
+}
+
+#payment li {
+    display : flex;
+    gap : 20px;
+    height : 40px;
+    margin-bottom : 10px;
+}
+#payment li {
+    display : flex;
+    gap : 20px;
+    margin-bottom : 10px;
+}
+#payment input {
     width: 20px;
     height: 20px;
-    padding: 0 5px;
+}
+#explain {
+    border-left : 1px dotted RGB(255, 200, 200);
 }
 
+
+/* 최종 결제 금액*/
 .total th {
     width: 25%;
     line-height: 1.2rem;
 }
+

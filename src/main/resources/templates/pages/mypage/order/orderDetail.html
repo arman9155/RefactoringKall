@@ -2,8 +2,8 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-  <link th:href="@{css/mypage/list.css}" rel="stylesheet">
-  <script type="text/javascript" th:src="@{myLib/jquery-3.2.1.min.js}"></script>
+  <link th:href="@{/css/mypage/list.css}" rel="stylesheet">
+  <script type="text/javascript" th:src="@{/myLib/jquery-3.2.1.min.js}"></script>
   <meta charset="UTF-8">
   <script th:inline="javascript">
     function closeWindow() {
@@ -14,21 +14,16 @@
     function submitForm() {
 
          const form = document.createElement('form');
-         form.method = 'POST';
-         form.action = '/cancelOrder';
+         form.method = 'GET';
+         form.action = '/mypage/order/cancel';
 
-         const id = document.querySelector('.odetailId');
+         const id = document.getElementById('odetailId');
          const input = document.createElement('input');
          input.type = 'hidden';
          input.name = 'odetailId';
-         input.value = id.value;
+         input.value = parseInt(id.value);
+         console.log(typeof input.value);
          form.appendChild(input);
-
-         const input2 = document.createElement('input');
-         input2.type = 'hidden';
-         input2.name = 'page';
-         input2.value = 'detail';
-         form.appendChild(input2);
 
          document.body.appendChild(form);
          form.submit();
@@ -37,49 +32,60 @@
   <title>주문상세정보</title>
 </head>
 <body>
-<section class="content">
-  <h3 class="underline">주문상세정보</h3>
-  <table class="list">
-    <tbody id="orderList">
-    <tr>
-      <th>주문상세번호</th>
-      <th>주문번호</th>
-      <th>아이디</th>
-      <th>상품명</th>
-      <th>옵션</th>
-      <th>수량</th>
-      <th>가격</th>
-      <th>요청사항</th>
-      <th>진행상황</th>
-    </tr>
-    <th:block th:each="odetail : ${odetailList}">
-      <tr>
-        <td><input class="odetailId" name="odetailId" value="${odetail.orderDTO.orderId}" readonly></td>
-        <td>[[${odetail.orderDTO.orderId}]]</td>
-        <td>[[${odetail.orderDTO.userDTO.userId}]]</td>
-        <td>[[${odetail.productDTO.name}]]</td>
-        <td><span th:if="[[${odetail.option_sheet}]] != null">[[${odetail.option_sheet}]] </span>
-          <span th:if="[[${odetail.option_shape}]] != null">[[${odetail.option_shape}]]</span>
-          <span th:if="[[${odetail.option_cream}]] != null">[[${odetail.option_cream}]]</span>
-          <span th:if="[[${odetail.option_lettering}]] != null">[[${odetail.option_lettering}]]</span>
-          <span th:if="[[${odetail.option_size}]] != null">[[${odetail.option_size}]]</span>
-        </td>
-        <td>[[${odetail.amount}]]</td>
-        <td th:utext="${odetail.amount * odetail.price}"></td>
-        <td>[[${odetail.request}]]</td>
-        <td>[[${odetail.status}]]</td>
-      </tr>
-    </th:block>
-    </tbody>
-    <tfoot>
-    <div class="buttons">
-      <a onclick="submitForm();">선택 삭제</a>
-      <a onclick="closeWindow();">닫기</a>
-    </div>
-    </tfoot>
-  </table>
-  </form>
-</section>
-
+  <section class="content">
+    <h3 class="underline">주문상세정보</h3>
+    <table class="list">
+      <tbody id="orderDetail">
+        <tr>
+          <th>주문상세번호</th>
+          <td id="odetailId">[[${odetail.odetailId}]]</td>
+        </tr>
+        <tr>
+          <th>주문번호</th>
+          <td>[[${odetail.orderDTO.orderId}]]</td>
+        </tr>
+        <tr>
+          <th>아이디</th>
+          <td>[[${odetail.orderDTO.userDTO.userId}]]</td>
+        </tr>
+        <tr>
+          <th>상품명</th>
+          <td>[[${odetail.productDTO.name}]]</td>
+        </tr>
+        <tr>
+          <th>옵션</th>
+          <td><span th:if="${odetail.option_sheet != null}">[[${odetail.option_sheet}]] </span>
+            <span th:if="${odetail.option_shape != null}">[[${odetail.option_shape}]]</span>
+            <span th:if="${odetail.option_cream != null}">[[${odetail.option_cream}]]</span>
+            <span th:if="${odetail.option_lettering != null}">[[${odetail.option_lettering}]]</span>
+            <span th:if="${odetail.option_size != null}">[[${odetail.option_size}]]</span>
+          </td>
+        </tr>
+        <tr>
+          <th>수량</th>
+          <td>[[${odetail.amount}]]</td>
+        </tr>
+        <tr>
+          <th>가격</th>
+          <td th:utext="${odetail.amount * odetail.price}"></td>
+        </tr>
+        <tr>
+          <th>요청사항</th>
+          <td>[[${odetail.request}]]</td>
+        </tr>
+        <tr>
+          <th>진행상황</th>
+          <td>[[${odetail.status}]]</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <div class="buttons">
+          <a onclick="submitForm();">반품 신청</a>
+          <a onclick="closeWindow();">닫기</a>
+        </div>
+      </tfoot>
+    </table>
+    </form>
+  </section>
 </body>
 </html>

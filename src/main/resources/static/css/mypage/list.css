@@ -7,32 +7,21 @@
 .list {
    table-layout: fixed; /* 이게 없으면... column 넓이 하나도 안멱혀요...*/
     width: 100%;
-    margin: 0 0 20px 0;
+    margin: 30px 0;
     border: 0;
     border-spacing: 0;
     border-collapse: collapse;
     border-top: 1px solid #3c3c3c;
     line-height: 40px;
 }
-/*
 
-.list tr {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-}
-*/
-
-table.list tr th:nth-child(1),
-table.list tr td:nth-child(1){
+.col1{
      width: 10%;
  }
-table.list tr th:nth-child(2),
-table.list tr td:nth-child(2) {
+col2{
     width: 30%;
  }
-table.list tr th:nth-child(3),
-table.list tr td:nth-child(3) {
+.col3{
     width: 60%;
 }
 
@@ -144,7 +133,7 @@ section .question_a {
     margin: 3px 0;
     color: white;
     border-radius: 20px;
-    background-color: RGB(255, 227, 227);
+    background-color: RGB(255, 200, 200);
     box-sizing: border-box;
     padding: 5px 20px;
     cursor: pointer;
@@ -152,4 +141,69 @@ section .question_a {
 
 .active {
     background : #FB9DA7;
+}
+
+
+/* order */
+
+.order.sort {
+    display : flex;
+    gap : 3px;
+    text-align : center;
+}
+#orderList {
+    border : 3px solid #FB9DA7;
+}
+#orderList tr {
+    margin : 5px 0;
+}
+#orderList .order1 {
+    border-bottom : 1px dotted RGB(255, 200, 200);
+}
+
+#orderList .order2 {
+    border-bottom : 3px solid #FB9DA7;
+}
+#orderList .order2 th {
+    border-left : 1px dotted RGB(255, 200, 200);
+}
+#orderList .order2 img {
+    width : 200px;
+    padding : 10px;
+}
+#orderList .order2 a {
+    color : white;
+    text-decoration : none;
+    background :  RGB(255, 200, 200);
+}
+#orderList .order2 a:hover {
+    background : #FB9DA7;
+}
+#orderList .btn {
+    display : flex;
+    flex-direction : column;
+    padding : 5px 10px;
+    gap : 10px;
+}
+#orderList .order3 a {
+    display : inline-block;
+    border-radius : 20px;
+}
+#orderList #productInfo {
+    color : black;
+    background : none;
+}
+
+#orderDetail tr:not(:last-child) {
+    border-bottom : 1px dotted RGB(255, 200, 200);
+}
+
+#orderDetail tr th {
+    background : #FB9DA7;
+    color : white;
+}
+
+#orderDetail {
+    text-align : center;
+    border : 3px solid #FB9DA7;
 }

@@ -13,7 +13,8 @@ form a {
     text-decoration: none;
 }
 
-table input {
+table input,
+textarea {
    box-sizing: border-box;
    display:inline-block;
    padding: 5px 20px;
@@ -25,7 +26,8 @@ table input {
    margin: 3px 0;
 }
 
-form input:focus {
+form input:focus,
+textarea:focus {
       border: 3px solid #FB9DA7;
 }
 
@@ -111,11 +113,24 @@ textarea {
       text-align:center;
       border-radius: 20px;
       width: 30%;
+      line-height : 1.2rem;
+      box-sizing: border-box;
+      padding: 10px 0;
 }
 
 #join:hover,
 #back:hover,
 #deleteUser:hover,
-#change:hover{
+#change:hover,
+#close:hover,
+#complete:hover,
+#delete:hover,
+#add:hover {
   background-color: #FB9DA7;
+}
+
+.eMessage {
+    color : red;
+    font-weight: bold;
+    font-size : 0.8rem;
 }

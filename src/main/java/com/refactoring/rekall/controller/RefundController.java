@@ -4,12 +4,14 @@ import com.refactoring.rekall.dto.RefundDTO;
 import com.refactoring.rekall.service.RefundService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.UsesSunMisc;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -20,16 +22,14 @@ public class RefundController {
 
 //  ------------------------------------- ★ mypage refund List ★ ------------------------------------------------------------
 
-    @GetMapping("u_refund")
-    public ModelAndView refundIdList (@SessionAttribute(name ="loginId", required = false) String loginId,
-                                   @SessionAttribute(name ="userRole", required = false) String userRole,
-                                   @RequestParam(name = "sort", defaultValue = "all", required = false) String status){
+    @GetMapping("mypage/refund")
+    public ModelAndView refundIdList (HttpSession session,
+                                      @RequestParam(name = "sort", defaultValue = "all", required = false) String status){
 
         ModelAndView modelAndView = new ModelAndView();
-        List<RefundDTO> refundDTOList = refundService.getRefundList(loginId, status);
+        List<RefundDTO> refundDTOList = refundService.getRefundList(session.getAttribute("loginId").toString(), status);
 
-        modelAndView.addObject("loginId", loginId);
-        modelAndView.addObject("userRole", userRole);
+
         modelAndView.addObject("status", status);
         modelAndView.addObject("refundList",refundDTOList);
         modelAndView.setViewName("pages/mypage/order/refundList.html");
@@ -38,12 +38,10 @@ public class RefundController {
     }
 
 
-
-
 //  ------------------------------------- ★ 관리자 ★ ------------------------------------------------------------
 //  ------------------------------------- ★ 전체 refund List ★ ------------------------------------------------------------
 
-    @GetMapping("a_refund")
+    @GetMapping("admin/refund")
     public ModelAndView refundList (@RequestParam(name = "sort", defaultValue = "all", required = false) String status){
 
         ModelAndView modelAndView = new ModelAndView();

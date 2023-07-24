@@ -2,7 +2,7 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{common/layouts/listLayout}">
+      layout:decorate="~{/common/layouts/listLayout}">
 <!--     layout:fragment="Content">-->
 <head>
     <meta charset="UTF-8">
@@ -15,20 +15,20 @@
         // 로그인 없이  wishList 클릭 -> OK
         function toggleNoActive() {
             alert("로그인 후 이용해주세요");
+            window.location.href="/login";
         }
 
         // wishList -> OK
         function toggleActive(element) {
 
             var url = element.getAttribute('data-url');
-            var loginId = /*[[${loginId}]]*/ null;
-            var userRole = /*[[${userRole}]]*/ null;
-            alert(loginId);
+            var loginId = /*[[${session.loginId}]]*/ null;
+            var userRole = /*[[${session.userRole}]]*/ null;
             var productId = parseInt(element.getAttribute('data-product'));
 
             if(element.classList.contains('active')) {
                 $.ajax({
-                    url: "/u_wishListDel/"+productId,
+                    url: "/wish/del/"+productId,
                     method: "GET",
                     data : {loginId: loginId,
                             url : url,
@@ -42,7 +42,7 @@
                 });
             } else {
                 $.ajax({
-                    url: "/u_wishList/"+productId,
+                    url: "/wish/"+productId,
                     method: "GET",
                     data : {loginId: loginId,
                             url : url,
@@ -59,7 +59,7 @@
     </script>
     <script th:inline="javascript">
     // 최종 상품
-        const itemList = [];
+
         let index = 0;
 
 //------값 +/- count 하는 -> 전체 갯수 변경도 ---------------------------------------------------------------------------------------------
@@ -89,46 +89,31 @@
 
 //------장바구니 / 구매 --------------------------------------------------------------------------------------------------
         function intoOrder(element) {
-            var loginId = /*[[${loginId}]]*/ null;
-            var userRole = /*[[${userRole}]]*/ null;
-            const dto = [];
-            alert(loginId);
-            alert(userRole);
+            var loginId = /*[[${session.loginId}]]*/ null;
+            var userRole = /*[[${session.userRole}]]*/ null;
+            var amount =  document.querySelector('.selected-item span').textContent;
+            var productId = /*[[${productDTO.productId}]]*/ null;
+            var page = element.getAttribute('data-element');
 
-            for(let i = 0 ; i < itemList.length; i++) {
-                const {price, sheet, shape, cream, lettering, request, img, count} = itemList[i];
-                const item = {
-                        price : price,
-                        option_sheet : sheet,
-                        option_shape : shape,
-                        option_cream : cream,
-                        option_lettering : lettering,
-                        request : request,
-                        option_image : img,
-                        amount : count
-                };
-                dto.push(item);
+            if(loginId == null) {
+                toggleNoActive();
+            } else {
+                    $.ajax({
+                            url: page === "cart"? "/cart/"+loginId : "/order/"+loginId,
+                            method: "POST",
+                            data : {amount : amount,
+                                    productId : productId
+                                    },
+                        }).done(function() {
+                                if(page == "cart") alert("장바구니에 추가되었습니다.");
+                                else alert("주문페이지로 이동합니다.");
+                                if(confirm("장바구니로 가겠습니까?")) {
+                                      location.href="/cart";
+                                } else location.reload();
+                        }).fail(function() {
+                                alert("다시시도해주세요");
+                    });
             }
-
-            // 사진 처리
-
-
-            $.ajax({
-                    url: element === "cart"? "/cart/"+loginId : "/order/"+loginId,
-                    method: "POST",
-                    data : {loginId: loginId,
-                            userRole: userRole,
-                            DTO : dto,
-                            formData,
-                            },
-                    contentType:false,
-                    processData:false,
-                }).done(function() {
-                        if(element.equals("cart")) alert("장바구니에 추가되었습니다.");
-                        else alert("주문페이지로 이동합니다.");
-                }).fail(function() {
-                        alert("다시시도해주세요");
-            });
         }
 </script>
 
@@ -160,7 +145,7 @@
                         <div class="icons">
                             <th:block th:if="${loginId != null}">
                                     <span th:class="${wish} ? 'heart active' : 'heart'" th:onclick="'javascript:toggleActive(this)'"
-                                          th:attr="data-product=${productDTO.productId},data-url=@{product/{productId}}">하트</span>
+                                          th:attr="data-product=${productDTO.productId},data-url=@{/product/{productId}}">하트</span>
                             </th:block>
                             <th:block th:if="${loginId == null}">
                                 <span class="heart" th:onclick="'javascript:toggleNoActive()'">하트</span>
@@ -229,7 +214,7 @@
                             <th>배송비</th>
                             <td>3,000 원 (주문 시 결제)</td>
                         </tr>
-                        <tr>
+                        <tr class="PDetail">
                             <th>수량</th>
                             <td class='countBtn'>
                                 <input type='button' onclick='count("minus")' value='-'/>

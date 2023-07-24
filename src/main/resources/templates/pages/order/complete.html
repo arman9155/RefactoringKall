@@ -2,41 +2,41 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{common/layouts/orderLayout}"
+      layout:decorate="~{/common/layouts/orderLayout}"
       layout:fragment="Content">
 <head>
   <meta charset="UTF-8">
-  <link th:href="@{css/order/complete.css}" rel="stylesheet">
+  <link th:href="@{/css/order/complete.css}" rel="stylesheet">
   <title>주문완료</title>
 </head>
 <body>
-  <div><h3>주문완료되었습니다</h3></div>
+  <h3 class="underline">주문완료되었습니다</h3>
   <table class="complete">
     <tr>
       <th>주문 번호</th>
-      <td>20164-51154-32478</td>
-    </tr>
-    <tr>
-      <th>배송지</th>
-      <td></td>
-    </tr>
-    <tr>
-      <th>주문 상품</th>
-      <td>!!!!!</td>
+      <td>[[${orderDTO.orderId}]]</td>
     </tr>
     <tr>
       <th>주문 금액</th>
-      <td>!원</td>
+      <td>[[${orderDTO.price}]]</td>
     </tr>
     <tr>
-      <th>결제 상세</th>
-      <td>!!카드 승인일자 가격이런거.~~</td>
+      <th>결제 방식</th>
+      <td th:if="${orderDTO.payment == 'kakao'}">카카오페이</td>
+      <td th:if="${orderDTO.payment == 'credit'}">카드결제</td>
+      <td th:if="${orderDTO.payment == 'phone'}">핸드폰결제</td>
+      <td th:if="${orderDTO.payment == 'acount'}">계좌결제</td>
+    </tr>
+    <tr>
+      <th>주문 상품</th>
+      <td th:if="${length > 1}" th:utext="${product}+' 외 '+${length -1}+'건'"></td>
+      <td th:if="${length < 2}" th:text="${product}"></td>
     </tr>
   </table>
 
-  <div class="atags">
-    <a th:href="@{orderList}">구매내역보기</a>
-    <a th:href="@{main}">홈으로 가기</a>
+  <div class="buttons">
+    <a th:href="@{/mypage/order(sort = 'all')}">구매내역보기</a>
+    <a th:href="@{/main}">홈으로 가기</a>
   </div>
 </body>
 </html>

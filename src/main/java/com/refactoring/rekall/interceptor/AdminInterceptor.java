@@ -72,7 +72,7 @@ public class AdminInterceptor extends HandlerInterceptorAdapter {
         // loginId의 role이 admin일 경우
           if(userRole.equals("ADMIN")) {
             System.out.println("role.equals여기");
-            UserDTO userDTO = userService.findByUserID(loginId);
+//            UserDTO userDTO = userService.findByUserID(loginId);
 //            --> 이게 왜 null 로 나오냐
             // admin임을 알 수 있는 조건을 작성한다.
             // ex) 서비스의 id가 root이면 admin이다.

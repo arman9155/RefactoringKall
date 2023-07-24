@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>상품 상세 이미지 수정</title>
-    <link th:href="@{css/admin/detail.css}" rel="stylesheet">
+    <link th:href="@{/css/admin/detail.css}" rel="stylesheet">
     <script>
         function windowClose() {  //부모창 / 현재창 닫기
             window.opener.parent.close();
@@ -38,7 +38,7 @@
         <h3 class="underline">상품 상세 이미지 수정</h3>
 
         <div class="noImg">
-            <form th:action="@{a_product_DImageC}" th:method="post" th:object="${productImg}" enctype="multipart/form-data">
+            <form th:action="@{/admin/product/dImageC}" th:method="post" th:object="${productImg}" enctype="multipart/form-data">
                 <input type="hidden" name="productId" th:value="${productId}">
                 <div class="detail_image"></div>
 

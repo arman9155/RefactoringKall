@@ -388,7 +388,7 @@ input[type="radio"]:checked+label,
      background-color: #FB9DA7;
 }
 
-.item .countBtn {
+td.countBtn {
     display : flex;
     text-align : center;
 }
@@ -404,4 +404,21 @@ input[type="radio"]:checked+label,
 .productQ_input input: focus,
 .productQ_input textarea: focus {
     border: 3px solid #FB9DA7;
+}
+
+.PDetail span {
+    width:20%;
+}
+
+.PDetail input[type="button"] {
+    all : unset;
+    text-align: center;
+    background : RGB(255, 200, 200);
+    cursor : pointer;
+    font-weight : bold;
+    margin : 3px 0;
+    line-height : 1.2rem;
+    color: white;
+    border-radius: 20px;
+    width : 10%;
 }

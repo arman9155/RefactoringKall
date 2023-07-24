@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,22 +30,22 @@ public class ProductController {
 //  ------------------------------------- ★ Product List ★ ------------------------------------------------------------
 //  ★ 케이크 리스트 ★ ------------------------------------------------------------
 
-    @GetMapping("product/List/{category}") // 상품리스트 _ custom
-    public ModelAndView customList(@SessionAttribute(name ="loginId", required = false) String loginId,
-                                   @SessionAttribute(name ="userRole", required = false) String userRole,
+    @GetMapping("product/list/{category}") // 상품리스트 _ custom
+    public ModelAndView customList(HttpSession session,
                                    @PathVariable("category") String categoryId) {
 
         ModelAndView modelAndView = new ModelAndView();
         List<ProductDTO> productDTOList = productService.findById(categoryId);
         String value = categoryService.findByCategoryId(categoryId);
         List<String> tags = productService.findtaglist(productDTOList);
-        List<WishListDTO> wishListDTOList = wishListService.findWishList(loginId);
-
+        String loginId = "";
+        if(session.getAttribute("loginId") == null) loginId = "null";
+        if(!"null".equals(loginId)) {
+            List<WishListDTO> wishListDTOList = wishListService.findWishList(session.getAttribute("loginId").toString());
+            modelAndView.addObject("wishList", wishListDTOList);
+        }
         modelAndView.addObject("productList", productDTOList);
         modelAndView.addObject("category", value);
-        modelAndView.addObject("loginId", loginId);
-        modelAndView.addObject("userRole", userRole);
-        modelAndView.addObject("wishList", wishListDTOList);
         modelAndView.addObject("tags", tags); // 태그들
         modelAndView.setViewName("pages/product/productList.html");
 
@@ -54,20 +55,17 @@ public class ProductController {
 //  ------------------------------------- ★ tag검색 ★ ------------------------------------------------------------
 
     @PostMapping("u_tagList")
-    public ModelAndView findTagList(@SessionAttribute(name ="loginId", required = false) String loginId,
-                                    @SessionAttribute(name ="userRole", required = false) String userRole,
+    public ModelAndView findTagList(HttpSession session,
                                     @RequestParam(value = "tags") String[] tags,
                                     @RequestParam("category") String value) {
 
         ModelAndView modelAndView = new ModelAndView();
 
         List<ProductDTO> productDTOList = productService.findProductByTagList(tags);
-        List<WishListDTO> wishListDTOList = wishListService.findWishList(loginId);
+        List<WishListDTO> wishListDTOList = wishListService.findWishList(session.getAttribute("loginId").toString());
 
         modelAndView.addObject("productList", productDTOList);
         modelAndView.addObject("category", value);
-        modelAndView.addObject("loginId", loginId);
-        modelAndView.addObject("userRole", userRole);
         modelAndView.addObject("wishList", wishListDTOList);
         modelAndView.addObject("tags", tags); // 태그들
         modelAndView.setViewName("pages/product/productList.html");
@@ -77,15 +75,16 @@ public class ProductController {
 
 //  ------------------------------------- ★ 상세페이지 연결 ★ ------------------------------------------------------------
     @GetMapping("product/{id}") // 상품 상세페이지
-        public ModelAndView product(@SessionAttribute(name ="loginId", required = false) String loginId,
-                                    @SessionAttribute(name ="userRole", required = false) String userRole,
-                                    @PathVariable("id") Integer productId) {
+        public ModelAndView product(@PathVariable("id") Integer productId, HttpSession session, String loginId) {
 
         ModelAndView modelAndView = new ModelAndView();
         ProductDTO productDTO = productService.findByProductId(productId); // 상품정보
         List<ProductImgDTO> productImgDTO = productService.productImgList(productId); //상세사진
         List<ReviewDTO> reviewDTOList = productService.findReview(productId); // 리뷰리스트
         List<ProductQDTO> productQList = productService.findproductQ(productId); // 문의리스트
+
+        Object loginIdAttri = session.getAttribute("loginId");
+        loginId = (loginIdAttri != null) ? loginIdAttri.toString() : "";
 
         /*List< ReviewCmtDTO> reviewCmtDTOList = productService.reviewCmt()*/
         List<ProductDTO> randomItem = productService.randomProduct(productId); // 랜덤리스트 --> 갯수에 따른 처리 필!
@@ -107,9 +106,6 @@ public class ProductController {
         if(flag)
             modelAndView.addObject("wish", true);
 
-        modelAndView.addObject("loginId", loginId);  //세션
-        modelAndView.addObject("userRole", userRole);  //세션
-
         modelAndView.addObject("productDTO", productDTO); // 상품정보
         modelAndView.addObject("detailImg", productImgDTO); // 상세사진
         modelAndView.addObject("review", reviewDTOList); // 리뷰리스트
@@ -120,25 +116,20 @@ public class ProductController {
 
         modelAndView.addObject("productQDTO",new ProductQDTO()); // 문의글DTO 보내기
 
-        System.out.println("productDTO.getCategoryDTO().getCategoryId()"+productDTO.getCategoryDTO().getCategoryId());
 
         if(productDTO.getCategoryDTO().getCategoryId().equals("custom"))
             modelAndView.setViewName("pages/product/customDetail.html");
-        else if(productDTO.getCategoryDTO().getCategoryId().equals("design"))
-            modelAndView.setViewName("pages/product/productDetail.html");
         else
-            modelAndView.setViewName("pages/product/customDetail.html");
-//        허허..안되넹..
+            modelAndView.setViewName("pages/product/productDetail.html");
 
         return modelAndView;
     }
 
 
 
-
 //  ------------------------------------- ★ 관리자페이지 ★ -----------------------------------------------------------------
 //   ★ 상품관리 _ 리스트  ★ -----------------------------------------------------------------
-    @GetMapping("a_product")
+    @GetMapping("admin/product")
     public ModelAndView userList(@RequestParam(value="sort", defaultValue = "all") String categoryId) {
         ModelAndView modelAndView = new ModelAndView();
         List<ProductDTO> productDTOList = productService.getList(categoryId);
@@ -151,7 +142,7 @@ public class ProductController {
     }
 
 //   ★ 상품관리 _ 디테일  ★ -----------------------------------------------------------------------
-    @GetMapping("a_product_detail")
+    @GetMapping("admin/product/detail")
     public ModelAndView productDetail(@RequestParam("productId") Integer productId) {
         ModelAndView modelAndView = new ModelAndView();
         ProductDTO productDTO = productService.findByProductId(productId);
@@ -162,7 +153,7 @@ public class ProductController {
     }
 
 // ★ 상품 관리 _ 상품 추가★ ---------------------------------------------------------------
-    @GetMapping("a_product_add")
+    @GetMapping("admin/product/add")
     public ModelAndView productAddF() {
         ModelAndView modelAndView = new ModelAndView();
 
@@ -171,19 +162,19 @@ public class ProductController {
         return modelAndView;
     }
 
-    @PostMapping("a_product_add")
+    @PostMapping("admin/product/add")
     public ModelAndView productAdd(@ModelAttribute ProductDTO productDTO, MultipartFile imgFile) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         String sort = "a";
         Integer productId = productService.productAdd(productDTO, imgFile, sort);
 
-        modelAndView.addObject("data", new Message("추가되었습니다.", "/a_product_detail?productId="+productId));
+        modelAndView.addObject("data", new Message("추가되었습니다.", "/admin/product/detail?productId="+productId));
         modelAndView.setViewName("common/message.html");
         return modelAndView;
     }
 
 //  상품 관리_ 수정 ★ ---------------------------------------------------------------
-    @GetMapping("a_product_change")
+    @GetMapping("admin/product/change")
     public ModelAndView productChangeF(@RequestParam("productId") Integer productId) {
         ModelAndView modelAndView = new ModelAndView();
         ProductDTO productDTO = productService.findByProductId(productId);
@@ -193,7 +184,7 @@ public class ProductController {
         return modelAndView;
     }
 //  상품 관리 _ 수정 완료★ ---------------------------------------------------------------
-    @PostMapping("a_product_change")
+    @PostMapping("admin/product/change")
     public ModelAndView productChange(@ModelAttribute ProductDTO productDTO, MultipartFile imgFile) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
 
@@ -205,13 +196,13 @@ public class ProductController {
             productService.productAdd(productDTO, null, sort);
         }
 
-        modelAndView.addObject("data", new Message("수정되었습니다.", "/a_product_detail?productId="+productDTO.getProductId()));
+        modelAndView.addObject("data", new Message("수정되었습니다.", "/admin/product/detail?productId="+productDTO.getProductId()));
         modelAndView.setViewName("common/message.html");
         return modelAndView;
     }
 
 //  ★ 상품 관리 _ 삭제★ ---------------------------------------------------------------
-    @PostMapping("a_product_del")
+    @PostMapping("admin/product/del")
     public ModelAndView addressDel(@RequestParam(required = false, name="productId") Integer productId,
                                    @RequestParam(required = false, name="productIds") List<Integer> productIds) {
         ModelAndView modelAndView = new ModelAndView();
@@ -221,17 +212,17 @@ public class ProductController {
         productService.productDel(productIds, productId);
 
         if(productId == 0) {
-            modelAndView.addObject("data", new Message("삭제되었습니다.", "a_product"));
+            modelAndView.addObject("data", new Message("삭제되었습니다.", "/admin/product"));
             modelAndView.setViewName("common/message.html");
         } else {
-            modelAndView.addObject("data", new Message("삭제되었습니다.", "close"));
+            modelAndView.addObject("data", new Message("삭제되었습니다.", "/close"));
             modelAndView.setViewName("common/message.html");
         }
         return modelAndView;
     }
     
 //  ★ 상품 관리 _ 상세사진등록★ ---------------------------------------------------------------
-    @GetMapping("a_product_DImage")
+    @GetMapping("admin/product/dImage")
     public ModelAndView imageF(@RequestParam("productId") Integer productId) {
         ModelAndView modelAndView = new ModelAndView();
 
@@ -245,21 +236,21 @@ public class ProductController {
         return modelAndView;
     }
 
-    @PostMapping("a_product_DImage")
+    @PostMapping("admin/product/dImage")
     public ModelAndView imageSave(@ModelAttribute("productImg") ProductImgDTO productImgDTO,
                                   @RequestParam("productId") Integer productId,
                                   MultipartFile[] files) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
 
         productService.detailImage(productImgDTO, productId, files);
-        modelAndView.addObject("data", new Message("등록되었습니다.", "a_product_DImage?productId="+productImgDTO.getProductDTO().getProductId()));
+        modelAndView.addObject("data", new Message("등록되었습니다.", "/admin/product/dImage?productId="+productImgDTO.getProductDTO().getProductId()));
         modelAndView.setViewName("common/message.html");
 
 
         return modelAndView;
     }
 //  ★ 상품 관리 _ 상세사진수정★ ---------------------------------------------------------------
-    @GetMapping("a_product_DImageC")
+    @GetMapping("admin/product/dImageC")
     public ModelAndView productDImageCF(@RequestParam("productId") Integer productId) {
         ModelAndView modelAndView = new ModelAndView();
 
@@ -268,7 +259,7 @@ public class ProductController {
 
         return modelAndView;
     }
-    @PostMapping("a_product_DImageC")
+    @PostMapping("admin/product/dImageC")
     public ModelAndView productDImageC(@ModelAttribute ProductImgDTO productImgDTO,
                                        @RequestParam("productId") Integer productId,
                                          MultipartFile[] files) throws Exception {
@@ -278,7 +269,7 @@ public class ProductController {
 
         modelAndView.addObject("productId", productId);
 
-        modelAndView.addObject("data", new Message("수정되었습니다.", "a_product_DImage?productId="+productId));
+        modelAndView.addObject("data", new Message("수정되었습니다.", "/admin/product/dImage?productId="+productId));
         modelAndView.setViewName("common/message.html");
 
         return modelAndView;

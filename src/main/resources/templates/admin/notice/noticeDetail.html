@@ -16,7 +16,7 @@
 
              const form = document.createElement('form');
              form.method = 'POST';
-             form.action = '/notice/del';
+             form.action = '/admin/notice/del';
 
              const id = document.querySelector('.noticeId');
              const input = document.createElement('input');
@@ -60,7 +60,7 @@
           </tbody>
         </table>
         <div class="buttons">
-          <a th:href="@{/notice/change(noticeId=${noticeList.noticeId})}" id="change">수정</a>
+          <a th:href="@{/admin/notice/change(noticeId=${noticeList.noticeId})}" id="change">수정</a>
           <a href="#" onclick="submitForm();">삭제</a>
           <a onclick="closeWindow();">닫기</a>
         </div>

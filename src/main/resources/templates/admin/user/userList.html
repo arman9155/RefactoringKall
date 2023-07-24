@@ -2,25 +2,25 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{admin/adminLayout}"
+      layout:decorate="~{/admin/adminLayout}"
       layout:fragment="Content">
 <head>
     <meta charset="UTF-8">
     <title>공지사항</title>
     <script type="text/javascript" th:src="@{myLib/jquery-3.2.1.min.js}"></script>
-    <link th:href="@{css/admin/list.css}" rel="stylesheet">
+    <link th:href="@{/css/admin/list.css}" rel="stylesheet">
 </head>
 <body>
     <section class="content">
         <h3 class="underline">회원 관리</h3>
 
         <div class="sort">
-                <a th:href="@{a_user}" th:text="전체" th:class="${status == 'all'} ? 'active' : '' "></a>
-                <a th:href="@{a_user(sort='활동계정')}" th:text="활동계정" th:class="${status == '활동계정'} ? 'active' : '' "></a>
-                <a th:href="@{a_user(sort='탈퇴계정')}" th:text="탈퇴계정" th:class="${status == '탈퇴계정'} ? 'active' : '' "></a>
+                <a th:href="@{/admin/user}" th:text="전체" th:class="${status == 'all'} ? 'active' : '' "></a>
+                <a th:href="@{/admin/user(sort='활동계정')}" th:text="활동계정" th:class="${status == '활동계정'} ? 'active' : '' "></a>
+                <a th:href="@{/admin/user(sort='탈퇴계정')}" th:text="탈퇴계정" th:class="${status == '탈퇴계정'} ? 'active' : '' "></a>
         </div>
 
-        <form id="deleteUser" method="post" th:action="@{a_deleteUser}">
+        <form id="deleteUser" method="post" th:action="@{/admin/user/del}">
             <table class="list">
                 <thead>
                 <tr>

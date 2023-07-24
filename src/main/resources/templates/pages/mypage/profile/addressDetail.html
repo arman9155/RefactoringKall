@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>배송지 정보</title>
-    <link th:href="@{css/mypage/addressDetail.css}" rel="stylesheet">
+    <link th:href="@{/css/mypage/addressDetail.css}" rel="stylesheet">
 
     <script>
         function windowClose() {
@@ -45,9 +45,9 @@
           </tbody>
         </table>
         <div class="buttons">
-          <a th:href="@{u_address_change(addressId=${usAddressDTO.addressId})}" id="change">수정</a>
-          <a th:href="@{u_address_del(popup=${usAddressDTO.addressId})}">삭제</a>
-          <a onclick="windowClose();">닫기</a>
+          <a th:href="@{/mypage/address/change(addressId=${usAddressDTO.addressId})}" id="change">수정</a>
+          <a th:href="@{/mypage/address/del(popup=${usAddressDTO.addressId})}" id="delete">삭제</a>
+          <a onclick="windowClose();" id="close">닫기</a>
         </div>
   </body>
 </html>

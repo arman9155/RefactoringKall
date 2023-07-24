@@ -2,13 +2,13 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{common/layouts/loginLayout}"
+      layout:decorate="~{/common/layouts/loginLayout}"
       layout:fragment="Content">
 <head>
   <meta charset="UTF-8">
   <title>회원가입</title>
-    <link th:href="@{css/login/join.css}" rel="stylesheet">
-    <script th:src="@{js/login/inCheck.js}"></script>
+    <link th:href="@{/css/login/join.css}" rel="stylesheet">
+    <script th:src="@{/js/login/inCheck.js}"></script>
     <script>
 
       //** id 중복 확인
@@ -105,10 +105,10 @@
           // ** Name
           document.getElementById('name').addEventListener("focusout",
                   () => {nCheck = nmCheck();} );
-                    // ** Name
+         // ** phone
           document.getElementById('phone').addEventListener("focusout",
                   () => {phCheck = phmCheck();} );
-                    // ** Name
+          // ** Name
           document.getElementById('email').addEventListener("focusout",
                   () => {eCheck = emCheck();} );
       } //onload
@@ -116,14 +116,13 @@
       function inCheck() {
 		if(iCheck == false) {$('#iMessage').html(' 필수입력, 아이디 (을)를 확인하세요 ~~');}
 		if(pCheck == false) {$('#pMessage').html(' 필수입력, 비밀번호 (을)를 확인하세요 ~~');}
-		if(p2Check == false) {$('#p2Message').html(' 필수입력, 비밀번호 (을)를 확인하세요 ~~');}
-		if(nCheck == false) {$('#nMessage').html(' 필수입력, 이름 (을)를 확인하세요 ~~');}
+		if(p2Check == false) {$('#p2Message').html('필수입력, 비밀번호 (을)를 확인하세요 ~~');}
+		if(nCheck == false) {$('#nMessage').html('필수입력, 이름 (을)를 확인하세요 ~~');}
 		if(phCheck == false) {$('#phMessage').html('필수입력, 전화번호 (을)를 확인하세요.');}
 		if(emCheck == false) {$('#emMessage').html('필수입력, 이메일 (을)를 확인하세요.');}
 
-        alert("뭐지");
 		if( iCheck && pCheck && p2Check && nCheck && phCheck && emCheck) {
-		  if(confirm("가입하시겠습니까? (YES: 확인 / NO : 취소) ~~") == false) {
+		  if(confirm("가입하시겠습니까? (YES: 확인 / NO : 취소)") == false) {
 				alert("가입이 취소되었습니다.");
 				return false;
 			} else return true;
@@ -134,8 +133,8 @@
 <body>
 <main>
   <h1 class="logo">
-    <a th:href="@{main}">메인으로</a></h1>
-  <form th:action="@{join}" method="post"  th:object="${userDTO}">
+    <a th:href="@{/main}">메인으로</a></h1>
+  <form th:action="@{/join}" method="post"  th:object="${userDTO}">
     <fieldset>
       <legend><h3>필수입력 사항</h3> </legend>
 <!--      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">-->

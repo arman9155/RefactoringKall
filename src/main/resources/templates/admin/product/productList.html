@@ -2,13 +2,13 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{admin/adminLayout}"
+      layout:decorate="~{/admin/adminLayout}"
       layout:fragment="Content">
 <head>
     <meta charset="UTF-8">
     <title>상품 관리</title>
-    <script type="text/javascript" th:src="@{myLib/jquery-3.2.1.min.js}"></script>
-    <link th:href="@{css/admin/list.css}" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/myLib/jquery-3.2.1.min.js}"></script>
+    <link th:href="@{/css/admin/list.css}" rel="stylesheet">
     <script th:inline="javascript">
     //전체선택
         $(document).ready(function() {
@@ -26,13 +26,13 @@
         <h3 class="underline">상품 관리</h3>
 
         <div class="sort">
-                <a th:href="@{a_product}" th:text="전체" th:class="${status == 'all'} ? 'active' : '' "></a>
-                <a th:href="@{a_product(sort='custom')}" th:text="custom" th:class="${status == 'custom'} ? 'active' : '' "></a>
-                <a th:href="@{a_product(sort='design')}" th:text="design" th:class="${status == 'design'} ? 'active' : '' "></a>
-                <a th:href="@{a_product(sort='etc')}" th:text="etc" th:class="${status == 'etc'} ? 'active' : '' "></a>
+                <a th:href="@{/admin/product}" th:text="전체" th:class="${status == 'all'} ? 'active' : '' "></a>
+                <a th:href="@{/admin/product(sort='custom')}" th:text="custom" th:class="${status == 'custom'} ? 'active' : '' "></a>
+                <a th:href="@{/admin/product(sort='design')}" th:text="design" th:class="${status == 'design'} ? 'active' : '' "></a>
+                <a th:href="@{/admin/product(sort='etc')}" th:text="etc" th:class="${status == 'etc'} ? 'active' : '' "></a>
         </div>
 
-        <form id="deleteProduct" th:action="@{a_product_del}" method="post" >
+        <form id="deleteProduct" th:action="@{/admin/product/del}" method="post" >
             <table class="list">
                 <thead>
                 <tr>
@@ -61,11 +61,11 @@
                             <img class="main_image" th:src="@{${product.getImage()}}">
                         </td>
                         <td>
-                         <a th:href="@{a_product_detail(productId=${product.productId})}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=800,height=800'); return false;">
+                         <a th:href="@{admin/product/detail(productId=${product.productId})}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=800,height=800'); return false;">
                              [[${product.name}]] </a>
                         </td>
                         <td>[[${product.amount}]]</td>
-                        <td><a id="detailImg" th:href="@{a_product_DImage(productId=${product.productId})}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=800, height=800'); return false;">상세이미지</a></td>
+                        <td><a id="detailImg" th:href="@{/admin/product/dImage(productId=${product.productId})}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=800, height=800'); return false;">상세이미지</a></td>
                     </tr>
                 </th:block>
                 </tbody>
@@ -73,7 +73,7 @@
                     <div class="buttons">
                         <button>선택 삭제</button>
                         <input type="reset" value="선택 취소">
-                        <a th:href="@{a_product_add}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=800,height=800'); return false;">상품 추가</a>
+                        <a th:href="@{/admin/product/add}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=800,height=800'); return false;">상품 추가</a>
                     </div>
                 </tfoot>
             </table>

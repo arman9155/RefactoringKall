@@ -38,7 +38,7 @@ function pwCheck() {
 		document.getElementById('pwMessage').innerHTML='비밀번호 는 영문과 숫자로만 입력하세요.';
 		return false;
 	} else {
-		document.getElementById('pwdMessage').innerHTML='';
+		document.getElementById('pwMessage').innerHTML='';
 		return true;
    }
 } //pwCheck
@@ -86,7 +86,34 @@ function phmCheck() {
         return true;
     }
 }
-
+// 여기는 order 부분
+function phm2Check() {
+    let phone=document.getElementById('pbC').value;
+    if(phone.replace(/[0-9]/gi, '').length>0) {
+          document.getElementById('phMessage').innerHTML='전화번호 는 숫자만 입력하세요.';
+          return false;
+    } else if(phone.length<10){
+        document.getElementById('phMessage').innerHTML='전화번호 를 재확인하세요.';
+        return false;
+    } else {
+        document.getElementById('phMessage').innerHTML='';
+        return true;
+    }
+}
+// 여기는 order 부분
+function phm3Check() {
+    let phone=document.getElementById('pb2').value;
+    if(phone.replace(/[0-9]/gi, '').length>0) {
+          document.getElementById('ph2Message').innerHTML='전화번호 는 숫자만 입력하세요.';
+          return false;
+    } else if(phone.length<10){
+        document.getElementById('ph2Message').innerHTML='전화번호 를 재확인하세요.';
+        return false;
+    } else {
+        document.getElementById('ph2Message').innerHTML='';
+        return true;
+    }
+}
 // ** email : @가 있어야하고 .com / .net / .co.kr 등 .~이 있어야함
 function emCheck() {
    let email = document.getElementById('email').value;

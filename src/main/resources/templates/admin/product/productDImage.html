@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>상품 상세 이미지</title>
-    <link th:href="@{css/admin/detail.css}" rel="stylesheet">
+    <link th:href="@{/css/admin/detail.css}" rel="stylesheet">
     <script>
     // 첨부파일명 / 사진 미리보기
         function loadFile(input) {
@@ -41,7 +41,7 @@
 
         <th:block th:if="${productImgList == null || productImgList.size() == 0}">
             <div class="noImg">
-                <form th:action="@{a_product_DImage}" th:method="post" th:object="${productImg}" enctype="multipart/form-data">
+                <form th:action="@{/admin/product/dImage}" th:method="post" th:object="${productImg}" enctype="multipart/form-data">
                     <input type="hidden" name="productId" th:value="${productId}">
                     <div class="text">등록된 이미지가 없습니다.</div>
 
@@ -72,7 +72,7 @@
               </tbody>
             </table>
             <div class="buttons">
-                <a th:href="@{a_product_DImageC(productId=${productId})}">수정</a>
+                <a th:href="@{/admin/product/dImageC(productId=${productId})}">수정</a>
                 <a onclick="windowClose();">닫기</a>
             </div>
         </th:block>

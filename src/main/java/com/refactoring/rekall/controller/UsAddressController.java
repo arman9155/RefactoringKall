@@ -23,31 +23,31 @@ public class UsAddressController {
     UsAddressService usAddressService;
 
 //  ------------------------------------- ★ 마이페이지 - 배송지 관리★ ---------------------------------------------------------------
-    @GetMapping("u_address")
-    public ModelAndView getAddress(@SessionAttribute(name ="loginId", required = false) String loginId,
-                                         @SessionAttribute(name ="userRole", required = false) String userRole) {
+    @GetMapping(value={"/mypage/address", "order/address"})
+    public ModelAndView getAddress(HttpSession session,
+                                   @RequestParam(name = "page", required = false, defaultValue="mypage")String page) {
         ModelAndView modelAndView = new ModelAndView();
-        List<UsAddressDTO> usAddressDTOList = usAddressService.getAddressList(loginId);
+        List<UsAddressDTO> usAddressDTOList = usAddressService.getAddressList(session.getAttribute("loginId").toString());
 
+
+        if("mypage".equals(page))  modelAndView.setViewName("/pages/mypage/profile/userAddress.html");
+        else modelAndView.setViewName("/pages/order/address.html");
         modelAndView.addObject("addressList", usAddressDTOList);
-        modelAndView.addObject("loginId", loginId);
-        modelAndView.addObject("userRole", userRole);
-        modelAndView.setViewName("pages/mypage/profile/userAddress.html");
         return modelAndView;
     }
 
 //  ★ 기본 배송지 설정★ ---------------------------------------------------------------
-    @PostMapping("u_default_address")
-    public ModelAndView setAddress(@RequestParam("addressId") Integer addressId,
-                                   @SessionAttribute(name ="loginId", required = false) String loginId,
-                                   @SessionAttribute(name ="userRole", required = false) String userRole) {
+    @PostMapping("/mypage/address/default")
+    public ModelAndView  setAddress(@RequestParam("addressId") Integer addressId,
+                                   HttpSession session) {
+        String loginId = session.getAttribute("loginId").toString();
         usAddressService.findAddressId(addressId, loginId);
 
-        return getAddress(loginId,userRole);
+        return getAddress(session, "mypage");
     }
 
 //  ------------------------------------- ★ 마이페이지 - 배송지 디테일★ ---------------------------------------------------------------
-    @GetMapping("u_address_detail")
+    @GetMapping("/mypage/address/detail")
     public ModelAndView addressDetail(@RequestParam("addressId") Integer addressId) {
         ModelAndView modelAndView = new ModelAndView();
         UsAddressDTO usAddressDTO = usAddressService.getAddress(addressId);
@@ -58,7 +58,7 @@ public class UsAddressController {
     }
 
 //  ------------------------------------- ★ 마이페이지 - 배송지 수정 페이지★ ---------------------------------------------------------------
-    @GetMapping("u_address_change")
+    @GetMapping("/mypage/address/change")
     public ModelAndView addressChangeF(@RequestParam("addressId") Integer addressId) {
         ModelAndView modelAndView = new ModelAndView();
         UsAddressDTO usAddressDTO = usAddressService.getAddress(addressId);
@@ -71,29 +71,23 @@ public class UsAddressController {
     }
 
 //  ★ 마이페이지 - 배송지 수정 완료★ ---------------------------------------------------------------
-    @PostMapping("u_address_change")
+    @PostMapping("/mypage/address/change")
     public ModelAndView addressChange(@ModelAttribute UsAddressDTO usAddressDTO,
                                       @RequestParam("addressId") Integer addressId,
-                                      @SessionAttribute(name ="loginId", required = false) String loginId) {
+                                      HttpSession session) {
         ModelAndView modelAndView = new ModelAndView();
         usAddressDTO.setAddressId(addressId);
-        usAddressService.saveAddress(usAddressDTO, loginId);
+        usAddressService.saveAddress(usAddressDTO, session.getAttribute("loginId").toString());
 
         modelAndView.addObject("data", new Message("수정되었습니다.", "u_address_detail?addressId=" + addressId));
         modelAndView.setViewName("common/message.html");
         return modelAndView;
     }
 
-    @GetMapping("close")
-    public ModelAndView close(HttpSession session) {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("common/close.html");
-        return modelAndView;
-    }
 
     //  ------------------------------------- ★ 마이페이지 - 배송지 추가★ ---------------------------------------------------------------
-    @GetMapping("u_address_add")
-    public ModelAndView addressAdd(@SessionAttribute(name ="loginId", required = false) String loginId) {
+    @GetMapping(value={"/mypage/address/add", "order/address/add"})
+    public ModelAndView addressAdd() {
         ModelAndView modelAndView = new ModelAndView();
 
         modelAndView.addObject("usAddressDTO", new UsAddressDTO());
@@ -101,30 +95,30 @@ public class UsAddressController {
         return modelAndView;
     }
 
-    @PostMapping("u_address_add")
+    @PostMapping(value={"/mypage/address/add", "order/address/add"})
     public ModelAndView addressAdd(@ModelAttribute UsAddressDTO usAddressDTO,
-                                   @SessionAttribute(name ="loginId", required = false) String loginId) {
+                                  HttpSession session) {
         ModelAndView modelAndView = new ModelAndView();
 
-        usAddressService.saveAddress(usAddressDTO, loginId);
+        usAddressService.saveAddress(usAddressDTO, session.getAttribute("loginId").toString());
 
-        modelAndView.addObject("data", new Message("추가되었습니다.", "close"));
+        modelAndView.addObject("data", new Message("추가되었습니다.", "/close"));
         modelAndView.setViewName("common/message.html");
         return modelAndView;
     }
 
 //  ------------------------------------- ★ 마이페이지 - 배송지 삭제★ ---------------------------------------------------------------
-    @GetMapping("u_address_del")
+    @GetMapping("/mypage/address/del")
     public ModelAndView addressDel(@RequestParam(required = false, name="addressId") Integer addressId,
                                    @RequestParam(required = false, name="popup") Integer addressId2) {
         ModelAndView modelAndView = new ModelAndView();
 
         if(addressId != null) {
             usAddressService.addressDel(addressId);
-            modelAndView.addObject("data", new Message("삭제되었습니다.", "u_address"));
+            modelAndView.addObject("data", new Message("삭제되었습니다.", "/mypage/address"));
         } else if (addressId2 != null) {
             usAddressService.addressDel(addressId2);
-            modelAndView.addObject("data", new Message("삭제되었습니다.", "close"));
+            modelAndView.addObject("data", new Message("삭제되었습니다.", "/close"));
         }
 
         modelAndView.setViewName("common/message.html");

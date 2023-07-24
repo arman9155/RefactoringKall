@@ -5,8 +5,8 @@
       layout:decorate="~{common/layouts/mypageLayout}"
       layout:fragment="Content">
 <head>
-  <link th:href="@{css/mypage/list.css}" rel="stylesheet">
-  <script type="text/javascript" th:src="@{myLib/jquery-3.2.1.min.js}"></script>
+  <link th:href="@{/css/mypage/list.css}" rel="stylesheet">
+  <script type="text/javascript" th:src="@{/myLib/jquery-3.2.1.min.js}"></script>
   <meta charset="UTF-8">
   <title>상품 문의 내역</title>
 </head>
@@ -15,25 +15,25 @@
   <section class="content">
     <h3 class="underline">상품 문의 내역</h3>
 
-    <form id="productQ_Del" method="post" th:action="@{productQ_Del}">
+    <form id="productQ_Del" method="post" th:action="@{/mypage/productQ/del}">
       <table class="list">
         <thead>
         <tr>
-          <th>
+          <th class="col1">
             <input type="checkbox" id="selectAll">
             <label for="selectAll">전체 선택</label>  <!--자바로 구현 필요-->
           </th>
-          <th>상품명</th>
-          <th>내용</th>
+          <th class="col2">상품명</th>
+          <th class="col3">내용</th>
         </tr>
         </thead>
 
         <tbody id="toggle_container">
         <th:block th:each="Q, i : ${productQList}">
           <tr class="toggle_Q" th:id="'#answer_'+${i.index}">
-            <td scope="row"><input type="checkbox" name="productqIds" th:value="${Q.productqId}"></td>
-            <td th:text="${Q.productDTO.name}"></td>
-            <td class="productQ_content">
+            <td class="col1" scope="row"><input type="checkbox" name="productqIds" th:value="${Q.productqId}"></td>
+            <td class="col2" th:text="${Q.productDTO.name}"></td>
+            <td class="productQ_content col3">
                                 <span class="productQ_title"
                                       th:text="${Q.title}">
                                 </span>

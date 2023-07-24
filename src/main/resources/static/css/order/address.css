@@ -1,0 +1,118 @@
+h3 {
+    font-size : 1.4rem;
+    padding-bottom : 20px;
+}
+
+h3.underline {
+    border-bottom : 1px solid #33333330;
+    margin : 30px 0;
+}
+
+#addressBox {
+    display : flex;
+    flex-direction : column-reverse;
+    gap : 20px;
+}
+/* ----- ★ 테이블 설정 ★ ------------------------------------------------------------*/
+.list {
+   table-layout: fixed; /* 이게 없으면... column 넓이 하나도 안멱혀요...*/
+    width: 100%;
+    border-spacing: 0;
+    border-top: 1px solid #3c3c3c;
+    border-collapse: collapse;
+    line-height: 40px;
+}
+
+.list thead tr,
+.list tbody tr {
+  border-bottom: 1px solid #3c3c3c;
+}
+.col1, .col2 {
+    width: 15%;
+    text-align:center;
+ }
+
+.col3 {
+    width: 20%;
+    text-align:center;
+ }
+
+.col4 {
+    width: 50%;
+}
+
+
+/* ----- ★ 테이블 내부★ ------------------------------------------------------------*/
+
+#check {
+    background: url("/img/mypage/check.svg") no-repeat center/100% ;
+    width : 30px;
+    line-height: 30px;
+    text-indent: -9999em;
+    display : inline-block;
+}
+#address td {
+    padding : 10px 5px;
+}
+
+#address input {
+    all : unset;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 5px 20px;
+    border-radius: 20px;
+    border: 1px solid RGB(255, 200, 200);
+    outline: none;
+    line-height: 1.2rem;
+    margin: 3px 0;
+}
+
+#address input:focus {
+    border: 3px solid #FB9DA7;
+}
+
+#address input[type='radio'] {
+    all : revert;
+    -webkit-appearance : none;
+    height : 20px;
+    width : 20px;
+    border-radius : 50%;
+    cursor : pointer;
+    padding : 0 10px;
+    outline : 1px solid RGB(255, 200, 200);
+    margin-top : calc((40px - 20px)/2);
+}
+
+#address input[type='radio']:checked {
+    border-color :  #FB9DA7;
+    background :   #FB9DA7;
+}
+
+
+
+/* ----- ★ 버튼 파트 ★ ------------------------------------------------------------*/
+
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+    text-align: center;
+    gap : 30px;
+    cursor: pointer;
+}
+
+.buttons * {
+    all: unset;
+    width: 20%;
+    font-weight: bold;
+    margin: 3px 0;
+    color: white;
+    border-radius: 20px;
+    background-color: RGB(255, 227, 227);
+    box-sizing: border-box;
+    padding: 5px 20px;
+}
+
+.buttons a:hover,
+.buttons button:hover {
+    background : #FB9DA7;
+}

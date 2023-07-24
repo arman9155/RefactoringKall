@@ -13,6 +13,7 @@ public class OrderDetailDTO {
 
     // -------- ▷▶   odetailId 가 외래키로 가져오는 DTO ----------------------------------------------
     private ProductDTO productDTO; // ▷▶ 상품번호
+    private OrderDTO orderDTO; // ▷▶ 주문번호
 // -------------------------------------------------------------------------------------------
 
     private String option_sheet; //  ▷▶  시트 옵션
@@ -27,12 +28,13 @@ public class OrderDetailDTO {
     private String request; // ▷▶ 요청사항
 
 // -------------- ▷▶ Entity -> DTO ---------------------------------------------------------
-    public static OrderDetailDTO toOrderDeatilDTO(OrderDetailEntity orderDetailEntity) {
+    public static OrderDetailDTO toOrderDetailDTO(OrderDetailEntity orderDetailEntity) {
         if(orderDetailEntity == null) return null;
         OrderDetailDTO orderDetailDTO = new OrderDetailDTO();
 
         orderDetailDTO.setOdetailId(orderDetailEntity.getOdetailId());
         orderDetailDTO.setProductDTO(ProductDTO.toProductDTO(orderDetailEntity.getProductEntity()));
+        orderDetailDTO.setOrderDTO(OrderDTO.toOrderDTO(orderDetailEntity.getOrderEntity()));
         orderDetailDTO.setOption_sheet(orderDetailEntity.getOption_sheet());
         orderDetailDTO.setOption_shape(orderDetailEntity.getOption_shape());
         orderDetailDTO.setOption_cream(orderDetailEntity.getOption_cream());

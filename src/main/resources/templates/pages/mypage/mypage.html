@@ -2,11 +2,11 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{common/layouts/mypageLayout}"
+      layout:decorate="~{/common/layouts/mypageLayout}"
       layout:fragment="Content">
 <head>
     <meta charset="UTF-8">
-    <link th:href="@{css/mypage/mypage.css}" rel="stylesheet">
+    <link th:href="@{/css/mypage/mypage.css}" rel="stylesheet">
     <title>마이페이지</title>
 </head>
 <body>
@@ -33,10 +33,10 @@
             </div>
 
             <div class="mypage_menu">
-                <div><a th:href="@{u_userInfo}"><i class="fa-regular fa-user fa-3x"></i>PROFILE</a></div>
-                <div><a href="@{order}"><i class="fa-solid fa-clipboard-check fa-3x"></i>ORDER</a></div>
-                <div><a href="@{u_review}"><i class="fa-solid fa-clipboard-list fa-3x"></i>BOARD</a></div>
-                <div><a th:href="@{u_wishList}"><i class="fa-regular fa-heart fa-3x"></i>WISH LIST</a></div>
+                <div><a th:href="@{/mypage/user/info}"><i class="fa-regular fa-user fa-3x"></i>PROFILE</a></div>
+                <div><a href="@{/mypage/order}"><i class="fa-solid fa-clipboard-check fa-3x"></i>ORDER</a></div>
+                <div><a href="@{/mypage/review}"><i class="fa-solid fa-clipboard-list fa-3x"></i>BOARD</a></div>
+                <div><a th:href="@{/mypage/wishList}"><i class="fa-regular fa-heart fa-3x"></i>WISH LIST</a></div>
             </div>
         <!-- 마이페이지 하단메뉴 -->
         </div>

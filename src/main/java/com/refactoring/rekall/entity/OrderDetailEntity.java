@@ -25,9 +25,6 @@ public class OrderDetailEntity {
 // -------- ▷▶  odetailId 를 사용하는 Entity ----------------------------------------------
     @OneToMany(mappedBy = "orderDetailEntity", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<OrderEntity> orderEntities = new ArrayList<>();
-    @OneToMany(mappedBy = "orderDetailEntity", cascade = CascadeType.ALL)
-    @JsonIgnore
     private List<RefundEntity> refundEntities = new ArrayList<>();
     @OneToMany(mappedBy = "orderDetailEntity", cascade = CascadeType.ALL)
     @JsonIgnore
@@ -37,6 +34,9 @@ public class OrderDetailEntity {
     @ManyToOne
     @JoinColumn(name = "productId")
     private ProductEntity productEntity; // ▷▶ 상품번호
+    @ManyToOne
+    @JoinColumn(name = "orderId")
+    private OrderEntity orderEntity; // ▷▶ 주문번호
 // -------------------------------------------------------------------------------------------
 
     @Column(length = 20)
@@ -70,6 +70,7 @@ public class OrderDetailEntity {
 
         orderDetailEntity.setOdetailId(orderdetailDTO.getOdetailId());
         orderDetailEntity.setProductEntity(ProductEntity.toProductEntity(orderdetailDTO.getProductDTO()));
+        orderDetailEntity.setOrderEntity(OrderEntity.toOrderEntity(orderdetailDTO.getOrderDTO()));
         orderDetailEntity.setOption_sheet(orderdetailDTO.getOption_sheet());
         orderDetailEntity.setOption_shape(orderdetailDTO.getOption_shape());
         orderDetailEntity.setOption_cream(orderdetailDTO.getOption_cream());

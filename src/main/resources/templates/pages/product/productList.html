@@ -19,7 +19,7 @@
             if (element.classList.contains('active')) {
                       alert("if절에 들어옴"+productId);
                 $.ajax({
-                    url: "/u_wishListDel/"+productId,
+                    url: "/wish/del/"+productId,
                     method: "GET",
                     data : {loginId: loginId,
                             url : url
@@ -35,7 +35,7 @@
                 });
             } else {
                 $.ajax({
-                    url: "/u_wishList/"+productId,
+                    url: "/wish/"+productId,
                     method: "GET",
                     data : {loginId: loginId,
                             url : url
@@ -53,6 +53,7 @@
 
         function toggleNoActive() {
             alert("로그인 후 이용해주세요");
+            location.href="/login";
         }
 
 
