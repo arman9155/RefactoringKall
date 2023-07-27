@@ -171,7 +171,7 @@ public class ProductService {
         List<ProductDTO> productDTOList = findAll(); //  main 제외 productList
         List<ProductDTO> productDTOS = new ArrayList<>(5);
 
-        if(productDTOList.size() >=6) {
+        if(productDTOList.size() >=7) { // 랜덤 5 개 + 현재 들어온 상품 1개 -> 7개부터 남은 6개 상품 중 랜덤으로 select
             Random random = new Random();
 
             if (productDTOList.isEmpty()) {
@@ -195,14 +195,12 @@ public class ProductService {
                 if(same == 0) {
                     productDTOList.add(productDTOS.get(randomIndex));
                 }
-                System.out.println("same"+same);
             }while(productDTOList.get(4) == null);
 
         } else {
             for(ProductDTO productDTO : productDTOList) {
                 if(productDTO.getProductId() != productId) {
                     productDTOS.add(productDTO);
-                    System.out.println(productDTO);
                 }
             }
         }
