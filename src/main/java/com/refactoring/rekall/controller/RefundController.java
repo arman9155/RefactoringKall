@@ -1,6 +1,8 @@
 package com.refactoring.rekall.controller;
 
+import com.refactoring.rekall.dto.CategoryDTO;
 import com.refactoring.rekall.dto.RefundDTO;
+import com.refactoring.rekall.service.CategoryService;
 import com.refactoring.rekall.service.RefundService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,8 @@ import java.util.List;
 public class RefundController {
     @Autowired
     RefundService refundService;
+    @Autowired
+    CategoryService categoryService;
 
 //  ------------------------------------- ★ mypage refund List ★ ------------------------------------------------------------
 
@@ -31,7 +35,7 @@ public class RefundController {
 
 
         modelAndView.addObject("status", status);
-        modelAndView.addObject("refundList",refundDTOList);
+        modelAndView.addObject("refundList", refundDTOList);
         modelAndView.setViewName("pages/mypage/order/refundList.html");
 
         return modelAndView;
@@ -45,6 +49,7 @@ public class RefundController {
     public ModelAndView refundList (@RequestParam(name = "sort", defaultValue = "all", required = false) String status){
 
         ModelAndView modelAndView = new ModelAndView();
+
         List<RefundDTO> refundDTOList = refundService.getAllRefund(status);
 
         modelAndView.addObject("status", status);
@@ -53,6 +58,18 @@ public class RefundController {
 
         return modelAndView;
     }
+    @GetMapping("admin/refund/detail")
+    public ModelAndView refundList (@RequestParam("refundId") Integer refundId){
 
+        ModelAndView modelAndView = new ModelAndView();
+        List<CategoryDTO> category = categoryService.findCategory("rf");
+        RefundDTO refundDTO = refundService.findRefundDTO(refundId);
+
+        modelAndView.addObject("select", category);
+        modelAndView.addObject("refund",refundDTO);
+        modelAndView.setViewName("admin/refund/refundList.html");
+
+        return modelAndView;
+    }
 
 }

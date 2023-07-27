@@ -1,12 +1,11 @@
 package com.refactoring.rekall.controller;
 
 import com.refactoring.rekall.dto.*;
-import com.refactoring.rekall.service.CartService;
-import com.refactoring.rekall.service.OrderService;
-import com.refactoring.rekall.service.UserService;
+import com.refactoring.rekall.service.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
+import org.codehaus.groovy.transform.SourceURIASTTransformation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
@@ -29,6 +28,10 @@ public class OrderController {
     UserService userService;
     @Autowired
     CartService cartService;
+    @Autowired
+    RefundService refundService;
+    @Autowired
+    ProductService productService;
 
 //  ------------------------------------- ★ mypage order List ★ ------------------------------------------------------------
     @GetMapping("mypage/order")
@@ -74,7 +77,7 @@ public class OrderController {
         OrderDetailDTO orderDetailDTO = orderService.getOrderDetail(odetailId);
 
         modelAndView.addObject("odetail",orderDetailDTO);
-
+        System.out.println(orderDetailDTO.getOrderDTO().getStatus());
         if("admin".equals(page))  {
             modelAndView.setViewName("admin/order/orderDetail.html");
         }
@@ -85,34 +88,33 @@ public class OrderController {
         return modelAndView;
     }
 
-
-
-    //  ------------------------------------- ★ odetail 취소 요청 ★ ------------------------------------------------------------
     //  ------------------------------------- ★ odetail 취소 요청 ★ ------------------------------------------------------------
     @GetMapping("/mypage/order/cancel")
     public ModelAndView cancelOdetailF(@RequestParam("odetailId") Integer odetailId) {
         ModelAndView modelAndView = new ModelAndView();
+        System.out.println(odetailId);
         OrderDetailDTO orderDetailDTO = orderService.getOrderDetail(odetailId);
         UserDTO userDTO = userService.findByUserID(orderDetailDTO.getOrderDTO().getUserDTO().getUserId());
 
         System.out.println(userDTO);
         System.out.println(orderDetailDTO);
+
         RefundDTO refundDTO = new RefundDTO();
         refundDTO.setUserDTO(userDTO);
         refundDTO.setOrderDetailDTO(orderDetailDTO);
 
-        modelAndView.addObject("refundDTO",refundDTO );
+        modelAndView.addObject("refundDTO", refundDTO );
         modelAndView.setViewName("/pages/mypage/order/orderRefund.html");
         return modelAndView;
     }
     @PostMapping("/mypage/order/cancel")
-    public ModelAndView cancelOdetail(@RequestParam("odetailId") Integer odetailId,
-                                      @RequestParam("page") String page) {
+    public ModelAndView cancelOdetail(@ModelAttribute("refundDTO") RefundDTO refundDTO, MultipartFile[] files) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
+        System.out.println(files);
+        orderService.cancelOdetail(refundDTO.getOrderDetailDTO().getOdetailId(), "mypage");
+        refundService.setRefund(refundDTO, files);
 
-        orderService.cancelOdetail(odetailId, page);
-
-        modelAndView.addObject("data", new Message("반품 요청되었습니다.","/common/close.html" ));
+        modelAndView.addObject("data", new Message("반품 요청되었습니다.","/common/close" ));
         modelAndView.setViewName("/common/message.html");
         return modelAndView;
     }
@@ -154,6 +156,7 @@ public class OrderController {
             totalP = cartP + 3000;
             session.setAttribute("cartIds", cartIds);
         }
+        session.setAttribute("from","direct");
         session.setAttribute("cartP", cartP );
         session.setAttribute("totalP", totalP);
         System.out.println(session.getAttribute("cartP").toString());
@@ -185,6 +188,7 @@ public class OrderController {
         String totalP = session.getAttribute("totalP").toString();
         Integer[] cartIds = (Integer[]) session.getAttribute("cartIds");
         String[] cartId = new String[cartIds.length];
+
         for(int i = 0; i < cartIds.length; i++) {
             System.out.println(cartIds[i]);
             cartId[i] = cartIds[i].toString();
@@ -193,7 +197,14 @@ public class OrderController {
         List<CartDTO> cartList = cartService.cartIdList(cartId);
         UserDTO userDTO = cartList.get(0).getUserDTO();
 
-        if(session.getAttribute("from") != null) modelAndView.addObject("from",session.getAttribute("from").toString());
+        if(session.getAttribute("from") != null) {
+            modelAndView.addObject("from",session.getAttribute("from").toString());
+            session.removeAttribute("from");
+            System.out.println("from 들어옴");
+        }
+        session.removeAttribute("cartP");
+        session.removeAttribute("totalP");
+        session.removeAttribute("cartIds");
 
         modelAndView.addObject("page", "order");
         modelAndView.addObject("cartP", cartP);
@@ -210,7 +221,7 @@ public class OrderController {
     public Integer saveOrder(@RequestParam("order") String[] order,
                              @RequestParam("userId") String userId) {
         OrderDTO orderDTO = orderService.saveOrder(order, userId);
-        System.out.println("order 저장");
+
         return orderDTO.getOrderId();
     }
 
@@ -244,6 +255,7 @@ public class OrderController {
         String product = orderDetailList.get(0).getProductDTO().getName();
 
         userService.calcMileage(orderDTO);
+        productService.countAmount(orderDetailList);
 
         modelAndView.addObject("page", "complete");
         modelAndView.addObject("orderDTO", orderDTO);

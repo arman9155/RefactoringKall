@@ -183,7 +183,7 @@ public class UserController {
         return modelAndView;
     }
     //   ★ 회원 탈퇴 하기 ★ -----------------------------------------------------------------
-    @GetMapping("/mypage/user/deleter")
+    @GetMapping("/mypage/user/del")
     public ModelAndView u_deleteUserF() {
         ModelAndView modelAndView = new ModelAndView();
 
@@ -193,7 +193,7 @@ public class UserController {
         return modelAndView;
     }
 
-    @PostMapping("/mypage/user/delete")
+    @PostMapping("/mypage/user/del")
     public ModelAndView u_deleteUser(@ModelAttribute("userDelDTO") UserDelDTO userDelDTO, HttpSession session) {
 
         userService.deleteUser(userDelDTO, session.getAttribute("loginId").toString());
@@ -206,7 +206,6 @@ public class UserController {
         modelAndView.addObject("data",new Message("탈퇴되었습니다.", "close"));
         modelAndView.setViewName("common/message.html");
         session.invalidate();
-//탈퇴되엇습니다 -> 창 close -> main으로 이동해야함  ==> close 수정중이었는데 안됭
         return modelAndView;
     }
 

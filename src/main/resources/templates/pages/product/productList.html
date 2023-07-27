@@ -123,7 +123,7 @@
         </div>
         <div class="wrapper">
             <th:block th:each="item,i : ${productList}">
-                <div th:class="custom+${i.index+1}"><!-- th:classappend=""-->
+                <div class="custom" th:classappend="${i.index+1}">
                     <div class="product_imgs">
                         <th:block th:if="${loginId != null}">
                             <th:block th:if="${wishList.size() == 0}">
@@ -146,7 +146,7 @@
                         </a>
                     </div>
 
-                    <a th:href="@{/product/{id}(id=${item.productId})}">
+                    <a class="productName" th:href="@{/product/{id}(id=${item.productId})}">
                           <h3 th:text="${item.name}"></h3><br>
                     </a>
                 </div>

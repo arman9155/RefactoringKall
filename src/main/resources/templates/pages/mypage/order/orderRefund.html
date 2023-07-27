@@ -2,7 +2,7 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-  <link th:href="@{/css/mypage/list.css}" rel="stylesheet">
+  <link th:href="@{/css/mypage/refund.css}" rel="stylesheet">
   <script type="text/javascript" th:src="@{/myLib/jquery-3.2.1.min.js}"></script>
   <meta charset="UTF-8">
   <script th:inline="javascript">
@@ -13,8 +13,8 @@
 
       // 첨부파일명 / 사진 미리보기
         function loadFile(input) {
-            var container = document.querySelector('.detail_image');
-            container.innerHTML = "";
+            var container = document.querySelector('#detail_image');
+            container.innerHtml="";
 
              if(input.files && input.files[0]) {
                 var names = [];
@@ -38,30 +38,31 @@
 <body>
 <section class="content">
   <h3 class="underline">반품 요청</h3>
-  <table class="list" th:object="${refundDTO}">
+  <form method="post" th:action="@{/mypage/order/cancel}" th:object="${refundDTO}" enctype="multipart/form-data">
+  <table class="list">
     <tbody id="orderCancel">
     <tr>
       <th>주문상세번호</th>
       <td>
-        <input type="text" id="odetailId" name="odetailId" th:field="*{orderDetailDTO.odetailId}" readonly>
+        <input type="text" id="odetailId" th:field="*{orderDetailDTO.odetailId}" readonly>
       </td>
     </tr>
     <tr>
       <th>아이디</th>
       <td>
-        <input type="text" id="userId" name="userId" th:field="*{userDTO.userId}" readonly>
+        <input type="text" id="userId" th:field="*{userDTO.userId}" readonly>
         </td>
     </tr>
     <tr>
       <th><label for="title">제목</label></th>
       <td>
-        <input type="text" id="title" name="title" th:field="*{title}">
+        <input type="text" id="title" th:field="*{title}" required>
       </td>
     </tr>
     <tr>
       <th><label for="description">내용</label></th>
       <td>
-        <textarea name="description" id="description" rows="10" th:field="*{content}">반품 사유 : </textarea>
+        <textarea id="description" rows="10" th:field="*{content}" required>반품 사유 : </textarea>
       </td>
     </tr>
     <tr>
@@ -73,19 +74,16 @@
       </td>
     </tr>
     <tr>
-      <td colspan="2" class="detail_image">
-
+      <td colspan="2" id="detail_image">
       </td>
     </tr>
     </tbody>
-    <tfoot>
-      <div class="buttons">
+  </table>
+    <div class="buttons">
         <button>반품 요청</button>
         <a onclick="closeWindow();">닫기</a>
       </div>
-    </tfoot>
-  </table>
-  </form>
+    </form>
 </section>
 </body>
 </html>

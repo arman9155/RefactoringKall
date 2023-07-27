@@ -99,7 +99,7 @@ public class OrderService {
                     orderDTOList.add(OrderDTO.toOrderDTO(orderEntity));
                 }
             }
-        } else if(status.equals(status)) {
+        } else {
             for (OrderEntity orderEntity : orderList) {
                 if (orderEntity != null && orderEntity.getStatus().equals(status)) {
                     orderDTOList.add(OrderDTO.toOrderDTO(orderEntity));
@@ -288,29 +288,33 @@ public class OrderService {
         OrderDetailEntity orderDetail = new OrderDetailEntity();
         if(orderDetailEntity.isPresent()) orderDetail = orderDetailEntity.get();
 
-        orderDetail.setStatus("환불 요청");
-        orderDetailRepository.save(orderDetail);
+        if("mypage".equals(page)) {
+            orderDetail.setStatus("반품 요청");
+        } else orderDetail.setStatus("반품");
 
+        orderDetailRepository.save(orderDetail);
         // order 수정하기
-        cancelOrder(orderDetail.getOrderEntity().getOrderId());
+        cancelOrder(orderDetail.getOrderEntity().getOrderId(), page);
     }
     //  ------------------------------------- ★ order 취소 요청 ★ --------------------------------------------------
-    public void cancelOrder(Integer orderId) {
+    public void cancelOrder(Integer orderId, String page) {
         List<OrderDetailEntity> orderDetailList = orderDetailRepository.findByOrderEntityOrderIdOrderByOdetailIdDesc(orderId);
         Optional<OrderEntity> optionalOrderEntity = orderRepository.findById(orderId);
         OrderEntity orderEntity = new OrderEntity();
         if(optionalOrderEntity.isPresent()) orderEntity = optionalOrderEntity.get();
         int i = 0 ;
-        for(OrderDetailEntity orderDetail : orderDetailList) {
-            if("반품 요청".equals(orderDetail.getStatus())) i++;
+
+        if("mypage".equals(page)) {
+            for(OrderDetailEntity orderDetail : orderDetailList) {
+                if("반품 요청".equals(orderDetail.getStatus())) i++;
+            }
+            if(i == orderDetailList.size()) orderEntity.setStatus("반품 요청");
+            else if (i > 0) orderEntity.setStatus("부분 반품 요청");
+        } else {
+            orderEntity.setStatus("반품 확정");
         }
-       if(i == orderDetailList.size()) orderEntity.setStatus("반품 요청");
-       else if (i > 0) orderEntity.setStatus("부분 반품 요청");
        orderRepository.save(orderEntity);
     }
-
-
-
 }
 
 

@@ -13,7 +13,7 @@
 .list {
     table-layout: fixed; /* 이게 없으면... column 넓이 하나도 안멱혀요...*/
     width: 100%;
-    margin: 0 0 20px 0;
+    margin: 30px 0;
     border: 0;
     border-spacing: 0;
     border-collapse: collapse;
@@ -29,7 +29,36 @@
     text-decoration : none;
     color : black;
 }
+.list .productName:hover {
+    font-size : bold;
+    background : none;
+}
+.col1,
+.col2,
+.col3,
+.col5 {
+    width : 5%
+}
 
+.col4,
+.n4 {
+    width : 40%;
+}
+.q1,
+.q2,
+.q7 {
+    width : 8%;
+}
+.q3,.q4, .q6,
+.n1, .n2, .n3, .n5 {
+    width : 15%;
+}
+.q5 {
+ width : 31%;
+}
+input[type="checkbox"] {
+    zoom : 1.2;
+}
 /* ----- ★ 밑의 삭제/취소버튼 파트 ★ ------------------------------------------------------------*/
 .buttons {
     display: flex;
@@ -53,7 +82,7 @@
     margin: 3px 0;
     color: white;
     border-radius: 20px;
-    background-color: RGB(255, 227, 227);
+    background-color: RGB(255, 200, 200);
     box-sizing: border-box;
     padding: 5px 20px;
     cursor: pointer;
@@ -66,7 +95,7 @@
 .buttons input:hover,
 .buttons button:hover,
 .buttons a:hover,
-#productList td a:hover {
+#productList .detailImg:hover {
     background : #FB9DA7;
 }
 

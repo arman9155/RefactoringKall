@@ -46,11 +46,13 @@
       });
 	}
   }
+    document.getElementById('id').focus();
+	opener.document.getElementById('id').value='';
   </script>
 </head>
 <body>
 <div id="wrap">
-  <h3>ID 중복확인</h3>
+  <h3 class="underline">ID 중복확인</h3>
 
   <form th:action="@{/join/idDupCheck}" method="get">
     작성하신 아이디:
@@ -59,7 +61,6 @@
     <input type="submit" id="idCheck" class="btn" value="ID 중복확인" onclick="idDupCheck()"><br>
     <!-- inCheck.js 의  idCheck() 의 결과에 따라 submit 결정 -->
   </form>
-  <br><br>
 
   <div id="msgBlock">
     <th:block th:if="${idUse == 'T'}">
@@ -69,11 +70,6 @@
     <th:block th:if="${idUse == 'F'}">
       [[${writeId}]] 는(은) 사용 불가능합니다 (사용중) <br>
       다시 입력하세요.<br>
-
-      <script>
-		document.getElementById('id').focus();
-		opener.document.getElementById('id').value='';
-	  </script>
     </th:block>
   </div>
 </div>

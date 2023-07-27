@@ -28,34 +28,35 @@
         <table class="list">
             <thead>
             <tr>
-                <th>
+                <th class="q1">
                     <input type="checkbox" id="selectAll">
                     <label for="selectAll">전체 선택</label>  <!--자바로 구현 필요-->
                 </th>
-                <th>번호</th>
-                <th>아이디</th>
-                <th>상품명</th>
-                <th>제목</th>
-                <th>날짜</th>
-                <th>답변</th>
+                <th class="q2">번호</th>
+                <th class="q3">아이디</th>
+                <th class="q4">상품명</th>
+                <th class="q5">제목</th>
+                <th class="q6">날짜</th>
+                <th class="q7">답변</th>
             </tr>
             </thead>
 
             <tbody id="productQList">
             <th:block th:each="q, i : ${productQList}">
                 <tr>
-                    <td scope="row"><input type="checkbox" name="productqIds" th:value="${q.productqId}"></td>
-                    <td th:text="${i.index+1}"></td>
-                    <td th:text="${q.userDTO.userId}"></td>
-                    <td th:text="${q.productDTO?.name}"></td>
-                    <td><a th:href="@{/admin/productQ/detail(productqId=${q.productqId})}" th:text="${q.title}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=500,height=800'); return false;"></a></td>
-                    <td th:text="${q.date1}"></td>
-                    <td>
+                    <td class="q1"><input type="checkbox" name="productqIds" th:value="${q.productqId}"></td>
+                    <td class="q2" th:text="${i.index+1}"></td>
+                    <td class="q3" th:text="${q.userDTO.userId}"></td>
+                    <td class="q4" th:text="${q.productDTO?.name}"></td>
+                    <td class="q5">
+                        <a th:href="@{/admin/productQ/detail(productqId=${q.productqId})}" th:text="${q.title}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=500,height=800'); return false;"></a></td>
+                    <td class="q6" th:text="${q.date1}"></td>
+                    <td class="q7">
                         <th:block th:if="${q.comment != null}">
-                            <label>O</label>
+                            <label>⭕</label>
                         </th:block>
                         <th:block th:if="${q.comment == null}">
-                            <label>X</label>
+                            <label>❌</label>
                         </th:block>
                     </td>
                 </tr>

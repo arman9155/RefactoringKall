@@ -29,8 +29,21 @@ h1.logo a{
 
 /*--------- 필수 ------------------------------------------------------------*/
 
+h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  padding-bottom: 20px;
+}
+
+h3.underline {
+  border-bottom: 1px solid  #33333330;
+  box-sizing :border-box;
+  padding: 10px;
+}
+
+
 form {
-    margin: 10px 0;
+    padding: 10px;
 }
 
 table {
@@ -158,13 +171,9 @@ table td {
     font-weight: bold;
     font-size : 0.8rem;
 }
-// ** etc
-.confirm {
-    display : flex;
-}
 
-// ** 아이디 중복 확인
-#wrap {
-    margin-left: 0;
-	text-align: center;
+/* msgBlock*/
+#msgBlock {
+    box-sizing : border-box;
+    padding : 10px;
 }

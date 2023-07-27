@@ -116,7 +116,10 @@ header {
 svg {
     fill:white;
 }
-
+#admin_page {
+    display : block;
+    font-weight : bold;
+}
 /* 상단 menu */
 .main_menu,
 .user_menu {

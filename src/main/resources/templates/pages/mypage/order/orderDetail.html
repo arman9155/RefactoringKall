@@ -2,7 +2,7 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-  <link th:href="@{/css/mypage/list.css}" rel="stylesheet">
+  <link th:href="@{/css/mypage/order.css}" rel="stylesheet">
   <script type="text/javascript" th:src="@{/myLib/jquery-3.2.1.min.js}"></script>
   <meta charset="UTF-8">
   <script th:inline="javascript">
@@ -21,10 +21,9 @@
          const input = document.createElement('input');
          input.type = 'hidden';
          input.name = 'odetailId';
-         input.value = parseInt(id.value);
-         console.log(typeof input.value);
-         form.appendChild(input);
+         input.value = id.innerText;
 
+         form.appendChild(input);
          document.body.appendChild(form);
          form.submit();
     }
@@ -54,7 +53,8 @@
         </tr>
         <tr>
           <th>옵션</th>
-          <td><span th:if="${odetail.option_sheet != null}">[[${odetail.option_sheet}]] </span>
+          <td>
+            <span th:if="${odetail.option_sheet != null}">[[${odetail.option_sheet}]] </span>
             <span th:if="${odetail.option_shape != null}">[[${odetail.option_shape}]]</span>
             <span th:if="${odetail.option_cream != null}">[[${odetail.option_cream}]]</span>
             <span th:if="${odetail.option_lettering != null}">[[${odetail.option_lettering}]]</span>
@@ -80,7 +80,9 @@
       </tbody>
       <tfoot>
         <div class="buttons">
-          <a onclick="submitForm();">반품 신청</a>
+          <th:block th:if="${odetail.orderDTO.status == '결제 완료'}">
+            <a onclick="submitForm();">반품 신청</a>
+          </th:block>
           <a onclick="closeWindow();">닫기</a>
         </div>
       </tfoot>

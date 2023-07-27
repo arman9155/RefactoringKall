@@ -39,7 +39,7 @@ public class ProductService {
 //  ------------------------------------- ★ Product List ★ ------------------------------------------------------------
     public List<ProductDTO> findAll() {
         List<ProductEntity> productEntityList = productRepository.findAll(Sort.by(Sort.Direction.DESC,"productId"));
-        List<ProductDTO> productDTOList = new ArrayList<>(6);
+        List<ProductDTO> productDTOList = new ArrayList<>();
         for(ProductEntity productEntity : productEntityList) {
             if(productEntity != null) {
                 if(!productEntity.getCategoryEntity().getCategoryId().equals("main")) {
@@ -66,6 +66,14 @@ public class ProductService {
 
         }
         return tagList;
+    }
+//  ------------------------------------- ★ name으로 ProductDTO ★ ------------------------------------------------------------
+    public ProductDTO findByName(String name) {
+        Optional<ProductEntity> OpProductEntity = productRepository.findByName(name);
+        ProductDTO productDTO = new ProductDTO();
+        if(OpProductEntity.isPresent()) productDTO = ProductDTO.toProductDTO(OpProductEntity.get());
+
+        return productDTO;
     }
 
 //  ★ 제품 리스트 뽑기_tag로★ ------------------------------------------------------------
@@ -160,24 +168,47 @@ public class ProductService {
 
 //  ★ 랜덤 제품 추천 ★ ------------------------------------------------------------
     public List<ProductDTO> randomProduct(Integer productId) {
-        List<ProductDTO> productDTOList = findAll();
+        List<ProductDTO> productDTOList = findAll(); //  main 제외 productList
         List<ProductDTO> productDTOS = new ArrayList<>(5);
 
-        if(productDTOList.size() > 5) {
-            for (int i = 0, j = 0, p = 0; ; i++) {
-                if (p == 5) break;
-                j = (int) (Math.random() * productDTOList.size());
-                if (productDTOList.get(j).getProductId() != productId) {
-                    productDTOS.add(productDTOList.get(j));
-                    p++;
+        if(productDTOList.size() >=6) {
+            Random random = new Random();
+
+            if (productDTOList.isEmpty()) {
+                do {
+                    Integer randomIndex = random.nextInt(productDTOList.size());
+                    if(productDTOList.get(randomIndex).getProductId() != productId) {
+                        productDTOS.add(productDTOS.get(randomIndex));
+                    }
+                }while(!productDTOS.isEmpty());
+            }
+
+            do {
+                Integer  randomIndex = random.nextInt(productDTOS.size());
+                ProductDTO productDTO = productDTOS.get(randomIndex);
+                Integer same = 0;
+
+                for(ProductDTO product : productDTOList) {
+                    if(product.getProductId() == productDTO.getProductId())
+                        same++;
+                }
+                if(same == 0) {
+                    productDTOList.add(productDTOS.get(randomIndex));
+                }
+                System.out.println("same"+same);
+            }while(productDTOList.get(4) == null);
+
+        } else {
+            for(ProductDTO productDTO : productDTOList) {
+                if(productDTO.getProductId() != productId) {
+                    productDTOS.add(productDTO);
+                    System.out.println(productDTO);
                 }
             }
-            return productDTOS;
-        } else {
-            return productDTOS;
         }
-    }
 
+        return productDTOS;
+    }
 
 //  ------------------------------------- ★ 관리자페이지 ★ -----------------------------------------------------------------
 //   ★ 상품관리 _ 리스트  ★ -----------------------------------------------------------------
@@ -205,9 +236,10 @@ public class ProductService {
         String id = "0";
         if(productRepository.findId() == null) id = "1";
         else id = productRepository.findId() + 1 + "";
-
+        System.out.println(imgFile);
         if(imgFile != null && !imgFile.isEmpty()) {
             String imgPath = imageService.saveImg(productDTO.getCategoryDTO().getCategoryId(), productDTO.getName(), id, imgFile);
+            System.out.println("imgPath"+imgPath);
             productDTO.setImage(imgPath);
         }
         saveDTO(productDTO);
@@ -260,7 +292,6 @@ public class ProductService {
         }
     }
 
-//   ★ 상품관리 _ 상세이미지 수정 ★ -----------------------------------------------------------------
 //   ★ 상품관리 _ 상세이미지 삭제 ★
     public void productDImageDel(Integer productId) {
         List<ProductImgEntity> productImgEntityList = productImgRepository.findByProductEntityProductId(productId);
@@ -277,8 +308,21 @@ public class ProductService {
         productDImageDel(productId);
         detailImage(productImgDTO, productId, files);
     }
+    
+//   ★ 구매 후 카운트 설정 ★ ----------------------------------------------------------------
+    public void countAmount(List<OrderDetailDTO> orderDetailList) {
 
-    public ProductDTO getIDFromName(String name) {
-        return ProductDTO.toProductDTO(productRepository.findByName(name));
+        for(OrderDetailDTO orderDetail : orderDetailList) {
+            Integer productId = orderDetail.getProductDTO().getProductId();
+            ProductDTO productDTO = findByProductId(productId);
+            Integer amount = productDTO.getAmount() - orderDetail.getAmount();
+
+            productDTO.setAmount(amount);
+            productRepository.save(ProductEntity.toProductEntity(productDTO));
+        }
+        
     }
+
+//  ------------------------------------- ★ Product Random 돌리기 ★ ------------------------------------------------------------
+
 }

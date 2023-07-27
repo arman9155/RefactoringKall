@@ -2,11 +2,10 @@
 /* product  정렬 */
 
 .wrapper {
-    margin: 0 auto;
-    margin-bottom: 50px;
-    gap: 20px;
-    width: 80%;
-    height: 700px;
+    padding: 10px;
+    gap : 20px;
+    width: 100%;
+    height : 100%;
     text-align: center;
     display:grid;
     grid-template: repeat(3, 1fr) / repeat(3, 1fr);
@@ -16,36 +15,37 @@
      "g h i";
 }
 
-.custom img {
+.custom img,
+.product_imgs {
     width: 100%;
-    height: 300px;
+    height : 400px;
 }
 
-.custom1 {
+.custom.1 {
     grid-area : a;
 }
-.custom2 {
+.custom.2 {
     grid-area : b;
 }
-.custom3 {
+.custom.3 {
     grid-area : c;
 }
-.custom4 {
+.custom.4 {
     grid-area : d;
 }
-.custom5 {
+.custom.5 {
     grid-area : e;
 }
-.custom6 {
+.custom.6 {
     grid-area : f;
 }
-.custom7 {
+.custom.7 {
     grid-area : g;
 }
-.custom8 {
+.custom.8 {
     grid-area : h;
 }
-.custom9 {
+.custom.9 {
     grid-area : i;
 }
 
@@ -53,7 +53,12 @@ a {
     text-decoration: none;
     color: black;
 }
-
+.productName {
+    display : block;
+}
+.productName h3 {
+    padding : 10px 0;
+}
 /* 이미지 */
 .product_imgs {
     position: relative;
@@ -75,8 +80,10 @@ a {
 
 /*태그들*/
 .tags {
-    padding: 10px;
-    padding-top:0;
+    display : flex;
+    gap : 10px;
+    align-items : center;
+    padding-bottom: 20px;
 }
 
 .tag * {
@@ -84,9 +91,12 @@ a {
     font-weight : bold;
     text-decoration : none;
     background-color: #FB9DA7;
-    padding : 0 5px;
+    padding : 5px;
     margin: 0 10px;
     line-height : 1.2rem;
+}
+.tag {
+    width : fit-content;
 }
 
 .tags label{
@@ -96,7 +106,7 @@ a {
       color: white;
       text-align:center;
       text-decoration:none;
-      width: 30%;
+      padding : 5px;
       border-radius : 20px;
 }
 

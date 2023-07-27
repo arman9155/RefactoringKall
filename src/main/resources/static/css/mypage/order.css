@@ -1,0 +1,150 @@
+
+/*--------- h3 ------------------------------------------------------*/
+
+h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  padding-bottom: 20px;
+}
+
+h3.underline {
+  border-bottom: 1px solid  #33333330;
+  margin-bottom: 20px;
+}
+
+
+/* SORT */
+
+.sort {
+    display : flex;
+    gap : 3px;
+    text-align : center;
+}
+
+.sort a {
+    all: unset;
+    width: 20%;
+    font-weight: bold;
+    margin: 3px 0;
+    color: white;
+    border-radius: 20px;
+    background-color: RGB(255, 200, 200);
+    box-sizing: border-box;
+    padding: 5px 20px;
+    cursor: pointer;
+}
+
+.sort .active {
+    background : #FB9DA7;
+}
+
+.list {
+   table-layout: fixed; /* 이게 없으면... column 넓이 하나도 안멱혀요...*/
+    width: 100%;
+    margin: 30px 0;
+    border: 0;
+    border-spacing: 0;
+    border-collapse: collapse;
+    border-top: 3px solid #FB9DA7;
+    line-height: 40px;
+}
+
+/* order */
+.list a {
+    text-decoration : none;
+}
+#orderList,
+#refundList {
+    border : 3px solid #FB9DA7;
+}
+
+#orderList tr,
+#refundList tr {
+    margin : 5px 0;
+}
+
+#orderList .order1,
+#refundList .col1 {
+    border-bottom : 1px dotted RGB(255, 200, 200);
+}
+
+#orderList .order2,
+#refundList .col2 {
+    border-bottom : 3px solid #FB9DA7;
+}
+
+#orderList .order2 th,
+#refundList .col2 th {
+    border-left : 1px dotted RGB(255, 200, 200);
+}
+
+#orderList .order2 img,
+#refundList tr img {
+    width : 200px;
+    padding : 10px;
+}
+
+#orderList #productInfo {
+    color : black;
+    background : none;
+}
+
+#orderDetail tr:not(:last-child) {
+    border-bottom : 1px dotted RGB(255, 200, 200);
+}
+
+#orderDetail tr th {
+    background : #FB9DA7;
+    color : white;
+}
+
+#orderDetail {
+    text-align : center;
+    border : 3px solid #FB9DA7;
+}
+
+/* ----- ★ 버튼 파트 ★ ------------------------------------------------------------*/
+
+.buttons,
+#orderList div.order3,
+#orderList div.order4,
+#refundList .col3 {
+    display: flex;
+    justify-content: flex-end;
+    text-align: center;
+    gap : 20px;
+    cursor: pointer;
+    padding : 5px;
+}
+#orderList div.order3,
+#orderList div.order4,
+#refundList .col3 {
+    flex-direction : column;
+}
+.buttons *,
+#orderList div.order3 a,
+#orderList div.order4 a,
+#refundList .col3 a {
+    all: unset;
+    width: 20%;
+    font-weight: bold;
+    margin: 3px 0;
+    color: white;
+    border-radius: 20px;
+    background-color: RGB(255, 200, 200);
+    box-sizing: border-box;
+    text-decoration : none;
+    padding: 5px 20px;
+}
+#orderList div.order3 a,
+#orderList div.order4 a,
+#refundList .col3 a {
+    width : 100%;
+}
+
+.buttons a:hover,
+#orderList div.order3 a:hover,
+#orderList div.order4 a:hover,
+#refundList .col3 a:hover {
+    background : #FB9DA7;
+}

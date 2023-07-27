@@ -9,6 +9,28 @@
   <script type="text/javascript" th:src="@{/myLib/jquery-3.2.1.min.js}"></script>
   <meta charset="UTF-8">
   <title>배송지 관리</title>
+  <script>
+    function addressDel() {
+      var inputList = document.querySelectorAll('input[type=radio]');
+      var input = 0;
+      for(let i = 0; i < inputList.length;i++){
+        if(inputList[i].checked) {
+          input = inputList[i].value;
+        }
+      }
+      alert(input);
+      $.ajax({
+        url : "/mypage/address/del",
+        method : "GET",
+        data : {addressId : input}
+      }).done(function(){
+          window.location.reload();
+      }).fail(function(){
+          alert("삭제실패");
+      });
+    }
+
+  </script>
 </head>
 <body>
   <section class="content">
@@ -17,17 +39,17 @@
       <table class="address list">
         <thead>
           <tr>
-            <th>기본배송지</th>
-            <th>배송지명</th>
-            <th>우편번호</th>
-            <th>주소</th>
+            <th class="col1">기본배송지</th>
+            <th class="col2">배송지명</th>
+            <th class="col3">우편번호</th>
+            <th class="col4">주소</th>
           </tr>
         </thead>
 
         <tbody id="address">
           <th:block th:each="address, i : ${addressList}">
             <tr>
-              <td>
+              <td class="col1">
                 <th:block th:if="${address.status != '기본배송지'}">
                   <input type="radio" name="addressId" th:id="'select'+${i.index}" th:value="${address.addressId}">
                 </th:block>
@@ -36,8 +58,8 @@
                 </th:block>
 
               </td>
-              <td>
-                <a th:href="@{/mypage/address/detail(addressId=${address.addressId})}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=650,height=300'); return false;">
+              <td class="col2">
+                <a th:href="@{/mypage/address/detail(addressId=${address.addressId})}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=650,height=500'); return false;">
                   <th:block th:if="${address.addressName == null || address.addressName == ''}">
                     [[${address.name}]]
                   </th:block>
@@ -46,29 +68,31 @@
                   </th:block>
                 </a>
               </td>
-              <td>[[${address.zipCode}]]</td>
-              <td>[[${address.address_1}]]
-                  <th:block th:if="${address.address_2 != null}">
-                    [[${address.address_2}]]
-                  </th:block>
+              <td class="col3">[[${address.zipCode}]]</td>
+              <td class="col4">
+                [[${address.address_1}]]
+                <th:block th:if="${address.address_2 != null}">
+                  [[${address.address_2}]]
+                </th:block>
               </td>
             </tr>
-
-            <div class="buttons">
-              <th:block th:if="${i.last}">
-                <button>기본 배송지로 설정</button>
-                <a th:href="@{/mypage/address/add}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=650,height=300'); return false;">배송지 추가</a>
-                <a th:href="@{/mypage/address/del(addressId=${address.addressId})}">삭제</a>
-              </th:block>
-            </div>
-          </th:block>
-          <th:block th:if="${addressList == null || addressList.size() == 0}">
-            <div class="buttons">
-              <a th:attr="data-page='mypage'" class="add" th:href="@{/mypage/address/add}"  th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=650,height=300'); return false;">배송지 추가</a>
-            </div>
           </th:block>
         </tbody>
       </table>
+      <th:block th:if="${addressList != null || addressList.size() > 0}">
+        <div class="buttons">
+          <button>기본 배송지로 설정</button>
+            <a th:href="@{/mypage/address/add}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=650,height=400'); return false;">배송지 추가</a>
+            <a onclick="addressDel()">삭제</a>
+        </div>
+      </th:block>
+
+          <th:block th:if="${addressList == null || addressList.size() == 0}">
+            <div class="buttons">
+              <a th:attr="data-page='mypage'" class="add" th:href="@{/mypage/address/add}"  th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=650,height=400'); return false;">배송지 추가</a>
+            </div>
+          </th:block>
+
     </form>
   </section>
 </body>

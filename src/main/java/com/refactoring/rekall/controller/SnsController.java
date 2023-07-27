@@ -24,18 +24,10 @@ public class SnsController {
     @Autowired
     SnsService snsService;
 
-/*
-    @GetMapping("kakaologin")
-    public String kakao() {
-        return "kakaologin";
-    }
-*/
-
     @GetMapping("/oauth/kakao")
     public String login(@RequestParam("code") String code, HttpSession session) {
-        System.out.println("code: "+code);
+
         String access_token = snsService.getAccessToken(code);
-        System.out.println("access_token: 여기까지가 access token 가져오기"+access_token);
 
         HashMap<String,Object> userInfo = snsService.getUserInfo(access_token);
         Object id = userInfo.get("id");
@@ -44,19 +36,14 @@ public class SnsController {
 
         session.setAttribute("loginId", id);
         session.setAttribute("name", name);
-        session.setAttribute("userRole","kakao");
+        session.setAttribute("userRole","KAKAO");
         session.setAttribute("access_token", access_token);
-
-        System.out.println("session >>> " + session.getAttribute("loginId"));
-        System.out.println("session >>> " + session.getAttribute("name"));
-        System.out.println("session >>> " + session.getAttribute("email"));
 
         String password="";
         if(snsService.findUser(id, name).equals("F")) { // --> 이미 있는지 확인하기 _ F :F없음 -> 회원가입
             password = snsService.saveSnsUSer((String)id, (String)name, (String) email, KAKAO);
         }
 
-        System.out.println("userInfo >>> "+userInfo);
         return "redirect:/main";
         // 지금 session 이 있어서 로그인 되느지 확인은 못했는데, 값이 save 되는 것은 확인됨
     }

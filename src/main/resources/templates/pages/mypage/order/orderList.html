@@ -5,7 +5,7 @@
       layout:decorate="~{/common/layouts/mypageLayout}"
       layout:fragment="Content">
 <head>
-  <link th:href="@{/css/mypage/list.css}" rel="stylesheet">
+  <link th:href="@{/css/mypage/order.css}" rel="stylesheet">
   <script type="text/javascript" th:src="@{/myLib/jquery-3.2.1.min.js}"></script>
   <meta charset="UTF-8">
   <title>주문•배송 내역</title>
@@ -38,8 +38,8 @@
           </a>
         </th>
         <th class="order3">
-          <div class="btn">
-            <a th:href="@{/mypage/order/detail(odetailId=${oDetail.odetailId})}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=600,height=550'); return false;">주문상세 ></a>
+          <div class="order3">
+            <a th:href="@{/mypage/order/detail(odetailId=${oDetail.odetailId})}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=600,height=600'); return false;">주문상세 ></a>
             <a th:href="@{/community/question}"> 문의 > </a>
           </div>
           <div class="order4" th:if="${oDetail.status == '결제 완료'}">

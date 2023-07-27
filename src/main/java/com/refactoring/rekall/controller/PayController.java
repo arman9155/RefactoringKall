@@ -48,7 +48,6 @@ public class PayController {
         KakaoApproveDTO kakaoApprove = payService.approveResponse(pgToken, orderId, loginId);
         ResponseEntity<KakaoApproveDTO> kakaoApproveDTO = new ResponseEntity<>(kakaoApprove, HttpStatus.OK);
 
-        System.out.println("여기 kakao success");
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("data", new Message("", "/order/complete?orderId="+orderId+"&loginId="+loginId));
         modelAndView.setViewName("/common/payComplete.html");

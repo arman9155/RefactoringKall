@@ -25,5 +25,5 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Integer>
     @Query("select max(p.productId) from ProductEntity p")
     Integer findId();
 
-    ProductEntity findByName(String name);
+    Optional<ProductEntity> findByName(String name);
 }

@@ -253,9 +253,12 @@ input[type="radio"]:checked+label,
     gap: 10px;
     padding: 5px;
     align-items : center;
+    justify-content : center;
 }
 .recommend {
     height: 100%;
+    width : 200px;
+    text-align : center;
 }
 
 .recommend a {
@@ -264,7 +267,7 @@ input[type="radio"]:checked+label,
 }
 
 .recommend .random_image {
-    width: 100%;
+    width: 180px;
     height: 70%;
     box-sizing : border-box;
 }
@@ -311,8 +314,6 @@ input[type="radio"]:checked+label,
 .detail_info tr > * {
     border : 1px solid RGB(255, 200, 200);
 }
-
-
 
 
 
@@ -398,11 +399,12 @@ td.countBtn {
     box-sizing : border-box;
     all: unset;
     padding: 0 10px;
+    box-sizing : border-box;
     width : 100%;
     border : 1px solid RGB(255, 200, 200);
 }
-.productQ_input input: focus,
-.productQ_input textarea: focus {
+.productQ_input input:focus,
+.productQ_input textarea:focus {
     border: 3px solid #FB9DA7;
 }
 

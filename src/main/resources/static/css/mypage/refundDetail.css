@@ -1,0 +1,127 @@
+h3 {
+    padding-bottom : 20px;
+    font-size : 1.4rem;
+}
+
+h3.underline {
+    border-bottom : 1px solid #33333330;
+    margin : 30px 0;
+}
+
+.list {
+    box-sizing : border-box;
+    table-layout : fixed;
+    width : 100%;
+    border-spacing : 0;
+    border-collapse : collapse;
+    line-height : 40px;
+}
+#orderCancel {
+    border : 3px solid #FB9DA7;
+}
+#orderCancel tr * {
+    padding : 5px;
+
+}
+#orderCancel tr th{
+    background : #FB9DA7;
+    color : white;
+}
+
+#orderCancel input[type="text"],
+#orderCancel textarea {
+    all : unset;
+    box-sizing: border-box;
+    padding: 5px 20px;
+    border-radius: 20px;
+    border: 1px solid RGB(255, 200, 200);
+    outline: none;
+    line-height: 1.2rem;
+    width : 100%;
+    margin : 0;
+}
+
+#orderCancel .file_upload {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    padding : 5px;
+}
+
+#orderCancel .file_upload .upload_name {
+    box-sizing: border-box;
+    height: 40px;
+    padding: 10px 20px;
+    vertical-align: middle;
+    border-radius: 20px 0 0 20px;
+    border: 1px solid RGB(255, 227, 227);
+    width:70%;
+    text-align : center;
+    outline : none;
+}
+
+#orderCancel .file_upload label {
+    box-sizing: border-box;
+    height: 40px;
+    vertical-align: middle;
+    background-color: #FB9DA7;
+    border: 1px solid  #FB9DA7;
+    border-radius: 0 20px 20px 0;
+    font-weight : bold;
+    width: 30%;
+    color: white;
+    padding : 0;
+}
+
+#orderCancel tr .file_upload input[type="file"] {
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+}
+
+.file_image {
+    display : flex;
+    gap: 5px;
+}
+#orderCancel tr:not(:last-child) {
+    border-bottom : 1px dotted RGB(255, 200, 200);
+}
+
+#orderCancel tr:last-child th{
+    background : none;
+}
+.buttons {
+    display :flex;
+    gap : 10px;
+    justify-content : flex-end;
+}
+
+.buttons * {
+  all: unset;
+  width: 25%;
+  box-sizing: border-box;
+  color: white;
+  padding: 10px 0;
+  text-align: center;
+  border-radius: 20px;
+  background-color: RGB(255, 227, 227);
+  cursor: pointer;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.buttons a:hover,
+.buttons button:hover {
+  background-color: #FB9DA7;
+}
+
+#detail_image {
+    display : flex;
+}
+
+#detail_image img {
+    width : 100px;
+}

@@ -15,7 +15,7 @@ h3.underline {
 /*--------- table ------------------------------------------------------*/
 
 table {
-    margin: 10px 0;
+    margin: 20px 0;
     width: 100%;
     border-collapse : collapse;
 }
@@ -23,9 +23,15 @@ table {
 table th,
 table td {
     box-sizing: border-box;
-    padding: 3px 10px;
-    border :  1px solid RGB(255, 227, 227);
+    padding: 10px;
+    border :  1px solid RGB(255, 200, 200);
 }
+
+table th {
+    background : #FB9DA7;
+    color : white;
+}
+
 table th:nth-child(1) {
     width: 45%;
 }
@@ -70,6 +76,7 @@ table input: focus {
       text-decoration:none;
       width: 30%;
       border-radius : 20px;
+      padding : 5px 0;
 }
 
 .buttons a:hover,

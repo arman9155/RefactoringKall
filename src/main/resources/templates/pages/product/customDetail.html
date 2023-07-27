@@ -286,6 +286,7 @@
                                 }
                    }).done(function() {
                         if(formData.get('img'+i) != null) {
+                        alert("사진쪽");
                             var fileData = new FormData();
                             fileData.append('fileData', formData.get('img'+i));
                             if(fileData != null) {
@@ -302,6 +303,8 @@
                                             if(confirm("장바구니로 가겠습니까?")) {
                                                 location.href="/cart";
                                             } else location.reload();
+                                       } else {
+                                        location.href="/order";
                                         }
                                     }
                                 }).fail(function() {
@@ -316,7 +319,6 @@
                                     } else location.reload();
                                 }else {
                                     location.href="/order";
-                                    session.setAttribute("from","direct");
                                 }
                              }
                         }

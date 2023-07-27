@@ -9,6 +9,7 @@
     <title>1:1 문의 내역</title>
     <script type="text/javascript" th:src="@{/myLib/jquery-3.2.1.min.js}"></script>
     <link th:href="@{/css/admin/list.css}" rel="stylesheet">
+
     <script th:inline="javascript">
         $(document).ready(function() {
             $('#selectAll').click(function() {
@@ -32,33 +33,35 @@
             </th:block>
         </div>
 
-        <form id="deleteUsQ" method="post" th:action="@{/admin/question/del(page='admin')}">
+        <form id="deleteUsQ" th:action="@{/admin/question/del(page='admin')}" method="post" >
             <table class="list">
                 <thead>
                 <tr>
-                    <th>
+                    <th class="q1">
                         <input type="checkbox" id="selectAll">
                         <label for="selectAll">전체 선택</label>  <!--자바로 구현 필요-->
                     </th>
-                    <th>번호</th>
-                    <th>아이디</th>
-                    <th>카테고리</th>
-                    <th>제목</th>
-                    <th>날짜</th>
-                    <th>답변</th>
+                    <th class="q2">번호</th>
+                    <th class="q3">아이디</th>
+                    <th class="q4">카테고리</th>
+                    <th class="q5">제목</th>
+                    <th class="q6">날짜</th>
+                    <th class="q7">답변</th>
                 </tr>
                 </thead>
 
                 <tbody id="questionList">
-                <th:block th:each="question,i : ${usQList}">
-                    <tr>
-                        <td scope="row"><input type="checkbox" name="usqIds" th:value="${question.usqId}"></td>
-                        <td th:text="${i.index+1}"></td>
-                        <td th:text="${question.userDTO.userId}"></td>
-                        <td th:text="${question.categoryDTO?.categoryName}"></td>
-                        <td><a th:href="@{/admin/question/detail(questionId=${question.usqId})}" th:text="${question.title}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=500,height=800'); return false;"></a></td>
-                        <td th:text="${question.date1}"></td>
-                        <td>
+                    <tr th:each="question,i : ${usQList}">
+                        <td class="q1">
+                            <input type="checkbox" name="usqIds" th:value="${question.usqId}">
+                        </td>
+                        <td class="q2" th:text="${i.index+1}"></td>
+                        <td class="q3" th:text="${question.userDTO.userId}"></td>
+                        <td class="q4" th:text="${question.categoryDTO?.categoryName}"></td>
+                        <td class="q5">
+                            <a th:href="@{/admin/question/detail(questionId=${question.usqId})}" th:text="${question.title}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=500,height=800'); return false;"></a></td>
+                        <td class="q6" th:text="${question.date1}"></td>
+                        <td class="q7">
                             <th:block th:if="${question.comment != null}">
                                 <label>O</label>
                             </th:block>
@@ -67,7 +70,6 @@
                             </th:block>
                         </td>
                     </tr>
-                </th:block>
                 </tbody>
                 <tfoot>
                     <div class="buttons">

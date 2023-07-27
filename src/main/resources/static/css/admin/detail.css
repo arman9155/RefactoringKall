@@ -15,16 +15,22 @@ h3.underline {
 /*--------- table ------------------------------------------------------*/
 
 table {
-    margin: 10px 0;
+    margin: 30px 0;
     width: 100%;
     border-collapse : collapse;
+    table-layout : fixed;
+    border : 3px solid #FB9DA7;
 }
 
 table th,
 table td {
     box-sizing: border-box;
-    padding: 3px 10px;
-    border :  1px solid RGB(255, 200, 200);
+    padding: 10px;
+    border-bottom :  1px dotted RGB(255, 200, 200);
+}
+table th {
+    color : white;
+    background : #FB9DA7;
 }
 table th:nth-child(1) {
     width: 45%;
@@ -37,7 +43,6 @@ table a {
 table input,
 table textarea {
     all: unset;
-    padding: 0 10px;
     width:100%;
 }
 
@@ -55,6 +60,13 @@ table input: focus {
     height: 300px;
     padding : 5px 0;
     text-align: center;
+}
+
+/* select */
+select {
+    zoom : 1.2;
+    border-color : #FB9DA7;
+    outline :  #FB9DA7;
 }
 
 /* file upload */

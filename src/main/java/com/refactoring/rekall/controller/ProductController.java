@@ -125,8 +125,6 @@ public class ProductController {
         return modelAndView;
     }
 
-
-
 //  ------------------------------------- ★ 관리자페이지 ★ -----------------------------------------------------------------
 //   ★ 상품관리 _ 리스트  ★ -----------------------------------------------------------------
     @GetMapping("admin/product")
@@ -259,6 +257,7 @@ public class ProductController {
 
         return modelAndView;
     }
+
     @PostMapping("admin/product/dImageC")
     public ModelAndView productDImageC(@ModelAttribute ProductImgDTO productImgDTO,
                                        @RequestParam("productId") Integer productId,

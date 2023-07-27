@@ -56,7 +56,7 @@ public class UsQController {
 //  ---------------------------- ★ userID_질문 리스트 --관리자포함 ★ ---------------------------------------------------------------
     @GetMapping(value={"admin/question/list", "mypage/question/list"}) // 1:1 문의
     public ModelAndView u_questionList(HttpSession session,
-                                       @RequestParam("page") String page,
+                                       @RequestParam(name="page", required = false, defaultValue = "mypage") String page,
                                        @RequestParam(name="sort", defaultValue = "all", required = false) String categoryId) {
         ModelAndView modelAndView = new ModelAndView();
         List<UsQDTO> usQList = new ArrayList<>();

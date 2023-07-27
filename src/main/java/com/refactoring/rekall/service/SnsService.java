@@ -43,7 +43,7 @@ public class SnsService {
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
             sb.append("&client_id=cb0f1cc9efcfef4061a974fee5bd040c");
-            sb.append("&redirect_uri=http://localhost:8080/oauth/kakao");
+            sb.append("&redirect_uri=http://localhost:8080/login/oauth/kakao");
             sb.append("&code=" + auth_code);
             bw.write(sb.toString());
             bw.flush();
@@ -121,7 +121,7 @@ public class SnsService {
     }
 
     public Object findUser(Object id, Object name) {
-        List<UserEntity> userEntityList = userRepository.findAllByRole("kakao");
+        List<UserEntity> userEntityList = userRepository.findAllByRole(Auth.Role.KAKAO);
         if(userEntityList != null) {
             for(UserEntity user : userEntityList) {
                 if(user.getUserId().equals(id)&&user.getStatus().equals("활동계정")){

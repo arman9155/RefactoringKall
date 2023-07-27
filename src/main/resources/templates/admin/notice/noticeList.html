@@ -35,42 +35,35 @@
 
         <form id="deleteNotice" method="post" th:action="@{/admin/notice/del}">
             <table class="list">
-                <colgroup>
-                    <col class="col1">
-                    <col class="col2">
-                    <col class="col3">
-                    <col class="col4">
-                    <col class="col5">
-                </colgroup>
                 <thead>
                 <tr>
-                    <th>
+                    <th class="n1">
                         <input type="checkbox" id="selectAll">
                         <label for="selectAll">전체 선택</label>
                     </th>
-                    <th>번호</th>
-                    <th>분류</th>
-                    <th>제목</th>
-                    <th>날짜</th>
+                    <th class="n2">번호</th>
+                    <th class="n3">분류</th>
+                    <th class="n4">제목</th>
+                    <th class="n5">날짜</th>
                 </tr>
                 </thead>
 
                 <tbody id="userList">
                 <th:block th:each="notice,i : ${noticeList}">
                     <tr>
-                        <td scope="row"><input type="checkbox" name="noticeIds" th:value="${notice.noticeId}"></td>
-                        <td th:text="${i.index+1}"></td>
-                        <td th:text="${notice.categoryDTO?.categoryName}"></td>
-                        <td>
-                            <a th:href="@{/admin/notice/detail(noticeId=${notice.noticeId})}" th:text="${notice.title}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=500,height=800'); return false;"></a>
+                        <td class="n1"><input type="checkbox" name="noticeIds" th:value="${notice.noticeId}"></td>
+                        <td class="n2" th:text="${i.index+1}"></td>
+                        <td class="n3" th:text="${notice.categoryDTO?.categoryName}"></td>
+                        <td class="n4">
+                            <a th:href="@{/admin/notice/detail(noticeId=${notice.noticeId})}" th:text="${notice.title}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=500,height=500'); return false;"></a>
                         </td>
-                        <td th:text="${notice.date}"></td>
+                        <td class="n5" th:text="${notice.date}"></td>
                     </tr>
                 </th:block>
                 </tbody>
                 <tfoot>
                     <div class="buttons">
-                        <a th:href="@{/admin/notice/add}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=500,height=800'); return false;">추가</a>
+                        <a th:href="@{/admin/notice/add}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=500,height=500'); return false;">추가</a>
                         <button>선택 삭제</button>
                         <input type="reset" value="선택 취소">
                     </div>

@@ -50,7 +50,7 @@
         <tbody>
           <tr>
             <th><label for="name">이름</label></th>
-            <td><input id="name" type="test" name="name" th:field="*{name}" th:value="*{name}"></td>
+            <td><input id="name" type="test" name="name" th:field="*{name}" th:value="*{name}" required></td>
           </tr>
           <tr>
             <th><label for="address_name">배송지명</label></th>
@@ -66,13 +66,13 @@
           <tr>
             <th><label for="zip_code">우편번호</label></th>
             <td class="zipCode">
-                <input id="zip_code" type="text" name="zip_code" th:field="*{zipCode}" th:value="*{zipCode}" required>
+                <input id="zip_code" type="text" name="zip_code" th:field="*{zipCode}" th:value="*{zipCode}" required readonly>
                 <input type="button" id="findZipCode" onclick="daumPostCode();" value="찾기">
             </td>
           </tr>
           <tr>
             <th><label for="address_1">주소</label></th>
-            <td><input id="address_1" type="text" name="address_1" th:field="*{address_1}" th:value="*{address_1}" required></td>
+            <td><input id="address_1" type="text" name="address_1" th:field="*{address_1}" th:value="*{address_1}" required readonly></td>
           </tr>
           <tr>
             <th><label for="address_2">상세주소</label></th>

@@ -26,27 +26,20 @@
     <table class="list">
       <tbody id="refundList">
           <tr>
-            <th>환불번호</th>
+            <th>번호</th>
             <th>주문상세번호</th>
             <th>아이디</th>
             <th>제목</th>
-            <th>환불사유</th>
-            <th>이미지</th>
             <th>진행사항</th>
             <th>날짜</th>
           </tr>
         <th:block th:each="refund : ${refundList}">
           <tr>
             <td>[[${refund.refundId}]]</td>
-            <td><a th:href="${/admin/order/detail}(odetailId=${refund.odetailDTO.odetailId})">[[${refund.odetailDTO.odetailId}]]</a></td>
+            <td>[[${refund.orderDetailDTO.odetailId}]]</td>
             <td>[[${refund.userDTO.userId}]]</td>
-            <td>[[${refund.title}]]</td>
             <td>
-              <textarea name="description" id="description" rows="10">[[${refund.content}]]</textarea>
-            </td>
-            <td>
-              <div th:if="${refund.image1 !=null}">[[${refund.image1}]]</div>
-              <div th:if="${refund.image1 !=null}">[[${refund.image2}]]</div>
+              <a th:href="@{/admin/refund/detail(refundId=${refund.refundId})}" th:targer="'_blank'" onclick="window.open(this.href, this.target, 'width=600,height=550'); return false;">[[${refund.title}]]</a>
             </td>
             <td>[[${refund.status}]]</td>
             <td>[[${refund.date}]]</td>

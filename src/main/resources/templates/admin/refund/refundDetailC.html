@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/admin/adminLayout}"
+      layout:fragment="Content">
+<head>
+  <link th:href="@{/css/admin/list.css}" rel="stylesheet">
+  <script type="text/javascript" th:src="@{/myLib/jquery-3.2.1.min.js}"></script>
+  <meta charset="UTF-8">
+  <title>반품 관리</title>
+</head>
+<body>
+<section class="content">
+  <h3 class="underline">반품 상세 정보</h3>
+
+  <table class="list">
+    <tbody id="refundList">
+    <tr>
+      <th>반품번호</th>
+      <td>[[${refund.refundId}]]</td>
+    </tr>
+    <tr>
+      <th>주문상세번호</th>
+      <td>[[${refund.odetailDTO.odetailId}]]</a></td>
+    </tr>
+    <tr>
+      <th>아이디</th>
+      <td>[[${refund.userDTO.userId}]]</td>
+    </tr>
+    <tr>
+      <th>제목</th>
+      <td>[[${refund.title}]]</td>
+    </tr>
+    <tr>
+      <th>반품사유</th>
+      <textarea name="description" id="description" rows="10">[[${refund.content}]]</textarea>
+    </tr>
+    <tr>
+      <th>이미지</th>
+      <td>
+        <div th:if="${refund.image1 !=null}">[[${refund.image1}]]</div>
+        <div th:if="${refund.image2 !=null}">[[${refund.image2}]]</div>
+      </td>
+    <tr>
+      <th>진행사항</th>
+      <td>
+        <select>
+          <option th:each="rf, ${select}" >
+
+          </option>
+
+          [[${refund.status}]]
+    </tr>
+    <tr>
+      <th>날짜</th>
+      <td>[[${refund.date}]]</td>
+    </tr>
+    </tbody>
+  </table>
+</section>
+</body>
+</html>

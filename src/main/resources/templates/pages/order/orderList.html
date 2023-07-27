@@ -9,7 +9,7 @@
     <script type="text/javascript" th:src="@{/myLib/jquery-3.2.1.min.js}"></script>
     <title>주문 / 결제</title>
     <script th:src="@{/js/login/inCheck.js}"></script>
-    <script>
+    <script th:inline="javascript">
 
 		let ph2Check = false;
 		let ph3Check = false;
@@ -275,23 +275,25 @@
         }
 
         function orderCancel() {
-            if(session.getAttribute("from") != null) {
+            var pageFrom = /*[[${from}]]*/ null;
+            console.log(pageFrom);
+            if(pageFrom != null) {
                 if(confirm("취소하겠습니까?")) {
                     var cartBox = document.querySelectorAll('.cartList'); // cartList 를 담은 틀
                     var cartIds = [];
 
-                    for(let i = 0; i < cartBox; i++) {
+                    for(let i = 0; i < cartBox.length; i++) {
                         var cartId = cartBox[i].getAttribute('data-cartId');
-                        cartIds.add(cartId);
+                        cartIds.push(cartId);
                     } // for문
-
+                    console.log(cartIds);
                     $.ajax({
                         url : 'cart/del',
                         method : 'POST',
-                        data : { cartIds : cartIds}
+                        data : { cartIds : JSON.stringify(cartIds)}
                     }).done (function(){
                         alert("cart 삭제 완료");
-                        location.href="/cart";
+                        location.href="/main";
 				    }).fail(function() {
 					    alert("삭제 실패");
 				    });

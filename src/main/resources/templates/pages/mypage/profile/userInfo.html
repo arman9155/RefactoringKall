@@ -197,7 +197,7 @@
             <div class="buttons">
                 <button onclick="return inCheck();" id="change" >수정완료</button>
                 <a href="javascript:history.go(-1)" id="back">이전으로</a>
-                <a th:href="@{/mypage/deleteUser}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=800,height=400'); return false;" id="deleteUser">회원탈퇴</a>
+                <a th:href="@{/mypage/user/del}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=800,height=400'); return false;" id="deleteUser">회원탈퇴</a>
             </div>
         </form>
     </div>

@@ -61,11 +61,11 @@
                             <img class="main_image" th:src="@{${product.getImage()}}">
                         </td>
                         <td>
-                         <a th:href="@{admin/product/detail(productId=${product.productId})}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=800,height=800'); return false;">
+                         <a class="productName" th:href="@{/admin/product/detail(productId=${product.productId})}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=800,height=800'); return false;">
                              [[${product.name}]] </a>
                         </td>
                         <td>[[${product.amount}]]</td>
-                        <td><a id="detailImg" th:href="@{/admin/product/dImage(productId=${product.productId})}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=800, height=800'); return false;">상세이미지</a></td>
+                        <td><a class="detailImg" th:href="@{/admin/product/dImage(productId=${product.productId})}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=800, height=800'); return false;">상세이미지</a></td>
                     </tr>
                 </th:block>
                 </tbody>

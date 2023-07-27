@@ -35,7 +35,7 @@
         <tbody>
           <tr>
             <th><label for="name">이름</label></th>
-            <td><input id="name" type="test" name="name" th:field="*{name}" th:value="*{name}"></td>
+            <td><input id="name" type="test" name="name" th:field="*{name}" th:value="*{name}" required></td>
           </tr>
           <tr>
             <th><label for="address_name">배송지명</label></th>
@@ -44,23 +44,23 @@
           <tr>
             <th><label for="phone">전화번호</label></th>
             <td id="phoneNb">
-              <input id="phone" type="text" name="phoneNb" th:field="*{phoneNb}" th:value="*{phoneNb}" maxlength="11"></td>
+              <input id="phone" type="text" name="phoneNb" th:field="*{phoneNb}" th:value="*{phoneNb}" maxlength="11" required></td>
               <span id="phMessage" class="eMessage"></span>
           </tr>
           <tr>
               <th><label for="zip_code">우편번호</label></th>
               <td class="zipCode">
-                  <input id="zip_code" type="text" name="zip_code" th:field="*{zipCode}" th:value="*{zipCode}">
+                  <input id="zip_code" type="text" name="zip_code" th:field="*{zipCode}" th:value="*{zipCode}" required readonly>
                   <input type="button" id="findZipCode" onclick="daumPostCode();" value="검색">
               </td>
           </tr>
           <tr>
             <th><label for="address_1">주소</label></th>
-            <td><input id="address_1" type="text" name="address_1" th:field="*{address_1}" th:value="*{address_1}"></td>
+            <td><input id="address_1" type="text" name="address_1" th:field="*{address_1}" th:value="*{address_1}" required readonly></td>
           </tr>
           <tr>
             <th><label for="address_2">상세주소</label></th>
-            <td><input id="address_2" type="text" name="address_2" th:field="*{address_2}" th:value="*{address_2}"></td>
+            <td><input id="address_2" type="text" name="address_2" th:field="*{address_2}" th:value="*{address_2}"required></td>
           </tr>
         </tbody>
       </table>

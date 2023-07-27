@@ -19,7 +19,7 @@ public class Interceptor implements WebMvcConfigurer {
         
         registry.addInterceptor(new AuthLoginInterceptor())
                 .addPathPatterns("/**")
-                .excludePathPatterns("/login/**","/join/**","/community/**","/product/**", "/main","/close","/favicon.ico",
+                .excludePathPatterns("/login/**","/join/**","/community/**","/product/**", "/main","/message/*","/close","/favicon.ico",
                                     "/resources/**","/img/**","/js/**","/upImg/**", "/myLib/**", "/css/**", "/",
                                     "https://kapi.kakao.com/**","/kakao/**");
 

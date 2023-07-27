@@ -32,13 +32,13 @@ public class MainController {
 
 //  ------------------------------------- ★ Product List ★ ------------------------------------------------------------
     @GetMapping(value = {"", "main"})
-    public ModelAndView main() {
+    public ModelAndView toMain() {
         ModelAndView modelAndView = new ModelAndView();
 
         List<ProductDTO> productDTOS = productService.findAll();
-        List<ProductDTO> productDTOList = new ArrayList<>();
+        List<ProductDTO> productDTOList = new ArrayList<>(6);
         if(productDTOS.size() >=6)
-            productDTOList = new ArrayList<>(productDTOS.subList(0, 6));
+            productDTOList = productDTOS.subList(0, 6);
         else
             productDTOList = productDTOS;
 

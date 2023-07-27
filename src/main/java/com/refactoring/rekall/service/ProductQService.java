@@ -39,7 +39,7 @@ public class ProductQService {
 //  ------------------------------------- ★ 상품 문의 답변 저장 ★ ------------------------------------------------------------
 
     public void saveDTO(ProductQDTO productQDTO) {
-        ProductDTO productDTO = productService.getIDFromName(productQDTO.getProductDTO().getName());
+        ProductDTO productDTO = productService.findByName(productQDTO.getProductDTO().getName());
         productQDTO.setProductDTO(productDTO);
         productQRepository.save(ProductQEntity.toProductQEntity(productQDTO));
     }

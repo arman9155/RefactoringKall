@@ -25,23 +25,34 @@ h3.underline {
 table {
   table-layout: fixed; /* 이게 없으면... column 넓이 하나도 안멱혀요...*/
   width: 100%;
-  margin: 0 0 20px 0;
+  margin: 30px 0;
   border: 0;
   border-spacing: 0;
   border-collapse: collapse;
-  border-top: 1px solid #3c3c3c;
+  border: 3px solid #FB9DA7;
   line-height: 40px;
 }
- table tr th:nth-child(1) {
-     width: 10%;
+.col1 {
+     width: 20%;
  }
-table tr th:nth-child(2) {
-    width: 30%;
+.col2 {
+    width: 20%;
  }
-table tr th:nth-child(3) {
+.col3 {
     width: 60%;
+    padding : 0 10px;
+}
+table thead {
+  border-bottom: 3px solid #FB9DA7;
+}
+table th {
+    background : #FB9DA7;
+    color : white;
 }
 
+table td {
+  border-right: 1px dotted RGB(255, 200, 200);
+}
 /* ----- ★ QnA의 버튼 파트 ★ ------------------------------------------------------------*/
 
 .select {
@@ -56,7 +67,7 @@ table tr th:nth-child(3) {
     text-decoration:none;
     color: white;
     border-radius: 20px;
-    background-color: RGB(255, 227, 227);
+    background-color: RGB(255, 200, 200);
     box-sizing: border-box;
     padding: 5px 20px;
 }
@@ -66,13 +77,13 @@ table tr th:nth-child(3) {
     background-color: #FB9DA7;
 }
 
-
 /* ----- ★ notice/QnA toggle 설정 ★ ------------------------------------------------------------*/
 
-section .toggle_Q .QA_content,
-section .toggle_Q .notice_content{
+section .toggle_Q .QA_content {
   text-align: left;
 }
+
+
 
 section .toggle_A {
   display: none;
@@ -88,7 +99,7 @@ section .toggle_Q,
 thead tr {
   background-color: var(--white-f);
   padding: 10px;
-  border-bottom: 1px solid #333333;
+  border-bottom: 1px dotted RGB(255, 200, 200);
   font-size: 1.2rem;
   cursor: pointer;
   font-family: 'Font Awesome 5 Free', sans-serif;
@@ -97,42 +108,9 @@ thead tr {
   text-align: center;
 }
 
-/*
- section .guide_q_title::before,
- section .toggle_Q .notice_content::before {
-  */
-/* content: '\f2c4';  q마크왜 안될까나*//*
-
-  content: '\f00c';
-  font-family: 'Font Awesome 5 Free', sans-serif;
-  font-weight: 900;
-  margin:0 10px;
-}
-
-
-section .QA_q_title::before,
-section .QA_q_content::before {
-  content: '\f059';
-  font-family: 'Font Awesome 5 Free', sans-serif;
-  font-weight: 900;
-
-}
-*/
-
 section .QA_q_a,
 section .notice_a {
-
   padding: 20px;
   background-color: var(--white-f9);
-  border-bottom: 1px solid #333333;
+  border-bottom: 1px dotted RGB(255, 200, 200);
 }
-
-/*section .toggle_A .open {
-  display: flex;
-  content: '\f107';
-  font-family: 'Font Awesome 5 Free', sans-serif;
-  font-weight: 900;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-}*/

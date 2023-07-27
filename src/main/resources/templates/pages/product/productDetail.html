@@ -98,21 +98,21 @@
             if(loginId == null) {
                 toggleNoActive();
             } else {
-                    $.ajax({
-                            url: page === "cart"? "/cart/"+loginId : "/order/"+loginId,
-                            method: "POST",
-                            data : {amount : amount,
-                                    productId : productId
-                                    },
-                        }).done(function() {
-                                if(page == "cart") alert("장바구니에 추가되었습니다.");
-                                else alert("주문페이지로 이동합니다.");
-                                if(confirm("장바구니로 가겠습니까?")) {
-                                      location.href="/cart";
-                                } else location.reload();
-                        }).fail(function() {
-                                alert("다시시도해주세요");
-                    });
+                $.ajax({
+                    url: page === "cart"? "/cart/"+loginId : "/order/"+loginId,
+                    method: "POST",
+                    data : {amount : amount,
+                        productId : productId
+                    }
+                }).done(function() {
+                    if(page == "cart") {
+                         if(confirm("장바구니로 가겠습니까?")) {
+                             location.href="/cart";
+                         } else location.reload();
+                    } else location.href="/order";
+                }).fail(function() {
+                     alert("다시시도해주세요");
+                });
             }
         }
 </script>

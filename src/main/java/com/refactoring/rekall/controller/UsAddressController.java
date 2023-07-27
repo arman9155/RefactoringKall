@@ -112,7 +112,7 @@ public class UsAddressController {
     public ModelAndView addressDel(@RequestParam(required = false, name="addressId") Integer addressId,
                                    @RequestParam(required = false, name="popup") Integer addressId2) {
         ModelAndView modelAndView = new ModelAndView();
-
+        System.out.println("addressId"+addressId);
         if(addressId != null) {
             usAddressService.addressDel(addressId);
             modelAndView.addObject("data", new Message("삭제되었습니다.", "/mypage/address"));

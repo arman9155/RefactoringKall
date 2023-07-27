@@ -1,5 +1,6 @@
 package com.refactoring.rekall.repository;
 
+import com.refactoring.rekall.Auth;
 import com.refactoring.rekall.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
@@ -32,7 +33,7 @@ public interface UserRepository extends JpaRepository<UserEntity, String> {
     List<UserEntity> findByStatus(String status);
 
     @Query("select u from UserEntity u where u.role = (:id)")
-    List<UserEntity> findAllByRole(@Param("id")String id);
+    List<UserEntity> findAllByRole(@Param("id") Auth.Role id);
 
     @Lock(LockModeType.PESSIMISTIC_READ)
     @QueryHints({@QueryHint(name="javax.persistence.lock.scope" , value="EXTENDED"),
