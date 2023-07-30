@@ -24,7 +24,6 @@
             var url = element.getAttribute('data-url');
             var loginId = /*[[${session.loginId}]]*/ null;
             var userRole = /*[[${session.userRole}]]*/ null;
-            alert(loginId);
             var productId = parseInt(element.getAttribute('data-product'));
 
             if(element.classList.contains('active')) {
@@ -93,8 +92,6 @@
             };
 
             itemList.push(item);
-
-            alert("item push");
 
             //선택한 것들 틀에 넣기
             const list = document.createElement('div');
@@ -199,7 +196,6 @@
 //------값 +/- count 하는   ---------------------------------------------------------------------------------------------
         function count(type, i)  {
           const resultElement = document.querySelector(`#amount${i}`);
-          alert(resultElement);
           var number = resultElement.innerText;
           var count = /*[[${productDTO.amount}]]*/ null;
 
@@ -244,8 +240,6 @@
         function deleteItem(event) {
             const item = event.target.parentNode;
             const i = item.getAttribute('data-index');
-            alert(item);
-            alert(i);
 
             item.remove();
             itemList.splice(i,1);
@@ -286,7 +280,6 @@
                                 }
                    }).done(function() {
                         if(formData.get('img'+i) != null) {
-                        alert("사진쪽");
                             var fileData = new FormData();
                             fileData.append('fileData', formData.get('img'+i));
                             if(fileData != null) {
@@ -328,6 +321,16 @@
                 } // for문
             } //else절
         } //intoOrder
+
+        function isUser() {
+            var loginId = /*[[${session.loginId}]]*/ null;
+            if(loginId == null) {
+                toggleNoActive();
+                return false;
+            } else {
+                return true;
+            }
+        }
 </script>
 
     <title>[[${productName}]]</title>
@@ -768,12 +771,12 @@
                             </div>
                         </table>
 
-                        <form th:if="${session.loginId != null}" th:action="@{/productQ/{id}(id=${productDTO.productId})}" method="post">
+                        <form th:action="@{/productQ/{id}(id=${productDTO.productId})}" method="post">
                             <th:block th:object="${productQDTO}">
                                 <div class="productQ_input">
-                                    <input class="productQ" type="text" th:field="*{title}" placeholder="제목">
-                                    <textarea name="productQ" id="productQQ" rows="10" th:field="*{content}">문의글을 작성해주세요</textarea>
-                                    <button id="QBtn">문의하기</button>
+                                    <input class="productQ" type="text" th:field="*{title}" placeholder="제목" required>
+                                    <textarea name="productQ" id="productQQ" rows="10" th:field="*{content}" required>문의글을 작성해주세요</textarea>
+                                    <button id="QBtn" onclick="return isUser()">문의하기</button>
                                 </div>
                             </th:block>
                         </form>

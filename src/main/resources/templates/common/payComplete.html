@@ -6,7 +6,6 @@
     <title>Title</title>
 </head>
 <body>
-        alert("페이지 넘어옴");
     <th:block th:if="${#strings.length(data.message) != 0}">
       <script>
           top.alert("[[${data.message}]]");
@@ -17,7 +16,6 @@
          var href = "";
           if("[[${data.href}]]".includes("&amp;")) {
             href = "[[${data.href}]]".replace(/&amp;/g, '&');
-            alert(href);
             }
           else
             href = "[[${data.href}]]";

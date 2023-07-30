@@ -2,7 +2,7 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-  <link th:href="@{/css/mypage/refund.css}" rel="stylesheet">
+  <link th:href="@{/css/mypage/refundDetail.css}" rel="stylesheet">
   <script type="text/javascript" th:src="@{/myLib/jquery-3.2.1.min.js}"></script>
   <meta charset="UTF-8">
   <script th:inline="javascript">
@@ -65,7 +65,7 @@
         <textarea id="description" rows="10" th:field="*{content}" required>반품 사유 : </textarea>
       </td>
     </tr>
-    <tr>
+    <tr class="file">
       <th>사진 첨부</th>
       <td class="file_upload">
         <input class="upload_name" placeholder="2개 첨부 가능"  readonly>
@@ -74,7 +74,9 @@
       </td>
     </tr>
     <tr>
-      <td colspan="2" id="detail_image">
+      <td colspan="2" id="refundImg" >
+        <div id="detail_image">
+        </div>
       </td>
     </tr>
     </tbody>

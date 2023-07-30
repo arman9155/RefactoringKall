@@ -15,65 +15,73 @@ h3.underline {
     border-spacing : 0;
     border-collapse : collapse;
     line-height : 40px;
-}
-#orderCancel {
+    text-align: center;
     border : 3px solid #FB9DA7;
 }
-#orderCancel tr * {
-    padding : 5px;
 
+#orderCancel tr,
+#refundDetail tr,
+#refundDetailC tr {
+    padding : 5px;
+    border-bottom : 1px dotted RGB(255, 200, 200);
 }
-#orderCancel tr th{
+
+#orderCancel tr th,
+#refundDetail tr th,
+#refundDetailC tr th {
     background : #FB9DA7;
     color : white;
 }
 
 #orderCancel input[type="text"],
-#orderCancel textarea {
+#orderCancel textarea,
+#refundDetail textarea,
+#refundDetailC input[type="text"],
+#refundDetailC textarea {
     all : unset;
     box-sizing: border-box;
     padding: 5px 20px;
-    border-radius: 20px;
-    border: 1px solid RGB(255, 200, 200);
     outline: none;
     line-height: 1.2rem;
     width : 100%;
     margin : 0;
+    text-align : left;
 }
 
-#orderCancel .file_upload {
+#orderCancel .file_upload,
+#refundDetailC .file_upload {
     display: flex;
     align-items: center;
-    text-align: center;
-    padding : 5px;
+    padding : 0;
 }
-
-#orderCancel .file_upload .upload_name {
+#orderCancel .file,
+#refundDetailC .file {
+    padding : 0;
+    text-align : center;
+}
+#orderCancel .file_upload .upload_name,
+#refundDetailC .file_upload .upload_name {
     box-sizing: border-box;
-    height: 40px;
     padding: 10px 20px;
     vertical-align: middle;
-    border-radius: 20px 0 0 20px;
-    border: 1px solid RGB(255, 227, 227);
     width:70%;
     text-align : center;
+    border : none;
     outline : none;
 }
 
-#orderCancel .file_upload label {
+#orderCancel .file_upload label,
+#refundDetailC .file_upload label {
     box-sizing: border-box;
-    height: 40px;
     vertical-align: middle;
     background-color: #FB9DA7;
-    border: 1px solid  #FB9DA7;
-    border-radius: 0 20px 20px 0;
     font-weight : bold;
     width: 30%;
     color: white;
-    padding : 0;
 }
 
-#orderCancel tr .file_upload input[type="file"] {
+#orderCancel tr .file_upload input[type="file"],
+#refundDetailC tr .file_upload input[type="file"] {
     position: absolute;
     width: 0;
     height: 0;
@@ -86,11 +94,10 @@ h3.underline {
     display : flex;
     gap: 5px;
 }
-#orderCancel tr:not(:last-child) {
-    border-bottom : 1px dotted RGB(255, 200, 200);
-}
 
-#orderCancel tr:last-child th{
+#orderCancel #refundImg,
+#refundDetail #refundImg,
+#refundDetailC #refundImg {
     background : none;
 }
 .buttons {
@@ -99,7 +106,8 @@ h3.underline {
     justify-content : flex-end;
 }
 
-.buttons * {
+.buttons *,
+#refundImg a {
   all: unset;
   width: 25%;
   box-sizing: border-box;
@@ -114,14 +122,27 @@ h3.underline {
 }
 
 .buttons a:hover,
-.buttons button:hover {
+.buttons button:hover,
+#refundImg a:hover {
   background-color: #FB9DA7;
 }
 
-#detail_image {
+#refundImg {
+    height : 250px;
+}
+#refundImg div {
     display : flex;
+    justify-content : center;
+    align-items : flex-end;
+    gap : 30px;
+}
+#refundImg img {
+    width : 200px;
+    height : 200px;
 }
 
-#detail_image img {
-    width : 100px;
+/* refundDetailC */
+#refundImg a {
+    line-height : 1.2rem;
 }
+

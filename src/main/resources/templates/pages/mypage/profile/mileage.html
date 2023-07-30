@@ -9,6 +9,50 @@
   <script type="text/javascript" th:src="@{/myLib/jquery-3.2.1.min.js}"></script>
   <meta charset="UTF-8">
   <title>마일리지 내역</title>
+  <script th:inline="javascript">
+    $(document).ready(function() {
+      var sumM = 0;
+      var status = /*[[${status}]]*/ null;
+
+      if(status == '사용') {
+        var container = document.getElementById('use');
+        var useM = container.querySelectorAll('.useM');
+
+        for(let i = 0; i < useM.length; i++) {
+          sumM += parseInt(useM[i].innerText);
+                  console.log("sumM>>"+sumM);
+
+        }
+      } else if(status == '적립') {
+        var container = document.getElementById('save');
+        var saveM = container.querySelectorAll('.saveM');
+
+        for(let i = 0; i < saveM.length; i++) {
+          sumM += parseInt(saveM[i].innerText);
+                  console.log("sumM>>"+sumM);
+
+        }
+      } else {
+         var container = document.getElementById('allM');
+         var saveM = container.querySelectorAll('.saveM');
+         var useM = container.querySelectorAll('.useM');
+
+         for(let i = 0; i < saveM.length; i++) {
+         console.log(saveM[i].innerText);
+            sumM += parseInt(saveM[i].innerText);
+                  console.log("sumM>>"+sumM);
+         }
+         for(let i = 0; i < useM.length; i++) {
+            console.log(parseInt(useM[i].innerText));
+            sumM -= parseInt(useM[i].innerText);
+                  console.log("sumM>>"+sumM);
+        }
+        console.log("sumM>>"+sumM);
+      }
+      document.getElementById('sumM').innerText = sumM;
+    });
+
+  </script>
 </head>
 <body>
 <section class="content">
@@ -22,46 +66,72 @@
     <a th:href="@{/mypage/mileage(sort='적립')}" th:text="'적립'" th:class="${status == '적립'} ? 'active' : '' "></a>
   </div>
 
-  <table class="list">
-    <tbody id="mileageList">
-    <th:block th:if="${status.equals('사용')}" th:each="m : ${orderList}">
-      <tr>
-        <th>사용</th>
-        <td>[[${m.mileage}]]</td>
-        <td>[[${m.date}]]</td>
-      </tr>
-    </th:block>
-    <th:block th:if="${status.equals('적립')}">
-      <tr th:each="m : ${orderList}">
-        <th>적립</th>
-        <td>[[${m.mileage2}]]</td>
-        <td>[[${m.date}]]</td>
-      </tr>
-      <tr>
-        <th>적립</th>
-        <td>3000</td>
-        <td>[[${user.date}]]</td>
-      </tr>
-    </th:block>
-    <th:block th:if="${status.equals('all')}">
-      <th:block th:each="m : ${orderList}">
-        <tr th:if="${m.mileage1 != 0}">
-          <th>사용</th>
-          <td>[[${m.mileage}]]</td>
-          <td>[[${m.date}]]</td>
+  <table class="mileage list">
+    <th:block th:if="${'사용'.equals(status)}">
+      <tbody id="use">
+        <tr>
+          <th>날짜</th>
+          <th>금액</th>
+          <th th:text="${status}"></th>
         </tr>
-        <tr th:if="${m.mileage2 != 0}">
+        <th:block th:each="m : ${orderList}">
+          <tr th:if="${m.mileage != 0}">
+            <td th:utext="${#temporals.format(m.date, 'yyyy-MM-dd')}"></td>
+            <td class="useM">[[${m.mileage}]]</td>
+            <th>사용</th>
+          </tr>
+        </th:block>
+      </tbody>
+    </th:block>
+    <th:block th:if="${'적립'.equals(status)}">
+      <tbody id="save">
+        <tr>
+          <th>날짜</th>
+          <th>금액</th>
+          <th th:text="${status}"></th>
+        </tr>
+        <tr th:each="m : ${orderList}">
+          <td th:utext="${#temporals.format(m.date, 'yyyy-MM-dd')}"></td>
+          <td class="saveM">[[${m.mileage2}]]</td>
           <th>적립</th>
-          <td>[[${m.mileage2}]]</td>
-          <td>[[${m.date}]]</td>
         </tr>
-      </th:block>
-      <tr>
-        <th>적립</th>
-        <td>3000</td>
-        <td>[[${user.date}]]</td>
-      </tr>
+        <tr>
+          <td th:utext="${#temporals.format(user.date, 'yyyy-MM-dd')}"></td>
+          <td class="saveM">3000</td>
+          <th>적립</th>
+        </tr>
+      </tbody>
     </th:block>
+    <th:block th:if="${'all'.equals(status)}">
+      <tbody id="allM">
+        <tr>
+          <th>날짜</th>
+          <th>금액</th>
+          <th>사용 / 적립</th>
+        </tr>
+        <th:block th:each="m : ${orderList}">
+          <tr th:if="${m.mileage != 0}">
+            <td th:utext="${#temporals.format(m.date, 'yyyy-MM-dd')}"></td>
+            <td class="useM"> [[${m.mileage}]]</td>
+            <th>사용</th>
+          </tr>
+          <tr th:if="${m.mileage2 != 0}">
+            <td th:utext="${#temporals.format(m.date, 'yyyy-MM-dd')}"></td>
+            <td class="saveM">[[${m.mileage2}]]</td>
+            <th>적립</th>
+          </tr>
+        </th:block>
+        <tr>
+          <td th:utext="${#temporals.format(user.date, 'yyyy-MM-dd')}"></td>
+          <td class="saveM">3000</td>
+          <th>적립</th>
+        </tr>
+      </tbody>
+    </th:block>
+    <tr>
+      <th>합계</th>
+      <th colspan="2" id="sumM">0</th>
+    </tr>
     </tbody>
   </table>
 </section>

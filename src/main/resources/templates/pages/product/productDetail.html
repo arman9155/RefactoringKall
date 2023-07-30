@@ -115,6 +115,16 @@
                 });
             }
         }
+
+         function isUser() {
+            var loginId = /*[[${session.loginId}]]*/ null;
+            if(loginId == null) {
+                toggleNoActive();
+                return false;
+            } else {
+                return true;
+            }
+        }
 </script>
 
     <title>[[${productName}]]</title>
@@ -480,12 +490,12 @@
                     </div>
                 </table>
 
-                <form th:if="${loginId != null}" th:action="@{/productQ/{id}(id=${productDTO.productId})}" method="post">
+                <form th:action="@{/productQ/{id}(id=${productDTO.productId})}" method="post">
                     <th:block th:object="${productQDTO}">
                         <div class="productQ_input">
-                            <input class="productQ" type="text" th:field="*{title}" placeholder="제목">
-                            <textarea name="productQ" id="productQQ" rows="10" th:field="*{content}">문의글을 작성해주세요</textarea>
-                            <button id="QBtn">문의하기</button>
+                            <input class="productQ" type="text" th:field="*{title}" placeholder="제목" requirede>
+                            <textarea name="productQ" id="productQQ" rows="10" th:field="*{content}" required>문의글을 작성해주세요</textarea>
+                            <button id="QBtn" onclick="return isUser()">문의하기</button>
                         </div>
                     </th:block>
                 </form>

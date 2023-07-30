@@ -7,8 +7,19 @@
 <head>
     <meta charset="UTF-8">
     <title>공지사항</title>
-    <script type="text/javascript" th:src="@{myLib/jquery-3.2.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/myLib/jquery-3.2.1.min.js}"></script>
     <link th:href="@{/css/admin/list.css}" rel="stylesheet">
+    <script th:inline="javascript">
+        $(document).ready(function() {
+            $('#selectAll').click(function() {
+                if($('#selectAll').is(':checked'))
+                    $("input[name=userIds]").prop("checked", true);
+                else
+                    $("input[name=userIds]").prop("checked", false);
+            });
+        });
+    </script>
+
 </head>
 <body>
     <section class="content">
@@ -40,7 +51,7 @@
                 <th:block th:each="user : ${userList}">
                     <tr>
                         <td scope="row"><input type="checkbox" name="userIds" th:value="${user.userId}"></td>
-                        <td>[[${user.userId}]]</td>
+                        <td><a th:href="@{/admin/user/info(userId=${user.userId})}">[[${user.userId}]]</a></td>
                         <td>[[${user.name}]]</td>
                         <td>[[${user.phoneNb}]]</td>
                         <td>[[${user.email}]]</td>
@@ -57,16 +68,5 @@
             </table>
         </form>
     </section>
-    <script th:inline="javascript">
-        $(document).ready(function() {
-            $('#selectAll').click(function() {
-                if($('#selectAll').is(':checked'))
-                    $("input[name=userIds]").prop("checked", true);
-                else
-                    $("input[name=userIds]").prop("checked", false);
-            });
-        });
-    </script>
-
 </body>
 </html>

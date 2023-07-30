@@ -71,7 +71,6 @@ public class UserController {
             modelAndView.addObject("data", new Message("아이디 또는 비밀번호 오류입니다.", "/login"));
             modelAndView.setViewName("common/message.html");
 
-            System.out.println("로그인 실패");
         } else if(userDTO.getStatus().equals("탈퇴계정")) {
             modelAndView.addObject("data", new Message("탈퇴한 계정입니다.", "/login"));
             modelAndView.setViewName("common/message.html");
@@ -93,12 +92,10 @@ public class UserController {
         session.invalidate();
         modelAndView.addObject("data", new Message("로그아웃되었습니다.", "/main"));
         modelAndView.setViewName("common/message.html");
-        System.out.println("logout");
 
         Cookie myCookie = new Cookie("JSESSIONID", null);  // 쿠키 값을 null로 설정
         myCookie.setMaxAge(0);  // 남은 만료시간을 0으로 설정
         response.addCookie(myCookie);
-        System.out.println("jsessionId"+myCookie);
 
         return modelAndView;
     }
@@ -128,7 +125,6 @@ public class UserController {
         ModelAndView modelAndView = new ModelAndView();
 
         String status = userService.idDupC(id);
-        System.out.println("status"+status);
         modelAndView.addObject("writeId", id);
         modelAndView.addObject("idUse", status);
         modelAndView.setViewName("pages/login/idDupCheck.html");
@@ -174,11 +170,18 @@ public class UserController {
     }
 //   ★ 개인정보수정 완료 ★ ------------------------------------------------------------
     @PostMapping("/mypage/user/info") // 마이페이지
-    public ModelAndView userInfo(@ModelAttribute("userDTO") UserDTO userDTO) {
+    public ModelAndView userInfo(@ModelAttribute("userDTO") UserDTO userDTO,
+                                 HttpSession session) {
         ModelAndView modelAndView = new ModelAndView();
-        userService.signUp(userDTO);
+        String status = userService.saveDTO(userDTO);
 
-        modelAndView.addObject("data", new Message("수정되었습니다.", "/mypage/user/info"));
+        if("T".equals(status)) {
+            modelAndView.addObject("data", new Message("수정되었습니다.", "/mypage/user/info"));
+        } else {
+            modelAndView.addObject("data", new Message("재시도해주세요.", "/mypage/user/info"));
+        }
+        session.setAttribute("loginId", userDTO.getUserId());
+        session.setAttribute("userRole", userDTO.getRole().toString());
         modelAndView.setViewName("common/message.html");
         return modelAndView;
     }
@@ -225,11 +228,26 @@ public class UserController {
         return modelAndView;
     }
 
-//   ★ 회원 탈퇴 처리 ★ -----------------------------------------------------------------
+//   ★ 회원 디테일 ★ -----------------------------------------------------------------
 
+    @GetMapping("admin/user/info")
+    public ModelAndView userDetail(@RequestParam("userId") String userId) {
+        ModelAndView modelAndView = new ModelAndView();
+        UserDTO user = userService.findByUserID(userId);
+
+        modelAndView.addObject("user", user);
+        modelAndView.setViewName("admin/user/userDetail.html");
+
+        return modelAndView;
+    }
+
+
+    //   ★ 회원 탈퇴 처리 ★ -----------------------------------------------------------------
     @PostMapping("admin/user/del")
-    public ModelAndView a_deleteUser(@RequestParam("userIds") List<String> userIds) {
-        userService.a_deleteUser(userIds);
+    public ModelAndView a_deleteUser(@RequestParam(name="userIds", required = false) List<String> userIds,
+                                     @RequestParam(name="userId", required = false, defaultValue = "0") String userId) {
+
+        userService.a_deleteUser(userIds, userId);
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("data",new Message("탈퇴되었습니다.", "/admin/user"));

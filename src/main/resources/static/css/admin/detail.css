@@ -166,3 +166,10 @@ select {
     display : flex;
     flex-direction : column-reverse;
 }
+
+/*--------- user 상세정보------------------------------------------------------*/
+#required th,
+#required td {
+    width : 50%;
+    text-align : center;
+}

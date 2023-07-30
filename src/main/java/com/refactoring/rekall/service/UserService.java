@@ -59,6 +59,26 @@ public class UserService {
             userRepository.save(UserEntity.toUserEntity(userDTO));
             return "T";
         } else return "F";
+    }
+    public String saveDTO(UserDTO userDTO) {
+        if (userDTO != null) {
+            if (userDTO.getPassword().contains("admin123")) {
+                userDTO.setRole(ADMIN);
+            } else userDTO.setRole(USER);
+            if (userDTO.getBirthday() == null || userDTO.getBirthday().equals("")) {
+                userDTO.setBirthday(null);
+            } else {
+                try {
+                    userDTO.setBirthday((userDTO.getBirthday()));
+                } catch (DateTimeParseException e) {
+                    // 유효한 날짜 형식이 아닌 경우 처리할 내용
+                    System.out.println("exception");
+                }
+            }
+            userRepository.save(UserEntity.toUserEntity(userDTO));
+            return "T";
+        } else return "F";
+    }
 
 /*        System.out.println("비밀번호 암호화");
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -69,7 +89,7 @@ public class UserService {
 //        System.out.println(userDTO.getRole());
 //        return userRepository.save(UserEntity.toUserEntity(userDTO)).getUserId();
 
-    }
+
 
     //  ---------------------------- ★ id/pw 기반 회원 정보 찾기 ★ -------------------------------------------------------------------------
     public UserDTO findID(String userId, String password) {
@@ -138,11 +158,16 @@ public class UserService {
 
 
 //  ---------------------------- ★ 관리자 탈퇴처리 ★ -------------------------------------------------------------------------
-    public void a_deleteUser(List<String> userIds) {
-        for(String user : userIds) {
-            UserDelDTO userDelDTO = new UserDelDTO();
-            userDelDTO.setText("관리자가 탈퇴처리함");
-            deleteUser(userDelDTO , user);
+    public void a_deleteUser(List<String> userIds, String userId) {
+        UserDelDTO userDelDTO = new UserDelDTO();
+        userDelDTO.setText("관리자가 탈퇴처리함");
+
+        if(userIds != null) {
+            for (String user : userIds) {
+                deleteUser(userDelDTO, user);
+            }
+        } else {
+            deleteUser(userDelDTO, userId);
         }
     }
 

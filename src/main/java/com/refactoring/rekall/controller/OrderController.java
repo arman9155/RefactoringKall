@@ -60,6 +60,7 @@ public class OrderController {
         UserDTO userDTO = userService.findByUserID(loginId);
 
         modelAndView.addObject("user", userDTO);
+        modelAndView.addObject("user", userDTO);
         modelAndView.addObject("status", status);
         modelAndView.addObject("orderList",orderDTOList);
         modelAndView.setViewName("pages/mypage/profile/mileage.html");
@@ -77,7 +78,7 @@ public class OrderController {
         OrderDetailDTO orderDetailDTO = orderService.getOrderDetail(odetailId);
 
         modelAndView.addObject("odetail",orderDetailDTO);
-        System.out.println(orderDetailDTO.getOrderDTO().getStatus());
+
         if("admin".equals(page))  {
             modelAndView.setViewName("admin/order/orderDetail.html");
         }
@@ -96,9 +97,6 @@ public class OrderController {
         OrderDetailDTO orderDetailDTO = orderService.getOrderDetail(odetailId);
         UserDTO userDTO = userService.findByUserID(orderDetailDTO.getOrderDTO().getUserDTO().getUserId());
 
-        System.out.println(userDTO);
-        System.out.println(orderDetailDTO);
-
         RefundDTO refundDTO = new RefundDTO();
         refundDTO.setUserDTO(userDTO);
         refundDTO.setOrderDetailDTO(orderDetailDTO);
@@ -110,11 +108,10 @@ public class OrderController {
     @PostMapping("/mypage/order/cancel")
     public ModelAndView cancelOdetail(@ModelAttribute("refundDTO") RefundDTO refundDTO, MultipartFile[] files) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
-        System.out.println(files);
         orderService.cancelOdetail(refundDTO.getOrderDetailDTO().getOdetailId(), "mypage");
-        refundService.setRefund(refundDTO, files);
+        refundService.setRefund(refundDTO, files, "save");
 
-        modelAndView.addObject("data", new Message("반품 요청되었습니다.","/common/close" ));
+        modelAndView.addObject("data", new Message("반품 요청되었습니다.","/close" ));
         modelAndView.setViewName("/common/message.html");
         return modelAndView;
     }
@@ -142,26 +139,22 @@ public class OrderController {
         if(session.getAttribute("cartP") != null) {
             cartP += Integer.parseInt(session.getAttribute("cartP").toString());
 
-            Integer[] tmp = (Integer[]) session.getAttribute("cartIds");
-            Integer[] cartIds = new Integer[tmp.length+1];
+            String[] tmp = (String[]) session.getAttribute("cartIds");
+            String[] cartIds = new String[tmp.length+1];
              for(int i = 0; i < tmp.length; i++) {
                 cartIds[i] = tmp[i];
-                System.out.println(cartIds[i]);
             }
-            cartIds[tmp.length] = cart.getCartId();
+            cartIds[tmp.length] = cart.getCartId().toString();
             session.setAttribute("cartIds", cartIds);
         } else {
-            Integer[] cartIds = new Integer[1];
-            cartIds[0] = cart.getCartId();
+            String[] cartIds = new String[1];
+            cartIds[0] = cart.getCartId().toString();
             totalP = cartP + 3000;
             session.setAttribute("cartIds", cartIds);
         }
         session.setAttribute("from","direct");
         session.setAttribute("cartP", cartP );
         session.setAttribute("totalP", totalP);
-        System.out.println(session.getAttribute("cartP").toString());
-        System.out.println(session.getAttribute("totalP").toString());
-        System.out.println(session.getAttribute("cartIds").toString());
     }
 
     @ResponseBody
@@ -186,13 +179,8 @@ public class OrderController {
 
         String cartP = session.getAttribute("cartP").toString();
         String totalP = session.getAttribute("totalP").toString();
-        Integer[] cartIds = (Integer[]) session.getAttribute("cartIds");
-        String[] cartId = new String[cartIds.length];
+        String[] cartId = (String[]) session.getAttribute("cartIds");
 
-        for(int i = 0; i < cartIds.length; i++) {
-            System.out.println(cartIds[i]);
-            cartId[i] = cartIds[i].toString();
-        }
         // 처리 로직 작성
         List<CartDTO> cartList = cartService.cartIdList(cartId);
         UserDTO userDTO = cartList.get(0).getUserDTO();

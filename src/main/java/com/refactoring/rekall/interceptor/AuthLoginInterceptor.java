@@ -8,7 +8,6 @@ import javax.servlet.http.HttpSession;
 
 public class AuthLoginInterceptor extends HandlerInterceptorAdapter {
 
-
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
@@ -16,6 +15,7 @@ public class AuthLoginInterceptor extends HandlerInterceptorAdapter {
 
         if(session.getAttribute("loginId") == null) {
             response.sendRedirect("/login/Info");
+            return false;
         }
 
         return true;

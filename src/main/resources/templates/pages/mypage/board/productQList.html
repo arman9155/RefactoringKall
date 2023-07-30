@@ -40,7 +40,10 @@
             </td>
           </tr>
           <tr class="toggle_A" th:if="${Q.content != null}" th:id="'#answer_'+${i.index}">
-              <td colspan="3" class="question_a" scope="row">
+            <td>
+              <img id="productQImg" th:src="${Q.productDTO.image}">
+            </td>
+            <td colspan="2" class="question_a" scope="row">
                 <div class="question_a_content">
                   <textarea cols="10" readonly>[[${Q.content}]] </textarea>
                 </div>

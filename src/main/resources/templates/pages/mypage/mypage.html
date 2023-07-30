@@ -13,30 +13,40 @@
     <main class="content">
         <div class="mypage">
             <div class="user">
-                <ul>
-                    <li> <a href="updateUser"></a>
-                        <th:block th:if="${session.userRole=='kakao'}">
-                            <span th:text="${session.name}"></span>님
-                        </th:block>
-                        <th:block th:if="${session.userRole != 'kakao'}">
-                            <span th:text="${session.loginId}"></span>님
-                        </th:block>
-                    </li>
-<!--                        <ul>-->
-<!--                            <li><a>새싹</a></li>-->
-<!--                            <li><a></a></li>-->
-<!--                            <li><a></a></li>-->
-<!--                            <li><a></a></li>-->
-<!--                        </ul>-->
-                    <li> <a href="#" class="ClassInfo">등급별 혜택</a></li>
-                </ul>
+                <th:block th:if="${session.userRole=='kakao'}">
+                    <span th:text="${session.name}+' 님'"></span>
+                </th:block>
+                <th:block th:if="${session.userRole != 'kakao'}">
+                    <span th:text="${session.loginId}+' 님'"></span>
+                </th:block>
+<!--                    a href="#" class="ClassInfo">등급별 혜택</a>-->
             </div>
 
             <div class="mypage_menu">
-                <div><a th:href="@{/mypage/user/info}"><i class="fa-regular fa-user fa-3x"></i>PROFILE</a></div>
-                <div><a href="@{/mypage/order}"><i class="fa-solid fa-clipboard-check fa-3x"></i>ORDER</a></div>
-                <div><a href="@{/mypage/review}"><i class="fa-solid fa-clipboard-list fa-3x"></i>BOARD</a></div>
-                <div><a th:href="@{/mypage/wishList}"><i class="fa-regular fa-heart fa-3x"></i>WISH LIST</a></div>
+                <div class="profile">
+                    <a th:href="@{/mypage/user/info}">
+                        <span id="profileImg"></span>
+                        <p>PROFILE</p>
+                    </a>
+                </div>
+                <div class="order">
+                    <a th:href="@{/mypage/order}">
+                        <span id="orderImg"></span>
+                        <p>ORDER</p>
+                    </a>
+                </div>
+                <div class="board">
+                    <a th:href="@{/mypage/question/list}">
+                        <span id="boardImg"></span>
+                        <p>BOARD</p>
+                    </a>
+                </div>
+                <div class="wishList">
+                    <a th:href="@{/mypage/wish/list}">
+                        <span id="wishListImg"></span>
+                        <p>WISH LIST</p>
+                    </a>
+                </div>
             </div>
         <!-- 마이페이지 하단메뉴 -->
         </div>

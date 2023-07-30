@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/admin/adminLayout}"
+      layout:fragment="Content">
+<head>
+  <script type="text/javascript" th:src="@{/myLib/jquery-3.2.1.min.js}"></script>
+  <link th:href="@{/css/admin/detail.css}" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>회원 상세</title>
+  <script th:inline="javascript">
+
+      function userDel(element) {
+        var userId = element.getAttribute('data-userId');
+
+        $.ajax({
+          url : "/admin/user/del",
+          method : "POST",
+          data : {userId : userId}
+        }).done(function(){
+          console.log("성공");
+          window.location.href="/admin/user";
+        });
+      }
+
+  </script>
+</head>
+<body>
+<section class="content">
+  <h3 class="underline">회원 상세</h3>
+
+      <table id="required">
+        <tbody>
+        <tr>
+          <th>아이디</th>
+          <td>[[${user.userId}]]</td>
+        </tr>
+        <tr>
+          <th>이름</th>
+          <td class="confirm">[[${user.name}]]</td>
+        </tr>
+        <tr>
+          <th>전화번호</th>
+          <td class="confirm">[[${user.phoneNb}]]</td>
+        </tr>
+        <tr>
+          <th>이메일</th>
+          <td class="confirm">[[${user.email}]]</td>
+        </tr>
+        <tr>
+          <th>생년월일</th>
+          <td th:if="${user.birthday != null}">[[${user.birthday}]]</td>
+          <td th:if="${user.birthday == null}">❌</td>
+        </tr>
+        <tr>
+          <th>방문경로</th>
+          <td th:if="${user.root != null}">
+            <th:block th:if="${'blogCafe'.equals(user.root)}">블로그 등</th:block>
+            <th:block th:if="${'friend'.equals(user.root)}">지인</th:block>
+            <th:block th:if="${'sns'.equals(user.root)}">sns</th:block>
+            <th:block th:if="${'search'.equals(user.root)}">검색</th:block>
+          </td>
+          <td th:if="${user.root == null}">❌</td>
+        </tr>
+        <tr>
+          <th>이벤트, 쿠폰,특가알림 메일 및 SMS 등 수신</th>
+          <td th:if="${user.eventagree != null}">⭕</td>
+          <td th:if="${user.eventagree == null}">❌</td>
+        </tr>
+        </tbody>
+        <div class="buttons">
+          <a href="javascript:history.go(-1)" id="back">이전으로</a>
+          <a onclick="userDel(this);" th:attr="data-userId=${user.userId}" id="delete">삭제</a>
+        </div>
+      </table>
+
+</section>
+</body>
+</html>

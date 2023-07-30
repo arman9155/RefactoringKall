@@ -1,6 +1,7 @@
 package com.refactoring.rekall.controller;
 
 import com.refactoring.rekall.dto.CategoryDTO;
+import com.refactoring.rekall.dto.Message;
 import com.refactoring.rekall.dto.RefundDTO;
 import com.refactoring.rekall.service.CategoryService;
 import com.refactoring.rekall.service.RefundService;
@@ -8,9 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.UsesSunMisc;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
@@ -41,7 +41,47 @@ public class RefundController {
         return modelAndView;
     }
 
+//  ------------------------------------- ★ mypage refund List ★ ------------------------------------------------------------
 
+    @GetMapping("mypage/refund/detail")
+    public ModelAndView refundDetail (@RequestParam("refundId") Integer refundId){
+
+        ModelAndView modelAndView = new ModelAndView();
+        RefundDTO refundDTO= refundService.findRefundDTO(refundId);
+
+        modelAndView.addObject("refund", refundDTO);
+        modelAndView.setViewName("pages/mypage/order/refundDetail.html");
+
+        return modelAndView;
+    }
+
+    @GetMapping("mypage/refund/change")
+    public ModelAndView refundChangeF (@RequestParam("refundId") Integer refundId){
+
+        ModelAndView modelAndView = new ModelAndView();
+        RefundDTO refundDTO= refundService.findRefundDTO(refundId);
+
+        modelAndView.addObject("refund", refundDTO);
+        modelAndView.setViewName("pages/mypage/order/refundDetailC.html");
+
+        return modelAndView;
+    }
+    @PostMapping("mypage/refund/change")
+    public ModelAndView refundChange(@ModelAttribute("refund") RefundDTO refundDTO,
+                                     @RequestParam("files") MultipartFile[] multipartFiles) throws Exception {
+
+        ModelAndView modelAndView = new ModelAndView();
+        if(multipartFiles != null) {
+            System.out.println("<<<<<");
+            refundService.setRefund(refundDTO, multipartFiles, "change");
+
+        } else refundService.saveRefundDTO(refundDTO);
+
+        modelAndView.addObject("data", new Message("수정되었습니다.",  "/mypage/refund/detail?refundId="+refundDTO.getRefundId()));
+        modelAndView.setViewName("common/message.html");
+
+        return modelAndView;
+    }
 //  ------------------------------------- ★ 관리자 ★ ------------------------------------------------------------
 //  ------------------------------------- ★ 전체 refund List ★ ------------------------------------------------------------
 

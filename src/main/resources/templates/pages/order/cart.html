@@ -78,7 +78,8 @@
       var status = element.getAttribute('data-element');
       var inputList = document.getElementsByName('cartIds');
       var cartP = document.getElementById('cartP').innerText.trim();    // 계산 값
-      var totalP = document.getElementById('totalP').innerText.trim();  // 배송비 포함 값
+      var totalP = document.getElementById('totalP').innerText.trim(
+      );  // 배송비 포함 값
       var cartIds = [];
 
       if(status == 'all') { //전체 주문
@@ -183,6 +184,7 @@
                   <img class="imageP" th:src="${cart.productDTO.image}">
                   <div class="cartOption">
                     <p>[[${cart.productDTO.name}]]</p>
+                    <p></p>
                     <p th:if="${cart.option_sheet != null}">
                       | 시트 : [[${cart.option_sheet}]]
                     </p>
@@ -236,9 +238,9 @@
       </table>
 
       <div id="buttons">
-        <input type="button" onclick="deleteCart();" value="선택 항목 삭제">
-        <input type="button" onclick="toOrder(this);" th:attr="data-element='select'" value="선택 항목 주문">
-        <input type="button" onclick="toOrder(this)" th:attr="data-element='all'" value="모든 항목 주문">
+        <input type="button" onclick="deleteCart();" value="선택 삭제">
+        <input type="button" onclick="toOrder(this);" th:attr="data-element='select'" value="선택 구매">
+        <input type="button" onclick="toOrder(this)" th:attr="data-element='all'" value="전체 구매">
       </div>
 
 </body>

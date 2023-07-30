@@ -29,12 +29,10 @@
 
             var page =  opener.document.querySelector('.add').getAttribute('data-page');
             var form = document.getElementById('address-form');
-            alert(page);
-            alert(form)
+
             if(page == 'order') {
                 form.action = '/order/address/add';
             }
-            alert(form.action);
             return true;
         }
 

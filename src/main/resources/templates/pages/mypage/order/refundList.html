@@ -37,7 +37,7 @@
         <th>[[${refund.orderDetailDTO.productDTO.name}]]</th>
         <th>
           <div class="col3">
-            <a href="#"> 반품 사유 > </a>
+            <a  th:href="@{/mypage/refund/detail(refundId=${refund.refundId})}", th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=600,height=600'); return false;"> 반품 상세 > </a>
             <a th:href="@{/community/question}"> 문의 ></a>
           </div>
         </th>

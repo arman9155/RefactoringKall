@@ -25,6 +25,7 @@
                  if(ph3Check == false)
                     $('#ph2Message').html('필수입력, 전화번호 (을)를 확인하세요.');
             });
+            selectPayment('kakao');
         }
 
         function selectPayment(element) {
@@ -179,7 +180,7 @@
 					            cartId : cartId
 					            }
 					}).done(function(){
-					    alert("odetail저장 완료");
+					    consol.log("odetail저장 완료");
 					}).fail(function() {
 					    alert("실패");
 					});
@@ -191,7 +192,7 @@
 				method : "POST",
 				data : { orderId : data}
 			    }).done(function(){
-					    alert("order 삭제 완료");
+					    console.log("order 삭제 완료");
 				}).fail(function() {
 					    alert("삭제 실패");
 				});
@@ -261,7 +262,7 @@
                 totalP.innerText = parseInt(calcP) + " 원"; // 값 계산
              } else if (parseInt(mileage.value) > parseInt(max)) {
                 alert.style.display='block';
-                alert.innerText = "가용 포인트 이상 사용 불가능";
+                alert.innerText = "가용 포인트 초과 사용 불가능";
                 mileage.value = "";
                 discount.innerText = "0 원";
                 totalP.innerText = parseInt(calcP) + " 원"; // 값 계산
@@ -458,7 +459,7 @@
                         <label for="phone">휴대폰</label>
                     </li>
                     <li>
-                        <input type="radio" id="kakaoPay" name="payment" value="kakao" onclick="selectPayment(this)">
+                        <input type="radio" id="kakaoPay" name="payment" value="kakao" onclick="selectPayment(this)" checked>
                         <label for="kakaoPay">카카오페이</label>
                     </li>
                 </ul>

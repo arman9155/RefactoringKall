@@ -1,13 +1,67 @@
 .mypage {
     text-align:center;
-     border: 3px solid #FB9DA7;
+    border: 3px solid #FB9DA7;
 }
+.mypage div {
+    box-sizing : border-box;
+    padding : 10px;
+}
+
+.user span {
+     font-weight : 700;
+     font-size : 1.2rem;
+     color : black;
+}
+
+/* menu */
 
 .mypage_menu {
     display: grid;
-    grid-template: repeat(2, 1fr) / repeat(4, 1fr);
-    justify-contents: center;
+    grid-template: 1fr / repeat(4, 1fr);
+    grid-template-areas:
+        "a b c d";
     align-items: center;
-    border-top: 3px solid #FB9DA7;
+    gap : 10px;
+    border-top : 3px solid #FB9DA7;
  }
+.mypage_menu div a {
+    display : flex;
+    flex-direction : column;
+    gap : 20px;
+    text-decoration : none;
+}
+.mypage_menu div span{
+    display : block;
+    height : 200px;
+}
+.mypage_menu div p {
+    display : block;
+    font-weight : 700;
+    font-size : 1.2rem;
+    color : black;
+}
+.profile {
+    grid-areas : a;
+}
+.order {
+    grid-areas : b;
+}
+.board {
+    grid-areas : c;
+}
+.wishList {
+    grid-areas : d;
+}
 
+#profileImg {
+    background : url("/img/mypage/profile.svg") no-repeat center/100%;
+}
+#orderImg {
+    background : url("/img/mypage/order.svg") no-repeat center/100%;
+}
+#boardImg {
+    background : url("/img/mypage/board.svg") no-repeat center/100%;
+}
+#wishListImg {
+    background : url("/img/product/full_heart.svg") no-repeat center/100%;
+}

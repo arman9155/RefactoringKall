@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <link th:href="@{/css/mypage/refundDetail.css}" rel="stylesheet">
+  <script type="text/javascript" th:src="@{/myLib/jquery-3.2.1.min.js}"></script>
+  <meta charset="UTF-8">
+    <script th:inline="javascript">
+      function closeWindow() {
+        window.close();
+        window.opener.location.reload();
+      }
+    </script>
+  <title>반품 상세</title>
+</head>
+<body>
+<section class="content">
+  <h3 class="underline">반품 상세</h3>
+    <table class="list">
+      <tbody id="refundDetail">
+      <tr>
+        <th>주문상세번호</th>
+        <td>
+          [[${refund.orderDetailDTO.odetailId}]]
+        </td>
+      </tr>
+      <tr>
+        <th>아이디</th>
+        <td>
+            [[${refund.userDTO.userId}]]
+        </td>
+      </tr>
+      <tr>
+        <th>제목</th>
+        <td>
+          [[${refund.title}]]
+        </td>
+      </tr>
+      <tr>
+        <th>내용</th>
+        <td>
+          <textarea id="description" rows="10" readonly>[[${refund.content}]]</textarea>
+        </td>
+      </tr>
+      <tr>
+        <th colspan="2" id="refundImg">
+          <div>
+            <th:block if="${refund.image_1 != null}">
+              <img th:src="${refund.image_1}" alt="반품사진1">
+            </th:block>
+            <th:block if="${refund.image_2 != null}">
+              <img th:src="${refund.image_2}" alt="반품사진2">
+            </th:block>
+          </div>
+        </th>
+      </tr>
+      </tbody>
+    </table>
+    <div class="buttons">
+      <a th:if="${'반품 요청'.equals(refund.status)}" th:href="@{/mypage/refund/change(refundId=${refund.refundId})}">수정</a>
+      <a onclick="closeWindow();">닫기</a>
+    </div>
+  </form>
+</section>
+</body>
+</html>
