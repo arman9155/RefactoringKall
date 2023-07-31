@@ -132,7 +132,7 @@ public class UsQController {
 
         usQService.saveQuestion(question);
 
-        modelAndView.addObject("data",new Message("답변이 등록되었습니다.","question_Detail?questionId="+question.getUsqId()));
+        modelAndView.addObject("data",new Message("답변이 등록되었습니다.","/admin/question/detail?questionId="+question.getUsqId()));
         modelAndView.setViewName("common/message.html");
 
         return modelAndView;

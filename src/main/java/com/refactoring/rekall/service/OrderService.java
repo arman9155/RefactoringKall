@@ -11,6 +11,7 @@ import com.refactoring.rekall.repository.OrderDetailRepository;
 import com.refactoring.rekall.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -112,14 +113,14 @@ public class OrderService {
 
 //  ------------------------------------- ★ 전체 / sort order List ★ --------------------------------------------------
     public List<OrderDTO>  getAllOrderList(String status) {
-        List<OrderEntity> orderEntities = orderRepository.findAll();
+        List<OrderEntity> orderEntities = orderRepository.findAll(Sort.by(Sort.Direction.DESC,"orderId"));
         List<OrderDTO> orderDTOList = getSotrList(orderEntities, status);
 
         return orderDTOList;
     }
     //  ------------------------------------- ★ 전체  odetail List ★ --------------------------------------------------
     public List<OrderDetailDTO> getAllOrderDetailList() {
-        List<OrderDetailEntity> orderDetailEntities = orderDetailRepository.findAll();
+        List<OrderDetailEntity> orderDetailEntities = orderDetailRepository.findAll(Sort.by(Sort.Direction.DESC,"orderEntity.orderId"));
         List<OrderDetailDTO> orderDTOList = new ArrayList<>();
         for(OrderDetailEntity orderDetail : orderDetailEntities) {
             if(orderDetail != null) orderDTOList.add(OrderDetailDTO.toOrderDetailDTO(orderDetail));
@@ -155,18 +156,8 @@ public class OrderService {
     public OrderDetailDTO getOrderDetail(Integer odetailId) {
         OrderDetailDTO orderDetail = new OrderDetailDTO();
 
-//        if(odetailId == 0) {
-//            List<OrderDetailEntity> orderDetailEntity = orderDetailRepository.findByOrderEntityOrderIdOrderByOdetailIdDesc(orderId);
-//            if (orderDetailEntity != null) {
-//                for (OrderDetailEntity orderDetail : orderDetailEntity) {
-//                    if (orderDetail != null) {
-//                        orderDetailList.add(OrderDetailDTO.toOrderDetailDTO(orderDetail));
-//                    }
-//                }
-//            }
-//        } else {}
-            Optional<OrderDetailEntity> orderDetailEntity = orderDetailRepository.findById(odetailId);
-            if(orderDetailEntity != null) orderDetail = OrderDetailDTO.toOrderDetailDTO(orderDetailEntity.get());
+        Optional<OrderDetailEntity> orderDetailEntity = orderDetailRepository.findById(odetailId);
+        if(orderDetailEntity != null) orderDetail = OrderDetailDTO.toOrderDetailDTO(orderDetailEntity.get());
 
         return orderDetail;
     }
@@ -283,38 +274,97 @@ public class OrderService {
 
     //  ------------------------------------- ★ odetailDTO 취소 요청 ★ --------------------------------------------------
 
-    public void cancelOdetail(Integer odetailId, String page) {
+    public void cancelOdetail(Integer odetailId) {
         Optional<OrderDetailEntity> orderDetailEntity = orderDetailRepository.findById(odetailId);
         OrderDetailEntity orderDetail = new OrderDetailEntity();
         if(orderDetailEntity.isPresent()) orderDetail = orderDetailEntity.get();
 
-        if("mypage".equals(page)) {
-            orderDetail.setStatus("반품 요청");
-        } else orderDetail.setStatus("반품");
+        orderDetail.setStatus("반품 요청");
 
         orderDetailRepository.save(orderDetail);
         // order 수정하기
-        cancelOrder(orderDetail.getOrderEntity().getOrderId(), page);
+        cancelOrder(orderDetail.getOrderEntity().getOrderId());
     }
     //  ------------------------------------- ★ order 취소 요청 ★ --------------------------------------------------
-    public void cancelOrder(Integer orderId, String page) {
-        List<OrderDetailEntity> orderDetailList = orderDetailRepository.findByOrderEntityOrderIdOrderByOdetailIdDesc(orderId);
-        Optional<OrderEntity> optionalOrderEntity = orderRepository.findById(orderId);
+    public void cancelOrder(Integer orderId) {
+        List<OrderDetailEntity> orderDetailList = orderDetailRepository.findByOrderEntityOrderIdOrderByOdetailIdDesc(orderId); // orderId에 포함된 odetail 찾기
+        Optional<OrderEntity> optionalOrderEntity = orderRepository.findById(orderId); //order 가져오기
         OrderEntity orderEntity = new OrderEntity();
         if(optionalOrderEntity.isPresent()) orderEntity = optionalOrderEntity.get();
         int i = 0 ;
 
-        if("mypage".equals(page)) {
             for(OrderDetailEntity orderDetail : orderDetailList) {
-                if("반품 요청".equals(orderDetail.getStatus())) i++;
+                if("반품 요청".equals(orderDetail.getStatus())) i++; // 반품요청 있으면 count i
             }
-            if(i == orderDetailList.size()) orderEntity.setStatus("반품 요청");
-            else if (i > 0) orderEntity.setStatus("부분 반품 요청");
-        } else {
-            orderEntity.setStatus("반품 확정");
-        }
+            if(i == orderDetailList.size()) orderEntity.setStatus("반품 요청"); //i가 list만큼 증가 -> 모두 반품요청 -> order status 변경
+            else if (i > 0) orderEntity.setStatus("부분 반품 요청"); // 전체 아니면 부분 반품으로 수정
+
        orderRepository.save(orderEntity);
     }
+
+//  ------------------------------------- ★ admin ★ --------------------------------------------------
+//  ------------------------------------- ★ order에서 주문 상태 변경★ --------------------------------------------------
+
+    public void changeStatus(String status, String[] odetailIds) {
+        for(String id : odetailIds) {
+            OrderDetailDTO orderDetailDTO = getOrderDetail(Integer.parseInt(id));
+            if(!"반품 확정".equals(orderDetailDTO.getStatus())) {
+                orderDetailDTO.setStatus(status);
+                orderDetailRepository.save(OrderDetailEntity.toOrderDetailEntity(orderDetailDTO));
+
+                Optional<OrderEntity> optionalOrderEntity = orderRepository.findById(orderDetailDTO.getOrderDTO().getOrderId()); //order 가져오기
+                OrderEntity orderEntity = new OrderEntity();
+                if (optionalOrderEntity.isPresent()) orderEntity = optionalOrderEntity.get();
+                orderEntity.setStatus(status);
+                orderRepository.save(orderEntity);
+            }
+        }
+    }
+
+//  ------------------------------------- ★ order에서 admin이 반품으로 넘김★ --------------------------------------------------
+    public void adminCancelOrder(String[] odetailIds) {
+        // 1차 odetailIds 에 있는거 상품 상태 변경
+        for(String id : odetailIds) {
+            Integer orderId = confirmOdetailCancel(Integer.parseInt(id));
+            confirmOrderCancel(orderId);
+        }
+    }
+
+    //  ------------------------------------- ★ odetailDTO 취소 확정★ --------------------------------------------------
+    public Integer confirmOdetailCancel(Integer odetailId) {
+        Optional<OrderDetailEntity> orderDetailEntity = orderDetailRepository.findById(odetailId);
+        OrderDetailEntity orderDetail = new OrderDetailEntity();
+        if(orderDetailEntity.isPresent()) orderDetail = orderDetailEntity.get();
+
+        orderDetail.setStatus("반품 확정");
+
+        orderDetailRepository.save(orderDetail);
+
+        return orderDetail.getOrderEntity().getOrderId();
+    }
+
+    //  ------------------------------------- ★ 주문 상태 변경 ★ --------------------------------------------------
+    public void confirmOrderCancel(Integer orderId) {
+        List<OrderDetailEntity> orderDetailList = orderDetailRepository.findByOrderEntityOrderIdOrderByOdetailIdDesc(orderId); // orderId에 포함된 odetail 찾기
+        Optional<OrderEntity> optionalOrderEntity = orderRepository.findById(orderId); //order 가져오기
+        OrderEntity orderEntity = new OrderEntity();
+        if(optionalOrderEntity.isPresent()) orderEntity = optionalOrderEntity.get();
+        int i = 0 ;
+        int j = 0;
+
+        for(OrderDetailEntity orderDetail : orderDetailList) {
+            if("반품 요청".equals(orderDetail.getStatus())) i++; // 반품요청 있으면 count i
+            else if ("반품 확정".equals(orderDetail.getStatus())) j++;
+        }
+        if(i == orderDetailList.size()) orderEntity.setStatus("반품 요청"); //i가 list만큼 증가 -> 모두 반품요청 -> order status 변경
+        else if (j == orderDetailList.size()) orderEntity.setStatus("반품 확정");
+        else if (j > 0) orderEntity.setStatus("부분 반품 확정");
+        else if (i > 0) orderEntity.setStatus("부분 반품 요청"); // 부분 반품으로 수정
+
+        orderRepository.save(orderEntity);
+    }
+
+
 }
 
 

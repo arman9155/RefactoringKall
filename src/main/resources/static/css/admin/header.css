@@ -84,3 +84,7 @@ h3.underline {
 /*     display: flex;
      flex-direction: column;*/
 }
+
+.extra {
+    height: 100px;
+}

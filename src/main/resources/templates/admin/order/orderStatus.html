@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <link th:href="@{/css/admin/list.css}" rel="stylesheet">
+  <script type="text/javascript" th:src="@{/myLib/jquery-3.2.1.min.js}"></script>
+  <meta charset="UTF-8">
+  <script th:inline="javascript">
+    function windowClose() {
+      window.close();
+      window.opener.location.reload();
+    }
+
+     function statusComplete() {
+      var form = document.getElementById('orderStatus');
+      var odetailIds = /*[[${odetailIds}]]*/ null;
+      alert(">>>"+odetailIds);
+
+      var input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = 'odetailIds';
+      input.value = odetailIds;
+      form.appendChild(input);
+
+      form.submit();
+     }
+
+
+  </script>
+  <title>상태 변경</title>
+</head>
+<body>
+  <h3 class="underline">상태 변경</h3>
+
+  <form id="orderStatus" method="post" th:action="@{/admin/order/status}">
+    <table class="list">
+      <tbody id="orderList">
+      <tr>
+        <th><label for="status">진행 상태</label></th>
+        <td>
+          <select name="status" id="status">
+            <option th:each="category : ${category}" th:value="${category.categoryName}">[[${category.categoryName}]]</option>
+          </select>
+        </td>
+      </tr>
+      </tbody>
+      <tfoot>
+        <div class="buttons">
+          <button onclick="statusComplete();">완료</button>
+          <a onclick="windowClose();">닫기 </a>
+        </div>
+      </tfoot>
+    </table>
+  </form>
+</body>
+</html>

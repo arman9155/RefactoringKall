@@ -1,5 +1,6 @@
 package com.refactoring.rekall.service;
 
+import com.refactoring.rekall.dto.CartDTO;
 import com.refactoring.rekall.dto.CategoryDTO;
 import com.refactoring.rekall.entity.CategoryEntity;
 import com.refactoring.rekall.repository.CategoryRepository;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -39,6 +41,13 @@ public class CategoryService {
             }
         }
         return  categoryDTOList;
+    }
+
+    public CategoryDTO findCategoryDTO(String value) {
+        Optional<CategoryEntity> optionalCategoryEntity =  categoryRepository.findById(value);
+        CategoryDTO categoryDTO = new CategoryDTO();
+        if(optionalCategoryEntity.isPresent()) categoryDTO = CategoryDTO.toCategoryDTO(optionalCategoryEntity.get());
+        return categoryDTO;
     }
 
 }

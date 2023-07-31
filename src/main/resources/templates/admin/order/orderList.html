@@ -9,14 +9,30 @@
   <script type="text/javascript" th:src="@{/myLib/jquery-3.2.1.min.js}"></script>
   <meta charset="UTF-8">
   <script th:inline="javascript">
+    //전체선택
         $(document).ready(function() {
             $('#selectAll').click(function() {
                 if($('#selectAll').is(':checked'))
-                    $("input[name=productQIds]").prop("checked", true);
+                    $("input[name=odetailIds]").prop("checked", true);
                 else
-                    $("input[name=productQIds]").prop("checked", false);
+                    $("input[name=odetailIds]").prop("checked", false);
             });
         });
+
+        function popUp() {
+          var checkList = document.querySelectorAll('input[name=odetailIds]:checked');
+          if(checkList.length == 0) {
+            alert("선택한 값이 없습니다.");
+            window.location.reload();
+          } else{
+            var form = document.getElementById('orderBox');
+            var target = "popUp";
+            var features = "scrollbars = yes, width = 500, height=250, location=no, resizable=yes";
+            window.open("",target,features);
+            form.target = target;
+            form.submit();
+          }
+        }
     </script>
   <title>주문 관리</title>
 </head>
@@ -27,13 +43,13 @@
   <div class="sort">
     <a th:href="@{/admin/order}" th:text="전체" th:class="${status == 'all'} ? 'active' : '' "></a>
     <a th:href="@{/admin/order(sort='결제 완료')}" th:text="'결제 완료'" th:class="${status == '결제 완료'} ? 'active' : '' "></a>
-    <a th:href="@{/admin/order(sort='배송 준비')}" th:text="'배송 준비'" th:class="${status == '배송 준비'} ? 'active' : '' "></a>
+    <a th:href="@{/admin/order(sort='배송 준비중')}" th:text="'배송 준비중'" th:class="${status == '배송 준비중'} ? 'active' : '' "></a>
     <a th:href="@{/admin/order(sort='배송 중')}" th:text="'배송 중'" th:class="${status == '배송 중'} ? 'active' : '' "></a>
     <a th:href="@{/admin/order(sort='배송 완료')}" th:text="'배송 완료'" th:class="${status == '배송 완료'} ? 'active' : '' "></a>
     <a th:href="@{/admin/order(sort='구매 확정')}" th:text="'구매 확정'" th:class="${status == '구매 확정'} ? 'active' : '' "></a>
   </div>
 
-  <form id="cancelOrder" method="post" th:action="@{/admin/order/cancel}">
+  <form id="orderBox" method="GET" th:action="@{/admin/order/status}">
     <table class="list">
       <tbody id="orderList">
         <tr>
@@ -44,27 +60,25 @@
           <th>주문번호</th>
           <th>주문상세번호</th>
           <th>아이디</th>
-          <th>진행사항</th>
+          <th>진행상태</th>
         </tr>
         <th:block th:each="odetail : ${oDetailList}">
           <tr>
             <td scope="row">
-              <input type="checkbox" name="orderIds" th:value="${odetail.orderDTO.orderId}">
+              <input type="checkbox" name="odetailIds" th:value="${odetail.odetailId}">
             </td>
             <td>[[${odetail.orderDTO.orderId}]]</td>
             <td><a th:href="@{/admin/order/detail(odetailId=${odetail.odetailId},page='admin')}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=600,height=550'); return false;">[[${odetail.odetailId}]]</a></td>
             <td>[[${odetail.orderDTO.userDTO.userId}]]</td>
-            <th>[[${odetail.orderDTO.status}]]</th>
+            <td>[[${odetail.orderDTO.status}]]</td>
           </tr>
         </th:block>
       </tbody>
-      <tfoot>
-        <div class="buttons">
-          <button>상태 변경</button>
-          <input type="reset" value="선택 취소">
-        </div>
-      </tfoot>
     </table>
+    <div class="buttons">
+      <a onclick="popUp();">상태 변경</a>
+      <input type="reset" value="선택 취소">
+    </div>
   </form>
 </section>
 

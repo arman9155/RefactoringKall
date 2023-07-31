@@ -1,10 +1,14 @@
 package com.refactoring.rekall.service;
 
+import com.refactoring.rekall.dto.OrderDetailDTO;
 import com.refactoring.rekall.dto.RefundDTO;
+import com.refactoring.rekall.entity.OrderDetailEntity;
+import com.refactoring.rekall.entity.OrderEntity;
 import com.refactoring.rekall.entity.RefundEntity;
 import com.refactoring.rekall.repository.RefundRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +25,12 @@ public class RefundService {
     RefundRepository refundRepository;
     @Autowired
     ImageService imageService;
+    @Autowired
+    OrderService orderService;
+    @Autowired
+    UserService userService;
+    @Autowired
+    RefundService refundService;
 
 //  ------------------------------------- ★ loginId별 / sort 별 List ★ --------------------------------------------------
     public List<RefundDTO> getRefundList(String loginId, String status) {
@@ -49,7 +59,7 @@ public class RefundService {
 
 //  ★ 전체 / sort 별 List ★ --------------------------------------------------
     public List<RefundDTO> getAllRefund(String status) {
-         List<RefundEntity> refundEntities = refundRepository.findAll();
+         List<RefundEntity> refundEntities = refundRepository.findAll(Sort.by(Sort.Direction.DESC,"refundId"));
         List<RefundDTO> refundDTOList = getSortRefund(refundEntities, status);
 
         return refundDTOList;
@@ -95,6 +105,15 @@ public class RefundService {
     }
 
     //  --------------------- ★ refund DTO 찾기★ ---------------------------------------------------------------
+    public List<RefundDTO> findRefundDTOList(List<Integer> refundId) {
+        List<RefundDTO> refundDTOList = new ArrayList<>();
+        for(Integer refund : refundId) {
+            RefundDTO refundDTO = findRefundDTO(refund);
+            refundDTOList.add(refundDTO);
+        }
+        return refundDTOList;
+    }
+
     public RefundDTO findRefundDTO(Integer refundId) {
         Optional<RefundEntity> optionalRefundEntity = refundRepository.findById(refundId);
         RefundDTO refundDTO = new RefundDTO();
@@ -102,7 +121,38 @@ public class RefundService {
         return refundDTO;
     }
 
+    //  --------------------- ★ refund DTO 찾기★ ---------------------------------------------------------------
+    public RefundDTO findRefundDTOByOdetailId(Integer odetailId) {
+        Optional<RefundEntity> optionalRefundEntity = refundRepository.findByOrderDetailEntityOdetailId(odetailId);
+        RefundDTO refundDTO = new RefundDTO();
+        if(optionalRefundEntity.isPresent()) refundDTO = RefundDTO.toRefundDTO(optionalRefundEntity.get());
+        return refundDTO;
+    }
+
+    //  --------------------- ★ refund DTO 저장★ ---------------------------------------------------------------
     public void saveRefundDTO(RefundDTO refundDTO) {
         if(refundDTO != null) refundRepository.save(RefundEntity.toRefundEntity(refundDTO));
+    }
+
+    //  --------------------- ★ admin refund 생성★ ---------------------------------------------------------------
+    public void adminSetRefund(String[] odetailIds, String loginId) {
+        for(String id : odetailIds) {
+            RefundDTO refundDTO = refundService.findRefundDTOByOdetailId(Integer.parseInt(id));
+            refundDTO.setOrderDetailDTO(orderService.getOrderDetail(Integer.parseInt(id)));
+            refundDTO.setUserDTO(userService.findByUserID(loginId));
+            refundDTO.setTitle("관리자 반품 확정");
+            refundDTO.setContent("관리자의 요청에 의해 반품 확정");
+            refundDTO.setStatus("반품 확정");
+            
+            if(refundDTO != null) refundRepository.save(RefundEntity.toRefundEntity(refundDTO));
+        }
+    }
+
+    public void changeStatus(String status, String[] refundIds) {
+        for(String id : refundIds) {
+            RefundDTO refundDTO = findRefundDTO(Integer.parseInt(id));
+            refundDTO.setStatus(status);
+            refundRepository.save(RefundEntity.toRefundEntity(refundDTO));
+        }
     }
 }

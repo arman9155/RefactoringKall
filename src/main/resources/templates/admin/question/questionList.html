@@ -63,10 +63,10 @@
                         <td class="q6" th:text="${question.date1}"></td>
                         <td class="q7">
                             <th:block th:if="${question.comment != null}">
-                                <label>O</label>
+                                <label>⭕</label>
                             </th:block>
                             <th:block th:if="${question.comment == null}">
-                                <label>X</label>
+                                <label>❌</label>
                             </th:block>
                         </td>
                     </tr>

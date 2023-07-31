@@ -17,6 +17,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpSession;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -32,6 +33,8 @@ public class OrderController {
     RefundService refundService;
     @Autowired
     ProductService productService;
+    @Autowired
+    CategoryService categoryService;
 
 //  ------------------------------------- ★ mypage order List ★ ------------------------------------------------------------
     @GetMapping("mypage/order")
@@ -69,22 +72,14 @@ public class OrderController {
     }
 
     //  ------------------------------------- ★ 주문상세정보 ★ ------------------------------------------------------------
-    @GetMapping(value = {"/mypage/order/detail","/admin/order/detail"})
-    public ModelAndView orderDetail (@RequestParam(name="odetailId", required = false, defaultValue = "0") Integer odetailId,
-                                     @RequestParam(name="page", required = false,defaultValue = "mypage")String page){
+    @GetMapping("/mypage/order/detail")
+    public ModelAndView userOrderDetail (@RequestParam("odetailId") Integer odetailId){
 
         ModelAndView modelAndView = new ModelAndView();
 
         OrderDetailDTO orderDetailDTO = orderService.getOrderDetail(odetailId);
-
         modelAndView.addObject("odetail",orderDetailDTO);
-
-        if("admin".equals(page))  {
-            modelAndView.setViewName("admin/order/orderDetail.html");
-        }
-        else {
-            modelAndView.setViewName("/pages/mypage/order/orderDetail.html");
-        }
+        modelAndView.setViewName("/pages/mypage/order/orderDetail.html");
 
         return modelAndView;
     }
@@ -93,7 +88,7 @@ public class OrderController {
     @GetMapping("/mypage/order/cancel")
     public ModelAndView cancelOdetailF(@RequestParam("odetailId") Integer odetailId) {
         ModelAndView modelAndView = new ModelAndView();
-        System.out.println(odetailId);
+
         OrderDetailDTO orderDetailDTO = orderService.getOrderDetail(odetailId);
         UserDTO userDTO = userService.findByUserID(orderDetailDTO.getOrderDTO().getUserDTO().getUserId());
 
@@ -108,7 +103,7 @@ public class OrderController {
     @PostMapping("/mypage/order/cancel")
     public ModelAndView cancelOdetail(@ModelAttribute("refundDTO") RefundDTO refundDTO, MultipartFile[] files) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
-        orderService.cancelOdetail(refundDTO.getOrderDetailDTO().getOdetailId(), "mypage");
+        orderService.cancelOdetail(refundDTO.getOrderDetailDTO().getOdetailId());
         refundService.setRefund(refundDTO, files, "save");
 
         modelAndView.addObject("data", new Message("반품 요청되었습니다.","/close" ));
@@ -269,6 +264,45 @@ public class OrderController {
 
         return modelAndView;
     }
+    @GetMapping("/admin/order/detail")
+    public ModelAndView adminOrderDetail (@RequestParam("odetailId") Integer odetailId){
 
-//"/admin/orer/cancel/"
+        ModelAndView modelAndView = new ModelAndView();
+        OrderDetailDTO orderDetailDTO = orderService.getOrderDetail(odetailId);
+
+        modelAndView.addObject("odetail",orderDetailDTO);
+        modelAndView.setViewName("admin/order/orderDetail.html");
+
+
+        return modelAndView;
+    }
+    @GetMapping("admin/order/status")
+    public ModelAndView adminOrderStatusF(@RequestParam("odetailIds") List<Integer> odetailIds) {
+        ModelAndView modelAndView = new ModelAndView();
+        List<CategoryDTO> categoryDTOS = categoryService.findCategory("order_"); // 주문 정보 가져오기
+        categoryDTOS.add(categoryService.findCategoryDTO("rf_03"));
+
+        modelAndView.addObject("odetailIds", odetailIds);
+        modelAndView.addObject("category", categoryDTOS );
+        modelAndView.setViewName("/admin/order/orderStatus.html");
+        return modelAndView;
+    }
+
+    @PostMapping("admin/order/status")
+    public ModelAndView adminOrderStatus(@RequestParam("status") String status,
+                                         @RequestParam("odetailIds") String[] odetailIds,
+                                         HttpSession session) {
+        ModelAndView modelAndView = new ModelAndView();
+
+        if("반품 확정".equals(status)){
+            orderService.adminCancelOrder(odetailIds); //order ,odetail 반품 수정
+            refundService.adminSetRefund(odetailIds, session.getAttribute("loginId").toString()); // refund 생성 저장
+        } else {
+            orderService.changeStatus(status, odetailIds);
+        }
+        modelAndView.addObject("data", new Message("변경되었습니다.","/close" ));
+        modelAndView.setViewName("/common/message.html");
+        return modelAndView;
+    }
+
 }

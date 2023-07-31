@@ -2,7 +2,7 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-  <link th:href="@{/css/mypage/list.css}" rel="stylesheet">
+  <link th:href="@{/css/admin/detail.css}" rel="stylesheet">
   <script type="text/javascript" th:src="@{/myLib/jquery-3.2.1.min.js}"></script>
   <meta charset="UTF-8">
   <script th:inline="javascript">
@@ -11,35 +11,32 @@
       window.close();
     }
 
-
-    function submitForm() {
+    function changeStatus() {
+        var target = "popUp";
+        var features = "scrollbars = yes, width = 500, height=250, location=no, resizable=yes";
+        window.open("",target,features);
 
          const form = document.createElement('form');
          form.method = 'GET';
-         form.action = '/admin/order/cancel';
+         form.action = '/admin/order/status';
+         form.target = target;
 
-         const id = document.querySelector('.odetailId');
+         const id = document.querySelector('#odetailId');
          const input = document.createElement('input');
          input.type = 'hidden';
-         input.name = 'odetailId';
-         input.value = id.value;
+         input.name = 'odetailIds';
+         input.value = id.innerText;
          form.appendChild(input);
-
-         const input2 = document.createElement('input');
-         input2.type = 'hidden';
-         input2.name = 'page';
-         input2.value = 'admin';
-         form.appendChild(input2);
 
          document.body.appendChild(form);
          form.submit();
     }
     </script>
-  <title>주문상세정보</title>
+  <title>주문 상세</title>
 </head>
 <body>
 <section class="content">
-  <h3 class="underline">주문상세정보</h3>
+  <h3 class="underline">주문 상세</h3>
   <table class="list">
     <tbody id="orderDetail">
     <tr>
@@ -80,13 +77,13 @@
       <td>[[${odetail.request}]]</td>
     </tr>
     <tr>
-      <th>진행상황</th>
+      <th>진행 상태</th>
       <td>[[${odetail.status}]]</td>
     </tr>
     </tbody>
       <tfoot>
       <div class="buttons">
-        <a onclick="submitForm();">선택 삭제</a>
+        <a onclick="changeStatus();">상태 변경</a>
         <a onclick="closeWindow();">닫기</a>
       </div>
       </tfoot>

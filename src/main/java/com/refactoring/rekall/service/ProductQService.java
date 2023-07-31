@@ -7,6 +7,7 @@ import com.refactoring.rekall.entity.ProductQEntity;
 import com.refactoring.rekall.repository.ProductQRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,7 +47,7 @@ public class ProductQService {
 //  ------------------------------------- ★ 상품 문의 리스트 ★ ------------------------------------------------------------
     //-- 전체 뽑기
     public List<ProductQDTO> findAll() {
-        List<ProductQEntity> productQEntityList = productQRepository.findAll();
+        List<ProductQEntity> productQEntityList = productQRepository.findAll(Sort.by(Sort.Direction.DESC,"productqId"));
         List<ProductQDTO> productQDTOList = new ArrayList<>();
         for(ProductQEntity productQEntity : productQEntityList) {
             if(productQEntity != null) {

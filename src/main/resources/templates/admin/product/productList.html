@@ -65,7 +65,7 @@
                              [[${product.name}]] </a>
                         </td>
                         <td>[[${product.amount}]]</td>
-                        <td><a class="detailImg" th:href="@{/admin/product/dImage(productId=${product.productId})}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=800, height=800'); return false;">상세이미지</a></td>
+                        <td class="detailImg"><a class="detailImg" th:href="@{/admin/product/dImage(productId=${product.productId})}" th:target="'_blank'" onclick="window.open(this.href, this.target, 'width=800, height=400'); return false;">상세이미지</a></td>
                     </tr>
                 </th:block>
                 </tbody>

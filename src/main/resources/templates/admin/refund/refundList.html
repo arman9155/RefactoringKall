@@ -8,6 +8,33 @@
   <link th:href="@{/css/admin/list.css}" rel="stylesheet">
   <script type="text/javascript" th:src="@{/myLib/jquery-3.2.1.min.js}"></script>
   <meta charset="UTF-8">
+  <script th:inline="javascript">
+    //전체선택
+        $(document).ready(function() {
+            $('#selectAll').click(function() {
+                if($('#selectAll').is(':checked'))
+                    $("input[name=refundIds]").prop("checked", true);
+                else
+                    $("input[name=refundIds]").prop("checked", false);
+            });
+        });
+
+      function popUp() {
+          var checkList = document.querySelectorAll('input[name=refundIds]:checked');
+          if(checkList.length == 0) {
+            alert("선택한 값이 없습니다.");
+            window.location.reload();
+          }else{
+            var form = document.getElementById('orderBox');
+            var target = "popUp";
+            var features = "scrollbars = yes, width = 500, height=250, location=no, resizable=yes";
+            window.open("",target,features);
+            form.target = target;
+            form.submit();
+          }
+        }
+
+  </script>
   <title>반품 관리</title>
 </head>
 <body>
@@ -21,32 +48,40 @@
     <a th:href="@{/admin/refund(sort='반품 확정')}" th:text="'반품 확정'" th:class="${status == '반품 확정'} ? 'active' : '' "></a>
     <a th:href="@{/admin/refund(sort='반품 완료')}" th:text="'반품 완료'" th:class="${status == '반품 완료'} ? 'active' : '' "></a>
   </div>
-
-
+  <form id="refundBox" method="GET" th:action="@{/admin/refund/status}">
     <table class="list">
       <tbody id="refundList">
           <tr>
-            <th>번호</th>
-            <th>주문상세번호</th>
-            <th>아이디</th>
-            <th>제목</th>
-            <th>진행사항</th>
-            <th>날짜</th>
+            <th class="refund1">
+              <input type="checkbox" id="selectAll">
+              <label for="selectAll">전체 선택</label>
+            </th>
+            <th class="refund2">반품번호</th>
+            <th class="refund3">주문상세번호</th>
+            <th class="refund4">아이디</th>
+            <th class="refund5">제목</th>
+            <th class="refund6">진행 상태</th>
           </tr>
         <th:block th:each="refund : ${refundList}">
           <tr>
-            <td>[[${refund.refundId}]]</td>
-            <td>[[${refund.orderDetailDTO.odetailId}]]</td>
-            <td>[[${refund.userDTO.userId}]]</td>
-            <td>
+            <td class="refund1">
+              <input type="checkbox" name="refundIds" th:value="${refund.refundId}">
+            </td>
+            <td class="refund2">[[${refund.refundId}]]</td>
+            <td class="refund3">[[${refund.orderDetailDTO.odetailId}]]</td>
+            <td class="refund4">[[${refund.userDTO.userId}]]</td>
+            <td class="refund5">
               <a th:href="@{/admin/refund/detail(refundId=${refund.refundId})}" th:targer="'_blank'" onclick="window.open(this.href, this.target, 'width=600,height=550'); return false;">[[${refund.title}]]</a>
             </td>
-            <td>[[${refund.status}]]</td>
-            <td>[[${refund.date}]]</td>
+            <td class="refund6">[[${refund.status}]]</td>
           </tr>
         </th:block>
       </tbody>
     </table>
+    <div class="buttons">
+      <a onclick="popUp();">상태 변경</a>
+      <input type="reset" value="선택 취소">
+    </div>
   </form>
 </section>
 

@@ -102,13 +102,36 @@ public class RefundController {
     public ModelAndView refundList (@RequestParam("refundId") Integer refundId){
 
         ModelAndView modelAndView = new ModelAndView();
-        List<CategoryDTO> category = categoryService.findCategory("rf");
         RefundDTO refundDTO = refundService.findRefundDTO(refundId);
 
-        modelAndView.addObject("select", category);
         modelAndView.addObject("refund",refundDTO);
-        modelAndView.setViewName("admin/refund/refundList.html");
+        modelAndView.setViewName("admin/refund/refundDetail.html");
 
+        return modelAndView;
+    }
+    @GetMapping("admin/refund/status")
+    public ModelAndView refundStatusF (@RequestParam("refundIds") List<Integer> refundIds){
+
+        ModelAndView modelAndView = new ModelAndView();
+        List<CategoryDTO> category = categoryService.findCategory("rf");
+
+        modelAndView.addObject("refundIds", refundIds);
+        modelAndView.addObject("category", category);
+        modelAndView.setViewName("admin/refund/refundStatus.html");
+
+        return modelAndView;
+    }
+
+    @PostMapping("admin/refund/status")
+    public ModelAndView refundStatus(@RequestParam("status") String status,
+                                      @RequestParam("refundIds") String[] refundIds,
+                                         HttpSession session) {
+        ModelAndView modelAndView = new ModelAndView();
+
+        refundService.changeStatus(status, refundIds);
+
+        modelAndView.addObject("data", new Message("변경되었습니다.","/close" ));
+        modelAndView.setViewName("/common/message.html");
         return modelAndView;
     }
 

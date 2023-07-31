@@ -1,20 +1,37 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/admin/adminLayout}"
-      layout:fragment="Content">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-  <link th:href="@{/css/admin/list.css}" rel="stylesheet">
+  <link th:href="@{/css/admin/detail.css}" rel="stylesheet">
   <script type="text/javascript" th:src="@{/myLib/jquery-3.2.1.min.js}"></script>
   <meta charset="UTF-8">
   <title>반품 관리</title>
-  <script>
+  <script th:inline="javascript">
     function windowClose() {
       window.close();
       window.opener.location.reload();
     }
 
+    function changeStatus() {
+          var target = "popUp";
+          var features = "scrollbars = yes, width = 500, height=250, location=no, resizable=yes";
+          window.open("",target,features);
+
+           const form = document.createElement('form');
+           form.method = 'GET';
+           form.action = '/admin/refund/status';
+           form.target = target;
+
+           const id = document.querySelector('#refundId');
+           const input = document.createElement('input');
+           input.type = 'hidden';
+           input.name = 'refundIds';
+           input.value = id.innerText;
+           form.appendChild(input);
+
+           document.body.appendChild(form);
+           form.submit();
+      }
   </script>
 </head>
 <body>
@@ -25,11 +42,11 @@
     <tbody id="refundList">
       <tr>
         <th>반품번호</th>
-        <td>[[${refund.refundId}]]</td>
+        <td id="refundId">[[${refund.refundId}]]</td>
       </tr>
       <tr>
         <th>주문상세번호</th>
-        <td>[[${refund.odetailDTO.odetailId}]]</a></td>
+        <td>[[${refund.orderDetailDTO.odetailId}]]</a></td>
       </tr>
       <tr>
         <th>아이디</th>
@@ -41,16 +58,30 @@
       </tr>
       <tr>
         <th>반품사유</th>
-        <textarea name="description" id="description" rows="10">[[${refund.content}]]</textarea>
+        <td>
+          <textarea name="description" id="description" rows="10">[[${refund.content}]]</textarea>
+        </td>
       </tr>
       <tr>
-        <th>이미지</th>
-        <td>
-          <div th:if="${refund.image1 !=null}">[[${refund.image1}]]</div>
-          <div th:if="${refund.image2 !=null}">[[${refund.image2}]]</div>
-        </td>
+        <th>첨부사진1</th>
+        <th:block th:if="${refund.image_1 !=null}">
+          <td><img class="main_image" th:src="${refund.image_1}">
+        </th:block>
+        <th:block th:if="${refund.image_1 == null}">
+          <td><label>❌</label></td>
+        </th:block>
+      </tr>
       <tr>
-        <th>진행사항</th>
+        <th>첨부사진2</th>
+        <th:block th:if="${refund.image_2 !=null}" >
+          <td><img class="main_image" th:src="${refund.image_2}">
+        </th:block>
+        <th:block th:if="${refund.image_2 == null}">
+          <td><label>❌</label></td>
+        </th:block>
+      </tr>
+      <tr>
+        <th>진행 상태</th>
         <td>[[${refund.status}]]</td>
       </tr>
       <tr>
@@ -60,7 +91,7 @@
     </tbody>
   </table>
   <div class="buttons">
-    <a>수정</a>
+    <a onclick="changeStatus();">상태 변경</a>
     <a onclick="windowClose()">닫기</a>
   </div>
 </section>
