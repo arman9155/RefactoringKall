@@ -38,7 +38,7 @@
                                 </span>
             </td>
           </tr>
-          <tr class="toggle_A" th:if="${usQ.content != null}" th:id="'#answer_'+${i.index}">
+          <tr class="toggle_A" th:if="${usQ.content != null}">
               <td colspan="3" class="question_a" scope="row">
                 <div class="question_a_content">
                   <textarea cols="10" readonly>[[${usQ.content}]] </textarea>
@@ -51,7 +51,7 @@
                 </div>
               </td>
           </tr>
-          <tr class="toggle_C" th:if="${usQ.comment != null}" th:id="'#answer_'+${i.index}">
+          <tr class="toggle_C" th:if="${usQ.comment != null}">
               <td colspan="3" class="question_a" scope="row">
                 <div class="question_a_comment">
                     <textarea cols="10" readonly> 답변 : &#13;&#10; [[${usQ.comment}]] </textarea>

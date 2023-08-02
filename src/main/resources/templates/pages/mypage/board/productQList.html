@@ -30,7 +30,7 @@
 
         <tbody id="toggle_container">
         <th:block th:each="Q, i : ${productQList}">
-          <tr class="toggle_Q" th:id="'#answer_'+${i.index}">
+          <tr class="toggle_Q" >
             <td class="col1" scope="row"><input type="checkbox" name="productqIds" th:value="${Q.productqId}"></td>
             <td class="col2" th:text="${Q.productDTO.name}"></td>
             <td class="productQ_content col3">
@@ -39,7 +39,7 @@
                                 </span>
             </td>
           </tr>
-          <tr class="toggle_A" th:if="${Q.content != null}" th:id="'#answer_'+${i.index}">
+          <tr class="toggle_A" th:if="${Q.content != null}" >
             <td>
               <img id="productQImg" th:src="${Q.productDTO.image}">
             </td>

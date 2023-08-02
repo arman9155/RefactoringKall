@@ -23,6 +23,7 @@ h3.underline {
     border-collapse: collapse;
     border: 3px solid #FB9DA7;
     line-height: 40px;
+    border-collapse :collapse;
 }
 
 .col1 {
@@ -80,33 +81,28 @@ section .toggle_Q .productQ_content {
 section .toggle_A,
 section .toggle_C {
   display: none;
-/*  text-align: justify;*/
   word-break: break-all;
-
-    /* content: '\f106'; */
-    font-family: 'Font Awesome 5 Free', sans-serif;
     font-weight: 900;
+  border-bottom: 3px solid #FB9DA7;
+
 }
 
 section .toggle_Q,
 thead tr {
   background-color: var(--white-f);
   padding: 10px;
-  border-bottom: 1px dotted RGB(255, 200, 200);
   font-size: 1.2rem;
   cursor: pointer;
-  font-family: 'Font Awesome 5 Free', sans-serif;
   font-weight: 900;
   margin-right: 10px;
   text-align: center;
+  border-bottom: 3px solid #FB9DA7;
+
 }
 
 section .notice_a,
 section .question_a {
-
   padding: 20px;
-  background-color: var(--white-f9);
-  border-bottom: 1px solid #333333;
 }
 
 .question_a_content {
@@ -171,4 +167,4 @@ section .question_a {
 }
 .mileage.list tr:first-child {
     border-bottom : 3px solid #FB9DA7;
-}9
+}
